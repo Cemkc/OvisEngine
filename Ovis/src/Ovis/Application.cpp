@@ -1,5 +1,8 @@
 #include "Application.h"
 
+#include "Ovis/Events/ApplicationEvent.h"
+#include "Ovis/Log.h"
+
 namespace Ovis {
 	Application::Application()
 	{
@@ -11,6 +14,10 @@ namespace Ovis {
 
 	void Application::Run()
 	{
-		while (true);
+
+		WindowResizeEvent e(1280, 720);
+		OV_TRACE(e.ToString());
+
+		while(true);
 	}
 }

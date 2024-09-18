@@ -11,6 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ovis\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Ovis\Events\Event.h" />
+    <ClInclude Include="src\Ovis\Events\KeyEvent.h" />
+    <ClInclude Include="src\Ovis\Events\MouseEvent.h" />
     <ClInclude Include="src\Ovis.h" />
     <ClInclude Include="src\Ovis\Application.h" />
     <ClInclude Include="src\Ovis\Core.h" />
@@ -68,7 +72,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Ovis\vendor\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Ovis/src;$(SolutionDir)Ovis\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
