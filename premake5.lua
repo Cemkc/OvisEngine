@@ -1,4 +1,4 @@
-worksapce "Ovis"
+workspace "OvisEngine"
 	architecture "x64"
 
 	configurations{
@@ -11,21 +11,25 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Ovis"
 	location "Ovis"
-	kind "SahredLib"
+	kind "SharedLib"
 	language "C++"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "ovpch.h"
+	pchsource "Ovis/src/ovpch.cpp"
+
 	files
 	{
-		"%{prj.name}/src/**.h"
+		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/src"
 	}
 
 	filter "system:windows"
@@ -36,24 +40,28 @@ project "Ovis"
 		defines
 		{
 			"OV_PLATFORM_WINDOWS",
-			"OV_BUILD_DLL",
+			"OV_BUILD_DLL"
 		}
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} .. /bin/" .. outputdir .. "/Sandbox")
+			-- Create the destination folder if it doesn't exist
+			("{MKDIR} \"../bin/" .. outputdir .. "/Sandbox/\""),
+
+			-- Copy the built DLL to the destination folder
+			("{COPYFILE} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
-	filter "Configurations:Debug"
-		define "OV_RELEASE"
+	filter "configurations:Debug"
+		defines "OV_DEBUG"
 		optimize "On"
 
 	filter "configurations:Release"
-		define "OV_RELEASE"
+		defines "OV_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
-		define "OV_DIST"
+		defines "OV_DIST"
 		optimize "On"
 
 project "Sandbox"
@@ -66,7 +74,7 @@ project "Sandbox"
 
 	files
 	{
-		"%{prj.name}/src/**.h"
+		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
@@ -91,14 +99,14 @@ project "Sandbox"
 			"OV_PLATFORM_WINDOWS",
 		}
 
-	filter "Configurations:Debug"
-		define "OV_RELEASE"
+	filter "configurations:Debug"
+		defines "OV_DEBUG"
 		optimize "On"
 
 	filter "configurations:Release"
-		define "OV_RELEASE"
+		defines "OV_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
-		define "OV_DIST"
+		defines "OV_DIST"
 		optimize "On"

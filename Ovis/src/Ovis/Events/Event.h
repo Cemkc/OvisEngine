@@ -2,9 +2,6 @@
 
 #include "Ovis/Core.h"
 
-#include <string>
-#include <functional>
-
 namespace Ovis {
 
 	// Events in Ovis are currently blocking, meaning when an event occurs it

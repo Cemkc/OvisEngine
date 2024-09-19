@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Ovis {
 
 	class OVIS_API KeyEvent : public Event
