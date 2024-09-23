@@ -1,3 +1,4 @@
+#pragma once
 #include <Ovis.h>
 
 class Sandbox : public Ovis::Application

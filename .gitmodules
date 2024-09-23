@@ -1,3 +1,6 @@
 [submodule "Ovis/vendor/spdlog"]
 	path = Ovis/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Ovis/vendor/GLFW"]
+	path = Ovis/vendor/GLFW
+	url = https://github.com/Cemkc/glfw.git

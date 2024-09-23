@@ -9,6 +9,13 @@ workspace "OvisEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Create a dictionary for include paths realtive to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Ovis/vendor/GLFW/include"
+
+-- Include premake5 file in GLFW path into this file
+include "Ovis/vendor/GLFW"
+
 project "Ovis"
 	location "Ovis"
 	kind "SharedLib"
@@ -29,7 +36,13 @@ project "Ovis"
 	includedirs
 	{
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

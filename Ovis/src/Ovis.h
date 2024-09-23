@@ -2,7 +2,9 @@
 
 // For use by Ovis Applications
 
-#include <iostream>
+// Precompiled header
+#include "ovpch.h"
+
 #include "Ovis/Application.h"
 #include "Ovis/Log.h"
 

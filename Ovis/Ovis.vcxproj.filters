@@ -7,6 +7,12 @@
     <Filter Include="Ovis\Events">
       <UniqueIdentifier>{8A42F7A3-F6F7-6F99-7FEC-6970EBA0669D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ovis.h" />
@@ -34,6 +40,12 @@
     <ClInclude Include="src\Ovis\Log.h">
       <Filter>Ovis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Window.h">
+      <Filter>Ovis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\ovpch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="src\Ovis\Log.cpp">
       <Filter>Ovis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\ovpch.cpp" />
   </ItemGroup>
