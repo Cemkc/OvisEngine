@@ -7,6 +7,8 @@ workspace "OvisEngine"
 		"Dist"
 	}
 
+	startproject "Sandbox"
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Create a dictionary for include paths realtive to root folder (solution directory)

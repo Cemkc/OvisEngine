@@ -1,5 +1,6 @@
 #pragma once
 #include "Ovis/Core.h"
+#include <spdlog/fmt/ostr.h>
 
 namespace Ovis {
 
@@ -78,4 +79,5 @@ namespace Ovis {
 	{
 		return os << e.ToString();
 	}
+
 }
