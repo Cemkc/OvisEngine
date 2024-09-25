@@ -17,7 +17,7 @@ namespace Ovis {
 
 	void Application::OnEvent(Event& e) 
 	{
-		OV_CORE_INFO("{0}", e);
+		OV_CORE_INFO("{0}", e.ToString());
 	}
 
 	void Application::Run()
