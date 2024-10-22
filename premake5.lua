@@ -15,10 +15,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Ovis/vendor/GLFW/include"
 IncludeDir["Glad"] = "Ovis/vendor/Glad/include"
+IncludeDir["imgui"] = "Ovis/vendor/imgui"
 
 -- Include premake5 file in GLFW path into this file
 include "Ovis/vendor/GLFW"
 include "Ovis/vendor/Glad"
+include "Ovis/vendor/imgui"
 
 project "Ovis"
 	location "Ovis"
@@ -42,12 +44,14 @@ project "Ovis"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}"
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.imgui}"
 	}
 
 	links{
 		"GLFW",
 		"Glad",
+		"imgui",
 		"opengl32.lib"
 	}
 

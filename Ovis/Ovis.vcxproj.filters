@@ -7,8 +7,14 @@
     <Filter Include="Ovis\Events">
       <UniqueIdentifier>{8A42F7A3-F6F7-6F99-7FEC-6970EBA0669D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ovis\imgui">
+      <UniqueIdentifier>{50670217-3C1F-4464-A526-1DC091FDDE54}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -49,6 +55,12 @@
     <ClInclude Include="src\Ovis\Window.h">
       <Filter>Ovis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\imgui\ImguiLayer.h">
+      <Filter>Ovis\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -66,6 +78,12 @@
     </ClCompile>
     <ClCompile Include="src\Ovis\Log.cpp">
       <Filter>Ovis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp">
+      <Filter>Ovis\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
