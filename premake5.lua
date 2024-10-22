@@ -14,9 +14,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Create a dictionary for include paths realtive to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Ovis/vendor/GLFW/include"
+IncludeDir["Glad"] = "Ovis/vendor/Glad/include"
 
 -- Include premake5 file in GLFW path into this file
 include "Ovis/vendor/GLFW"
+include "Ovis/vendor/Glad"
 
 project "Ovis"
 	location "Ovis"
@@ -39,11 +41,13 @@ project "Ovis"
 	{
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -55,7 +59,8 @@ project "Ovis"
 		defines
 		{
 			"OV_PLATFORM_WINDOWS",
-			"OV_BUILD_DLL"
+			"OV_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands

@@ -37,6 +37,12 @@
     <ClInclude Include="src\Ovis\Events\MouseEvent.h">
       <Filter>Ovis\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Layer.h">
+      <Filter>Ovis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\LayerStack.h">
+      <Filter>Ovis</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Log.h">
       <Filter>Ovis</Filter>
     </ClInclude>
@@ -47,11 +53,15 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\ovpch.h" />
-    <ClInclude Include="src\Ovis\Layer.h" />
-    <ClInclude Include="src\Ovis\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Application.cpp">
+      <Filter>Ovis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Layer.cpp">
+      <Filter>Ovis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\LayerStack.cpp">
       <Filter>Ovis</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Log.cpp">
@@ -61,7 +71,5 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\ovpch.cpp" />
-    <ClCompile Include="src\Ovis\Layer.cpp" />
-    <ClCompile Include="src\Ovis\LayerStack.cpp" />
   </ItemGroup>
 </Project>

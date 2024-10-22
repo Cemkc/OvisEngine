@@ -4,3 +4,6 @@
 [submodule "Ovis/vendor/GLFW"]
 	path = Ovis/vendor/GLFW
 	url = https://github.com/Cemkc/glfw.git
+[submodule "Ovis/vendor/imgui"]
+	path = Ovis/vendor/imgui
+	url = https://github.com/Cemkc/imgui.git
