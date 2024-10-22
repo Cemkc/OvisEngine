@@ -47,6 +47,8 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\ovpch.h" />
+    <ClInclude Include="src\Ovis\Layer.h" />
+    <ClInclude Include="src\Ovis\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Application.cpp">
@@ -59,5 +61,7 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\ovpch.cpp" />
+    <ClCompile Include="src\Ovis\Layer.cpp" />
+    <ClCompile Include="src\Ovis\LayerStack.cpp" />
   </ItemGroup>
 </Project>

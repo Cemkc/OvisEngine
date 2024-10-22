@@ -1,7 +1,6 @@
 #include "ovpch.h"
 #include "Application.h"
 
-#include "Ovis/Events/ApplicationEvent.h"
 #include "Ovis/Log.h"
 
 namespace Ovis {
@@ -17,14 +16,47 @@ namespace Ovis {
 
 	void Application::OnEvent(Event& e) 
 	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 		OV_CORE_INFO("{0}", e.ToString());
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) 
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled) {
+				break;
+			}
+		}
+
 	}
 
 	void Application::Run()
 	{
-		while (m_Running) {
-			
+		while (m_Running) 
+		{
+
+			for (Layer* layer : m_LayerStack) {
+				layer->OnUpdate();
+			}
+
 			m_Window->OnUpdate();
 		}
 	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return false;
+	}
+
 }
