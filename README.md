@@ -1,2 +1,2 @@
-# Ovis
-Ovis Engine
+# Ovis Game Engine
+Ovis Engine is a Game Engine that I'm working on following the [Game Enigne Series on YouTube by TheCherno](https://youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&si=CwlxDhrIczdImBbZ) with the puropse of understanding coding principles and managing a large scaled project as well as improving my skills on concepts that are part of game development such as rendering, animations, sound etc.
