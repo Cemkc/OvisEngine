@@ -25,7 +25,7 @@ namespace Ovis {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
-		OV_CORE_INFO("{0}", e.ToString());
+		// OV_CORE_INFO("{0}", e.ToString());
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) 
 		{
@@ -41,13 +41,15 @@ namespace Ovis {
 	{
 		while (m_Running) 
 		{
-
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
 			}
 
 			m_Window->OnUpdate();
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
+		
 	}
 
 	void Application::PushLayer(Layer* layer)

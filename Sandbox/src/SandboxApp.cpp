@@ -14,7 +14,7 @@ public:
 	}
 	void OnEvent(Ovis::Event& event) override
 	{
-		OV_TRACE("{0}", event.ToString());
+		// OV_TRACE("{0}", event.ToString());
 	}
 };
 

@@ -9,6 +9,7 @@
 #include "Ovis/Events/KeyEvent.h"
 
 #include "glad/glad.h"
+#include "imgui.h"
 
 namespace Ovis {
 
@@ -38,7 +39,7 @@ namespace Ovis {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		OV_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+		// OV_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialized)
 		{
@@ -102,6 +103,14 @@ namespace Ovis {
 				}
 			});
 
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int character)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				KeyTypedEvent event(character);
+				data.EventCallback(event);
+			});
+		
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -112,6 +121,7 @@ namespace Ovis {
 					{
 						MouseButtonPressedEvent event(button);
 						data.EventCallback(event);
+						break;
 					}
 					case GLFW_RELEASE:
 					{
