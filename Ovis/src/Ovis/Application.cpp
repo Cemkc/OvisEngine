@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "Ovis/Log.h"
+#include "Ovis/Input.h"
 
 #include "glad/glad.h"
 

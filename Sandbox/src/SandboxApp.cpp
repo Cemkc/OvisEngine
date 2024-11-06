@@ -10,6 +10,10 @@ public:
 	}
 	void OnUpdate() override
 	{
+		if (Ovis::Input::IsKeyPressed(OV_KEY_TAB)) 
+		{
+			OV_TRACE("Tab key is pressed!");
+		}
 		// OV_INFO("ExampleLayer::Update");
 	}
 	void OnEvent(Ovis::Event& event) override

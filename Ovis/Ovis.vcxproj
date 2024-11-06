@@ -167,14 +167,18 @@ copy /B /Y ..\bin\Dist-windows-x86_64\Ovis\Ovis.dll "..\bin\Dist-windows-x86_64\
     <ClInclude Include="src\Ovis\Events\Event.h" />
     <ClInclude Include="src\Ovis\Events\KeyEvent.h" />
     <ClInclude Include="src\Ovis\Events\MouseEvent.h" />
+    <ClInclude Include="src\Ovis\Input.h" />
+    <ClInclude Include="src\Ovis\KeyCodes.h" />
     <ClInclude Include="src\Ovis\Layer.h" />
     <ClInclude Include="src\Ovis\LayerStack.h" />
     <ClInclude Include="src\Ovis\Log.h" />
+    <ClInclude Include="src\Ovis\MouseButtonCodes.h" />
     <ClInclude Include="src\Ovis\Window.h" />
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\ovpch.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Application.cpp" />
@@ -187,6 +191,7 @@ copy /B /Y ..\bin\Dist-windows-x86_64\Ovis\Ovis.dll "..\bin\Dist-windows-x86_64\
     <ClCompile Include="src\ovpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

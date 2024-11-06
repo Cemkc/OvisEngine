@@ -8,6 +8,7 @@
 #include "Ovis/Application.h"
 #include "Ovis/Log.h"
 #include "Ovis/imgui/ImguiLayer.h"
+#include "Ovis/Input.h"
 
 // -----Entry Point-----------------
 #include "Ovis/EntryPoint.h"
