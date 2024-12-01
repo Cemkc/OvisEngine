@@ -3,7 +3,7 @@
 #include "Layer.h"
 #include <vector>
 namespace Ovis {
-	class OVIS_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack();
@@ -16,6 +16,6 @@ namespace Ovis {
 		std::vector<Layer*>::iterator end() { return m_Layers.end(); }
 	private:
 		std::vector<Layer*> m_Layers;
-		std::vector<Layer*>::iterator m_LayerInsert;
+		unsigned int m_LayerInsertIndex = 0;
 	};
 }

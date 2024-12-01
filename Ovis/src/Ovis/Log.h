@@ -6,7 +6,7 @@
 
 namespace Ovis {
 
-	class OVIS_API Log {
+	class Log {
 	public:
 		static void Init();
 

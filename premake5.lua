@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Ovis/vendor/GLFW/include"
 IncludeDir["Glad"] = "Ovis/vendor/Glad/include"
 IncludeDir["imgui"] = "Ovis/vendor/imgui"
+IncludeDir["glm"] = "Ovis/vendor/glm"
 
 -- Include premake5 file in GLFW path into this file
 include "Ovis/vendor/GLFW"
@@ -24,8 +25,10 @@ include "Ovis/vendor/imgui"
 
 project "Ovis"
 	location "Ovis"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -36,7 +39,14 @@ project "Ovis"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -45,7 +55,8 @@ project "Ovis"
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links{
@@ -56,7 +67,6 @@ project "Ovis"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 
@@ -67,31 +77,27 @@ project "Ovis"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			-- Create the destination folder if it doesn't exist
-			("{MKDIR} \"../bin/" .. outputdir .. "/Sandbox/\""),
-
-			-- Copy the built DLL to the destination folder
-			("{COPYFILE} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-		}
-
 	filter "configurations:Debug"
 		defines "OV_DEBUG"
-		optimize "On"
+		runtime "Debug"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "OV_RELEASE"
-		optimize "On"
+		runtime "Release"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "OV_DIST"
-		optimize "On"
+		runtime "Release"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -105,7 +111,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Ovis/vendor/spdlog/include",
-		"Ovis/src"
+		"Ovis/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -114,8 +121,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -125,12 +130,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "OV_DEBUG"
-		optimize "On"
+		runtime "Debug"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "OV_RELEASE"
-		optimize "On"
+		runtime "Release"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "OV_DIST"
-		optimize "On"
+		runtime "Release"
+		optimize "on"

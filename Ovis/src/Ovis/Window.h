@@ -20,7 +20,7 @@ namespace Ovis {
 					:Title(title), Width(widht), Height(height){}
 	};
 
-	class OVIS_API Window
+	class Window
 	{
 	public:
 

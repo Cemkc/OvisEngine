@@ -4,7 +4,7 @@
 
 namespace Ovis {
 
-	class OVIS_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -17,7 +17,7 @@ namespace Ovis {
 		int m_KeyCode;
 	};
 
-	class OVIS_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -37,7 +37,7 @@ namespace Ovis {
 		int m_RepeatCount;
 	};
 
-	class OVIS_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -53,7 +53,7 @@ namespace Ovis {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class OVIS_API KeyTypedEvent : public KeyEvent 
+	class KeyTypedEvent : public KeyEvent 
 	{
 	public:
 		KeyTypedEvent(int keyCode) 

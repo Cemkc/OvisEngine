@@ -6,9 +6,11 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 
+#include "Ovis/imgui/ImguiLayer.h"
+
 namespace Ovis {
 
-	class OVIS_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -26,6 +28,7 @@ namespace Ovis {
 	private:
 		static Application* s_Instance;
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
