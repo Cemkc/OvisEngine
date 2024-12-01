@@ -1,9 +1,12 @@
 [submodule "Ovis/vendor/spdlog"]
 	path = Ovis/vendor/spdlog
-	url = https://github.com/gabime/spdlog.git
+	url = https://github.com/Cemkc/spdlog.git
 [submodule "Ovis/vendor/GLFW"]
 	path = Ovis/vendor/GLFW
 	url = https://github.com/Cemkc/glfw.git
 [submodule "Ovis/vendor/imgui"]
 	path = Ovis/vendor/imgui
 	url = https://github.com/Cemkc/imgui.git
+[submodule "Ovis/vendor/glm"]
+	path = Ovis/vendor/glm
+	url = https://github.com/Cemkc/glm.git
