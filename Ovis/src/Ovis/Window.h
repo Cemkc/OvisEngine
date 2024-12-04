@@ -1,10 +1,8 @@
 #pragma once
 
-#include "ovpch.h"
-
 #include "Ovis/Core.h"
 #include "Ovis/Events/Event.h"
-
+#include "Ovis/Renderer/GraphicsContext.h"
 
 namespace Ovis {
 
@@ -22,6 +20,8 @@ namespace Ovis {
 
 	class Window
 	{
+	protected:
+		GraphicsContext* m_Context;
 	public:
 
 		virtual ~Window() {}
@@ -38,6 +38,7 @@ namespace Ovis {
 
 		virtual void* GetNativeWindow() const = 0;
 
+		// To be defined by the window class of a particular platform
 		static Window* Create(const WindowProps& props = WindowProps());
 
 	};

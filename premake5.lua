@@ -78,7 +78,11 @@ project "Ovis"
 		}
 
 	filter "configurations:Debug"
-		defines "OV_DEBUG"
+		defines 
+		{
+			"OV_DEBUG",
+			"OV_ENABLE_ASSERTS"
+		}
 		runtime "Debug"
 		symbols "on"
 
