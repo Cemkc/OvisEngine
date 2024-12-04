@@ -12,6 +12,27 @@ namespace Ovis {
 
 	Application* Application::s_Instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+				case Ovis::ShaderDataType::Float:    return GL_FLOAT;
+				case Ovis::ShaderDataType::Float2:   return GL_FLOAT;
+				case Ovis::ShaderDataType::Float3:   return GL_FLOAT;
+				case Ovis::ShaderDataType::Float4:   return GL_FLOAT;
+				case Ovis::ShaderDataType::Mat3:     return GL_FLOAT;
+				case Ovis::ShaderDataType::Mat4:     return GL_FLOAT;
+				case Ovis::ShaderDataType::Int:      return GL_INT;
+				case Ovis::ShaderDataType::Int2:     return GL_INT;
+				case Ovis::ShaderDataType::Int3:     return GL_INT;
+				case Ovis::ShaderDataType::Int4:     return GL_INT;
+				case Ovis::ShaderDataType::Bool:     return GL_BOOL;
+			}
+
+			OV_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		OV_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -22,34 +43,14 @@ namespace Ovis {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		const std::string vertexSrc = R"(
-			#version 330 core
-			layout (location = 0) in vec3 aPos;
-
-			void main(){
-				gl_Position = vec4(aPos, 1.0);
-			}
-			)";
-
-		const std::string fragmentSrc = R"(
-			#version 330 core
-			out vec4 FragColor;
-
-			void main(){
-				FragColor = vec4(1.0, 0.5, 0.2, 1.0);
-			}
-			)";
-
-		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
-
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
 
 		float vertices[] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f,  0.8f, 0.8f, 0.1f, 1.0f,
+			 0.5f, -0.5f, 0.0f,  0.8f, 0.1f, 0.8f, 1.0f,
+			 0.0f,  0.5f, 0.0f,	 0.1f, 0.8f, 0.8f,	1.0f,
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
@@ -61,13 +62,56 @@ namespace Ovis {
 
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
-		//BufferLayout layout = 
-		//{
-		//	{ShaderDataType type, std::string name}
-		//}
+		{
+			BufferLayout layout
+			{
+				{ ShaderDataType::Float3, "aPos" },
+				{ ShaderDataType::Float4, "aColor" }
+			};
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+			m_VertexBuffer->SetLayout(layout);
+		}
+
+		const auto& bufferLayout = m_VertexBuffer->GetLayout();
+		int index = 0;
+		for (const auto& attribute : bufferLayout)
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, attribute.GetComponentCount(), 
+				ShaderDataTypeToOpenGLBaseType(attribute.Type), 
+				attribute.Normalized ? GL_TRUE : GL_FALSE,
+				bufferLayout.GetSrtide(),
+				(void*)attribute.Offset);
+
+			index++;
+		}
+
+		const std::string vertexSrc = R"(
+			#version 330 core
+			layout (location = 0) in vec3 aPos;
+			layout (location = 1) in vec4 aColor;
+
+			out vec4 vColor;
+
+			void main(){
+				gl_Position = vec4(aPos, 1.0);
+				vColor = aColor;
+			}
+		)";
+
+		const std::string fragmentSrc = R"(
+			#version 330 core
+
+			in vec4 vColor;
+
+			out vec4 FragColor;
+
+			void main(){
+				FragColor = vColor;
+			}
+		)";
+
+		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application() 
