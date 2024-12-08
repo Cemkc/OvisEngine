@@ -4,34 +4,11 @@
 #include "Ovis/Log.h"
 #include "Ovis/Input.h"
 
-#include "glad/glad.h"
-
-#include "Platform/OpenGL/OpenGLShader.h"
+#include "Ovis/Renderer/Renderer.h"
 
 namespace Ovis {
 
 	Application* Application::s_Instance = nullptr;
-
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-				case Ovis::ShaderDataType::Float:    return GL_FLOAT;
-				case Ovis::ShaderDataType::Float2:   return GL_FLOAT;
-				case Ovis::ShaderDataType::Float3:   return GL_FLOAT;
-				case Ovis::ShaderDataType::Float4:   return GL_FLOAT;
-				case Ovis::ShaderDataType::Mat3:     return GL_FLOAT;
-				case Ovis::ShaderDataType::Mat4:     return GL_FLOAT;
-				case Ovis::ShaderDataType::Int:      return GL_INT;
-				case Ovis::ShaderDataType::Int2:     return GL_INT;
-				case Ovis::ShaderDataType::Int3:     return GL_INT;
-				case Ovis::ShaderDataType::Int4:     return GL_INT;
-				case Ovis::ShaderDataType::Bool:     return GL_BOOL;
-			}
-
-			OV_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
 
 	Application::Application()
 	{
@@ -43,9 +20,6 @@ namespace Ovis {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-
 		float vertices[] =
 		{
 			-0.5f, -0.5f, 0.0f,  0.8f, 0.8f, 0.1f, 1.0f,
@@ -53,38 +27,59 @@ namespace Ovis {
 			 0.0f,  0.5f, 0.0f,	 0.1f, 0.8f, 0.8f,	1.0f,
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+		float squareVertices[] =
+		{
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f,
+		};
+
+		std::shared_ptr<VertexBuffer> squareVertexBuffer;
+		squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+
+		BufferLayout layout
+		{
+			{ ShaderDataType::Float3, "aPos" },
+			{ ShaderDataType::Float4, "aColor" }
+		};
+
+		vertexBuffer->SetLayout(layout);
 
 		uint32_t indices[] =
 		{
 			0, 1, 2
 		};
 
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
+		BufferLayout squareLayout
 		{
-			BufferLayout layout
-			{
-				{ ShaderDataType::Float3, "aPos" },
-				{ ShaderDataType::Float4, "aColor" }
-			};
+			{ ShaderDataType::Float3, "aPos" },
+		};
 
-			m_VertexBuffer->SetLayout(layout);
-		}
+		squareVertexBuffer->SetLayout(squareLayout);
 
-		const auto& bufferLayout = m_VertexBuffer->GetLayout();
-		int index = 0;
-		for (const auto& attribute : bufferLayout)
+		uint32_t squareIndices[] =
 		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, attribute.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(attribute.Type), 
-				attribute.Normalized ? GL_TRUE : GL_FALSE,
-				bufferLayout.GetSrtide(),
-				(void*)attribute.Offset);
+			0, 1, 2, 2, 3, 0
+		};
 
-			index++;
-		}
+		std::shared_ptr<IndexBuffer> squareIndexBuffer;
+		squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		
+
+		m_VertexArray.reset(VertexArray::Create());
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
+		m_VertexArray->SetIndexBuffer(indexBuffer);
+
+		m_SquareVertexArray.reset(VertexArray::Create());
+		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
+		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
 		const std::string vertexSrc = R"(
 			#version 330 core
@@ -111,7 +106,28 @@ namespace Ovis {
 			}
 		)";
 
+		const std::string blueShaderVsrc = R"(
+			#version 330 core
+			layout (location = 0) in vec3 aPos;
+
+			void main(){
+				gl_Position = vec4(aPos * 1.5, 1.0);
+			}
+		)";
+
+		const std::string blueShaderFsrc = R"(
+			#version 330 core
+
+			out vec4 FragColor;
+
+			void main(){
+				FragColor = vec4(0.1, 0.2, 0.8, 1.0);
+			}
+		)";
+
 		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
+
+		m_BlueShader.reset(Shader::Create(blueShaderVsrc, blueShaderFsrc));
 	}
 
 	Application::~Application() 
@@ -122,12 +138,18 @@ namespace Ovis {
 	{
 		while (m_Running) 
 		{
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+			RenderCommand::Clear();
 
-			glBindVertexArray(m_VertexArray);
+			Renderer::BeginScene();
+
+			m_BlueShader->Bind();
+			Renderer::Submit(m_SquareVertexArray);
+
 			m_Shader->Bind();
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();

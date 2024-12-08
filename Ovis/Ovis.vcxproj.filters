@@ -1368,6 +1368,11 @@
     <ClInclude Include="src\Ovis\Renderer\Buffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Ovis\Renderer\Renderer.h" />
+    <ClInclude Include="src\Ovis\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Ovis\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Ovis\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Application.cpp">
@@ -1405,5 +1410,10 @@
     <ClCompile Include="src\Ovis\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
   </ItemGroup>
 </Project>
