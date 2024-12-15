@@ -34,9 +34,9 @@ namespace Ovis
 	/////////////////////////////////////
 
 	PerspectiveCamera::PerspectiveCamera(float fov, float aspectRatio, float nearPlane, float farPlane)
-		: Camera(nearPlane, farPlane)
+		: Camera(nearPlane, farPlane), m_Fov(fov), m_AspectRatio(aspectRatio)
 	{
-		m_ProjectionMatrix = glm::perspective(m_Fov, m_AspectRatio, nearPlane, farPlane);
+		m_ProjectionMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
 	}
 	void PerspectiveCamera::UpdateViewMatrix()
 	{

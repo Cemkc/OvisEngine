@@ -25,6 +25,8 @@ namespace Ovis
 		shader->SetUniform("model", glm::mat4(1.0f));
 		shader->SetUniform("view", m_View);
 		shader->SetUniform("projection", m_Projection);
+		//shader->SetUniform("view", glm::mat4(1.0f));
+		//shader->SetUniform("projection", glm::mat4(1.0f));
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

@@ -30,6 +30,7 @@ namespace Ovis {
 
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
+		virtual float AspectRatio() const { return (float)GetWidth() / (float)GetHeight(); };
 
 		// Window attributes
 		virtual void SetEventCallback(const std::function<void(Event&)>& callback) = 0;

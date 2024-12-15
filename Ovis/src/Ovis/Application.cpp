@@ -140,7 +140,10 @@ namespace Ovis {
 
 		m_BlueShader.reset(Shader::Create(blueShaderVsrc, blueShaderFsrc));
 
-		m_Camera.reset(new OrthographicCamera(-2.0f, 2.0f, -2.0f, 2.0f));
+		OV_CORE_TRACE("{0}", Application::Get().GetWindow().GetWidth());
+		OV_CORE_TRACE("{0}", Application::Get().GetWindow().GetHeight());
+		OV_CORE_TRACE("{0}", Application::Get().GetWindow().AspectRatio());
+		m_Camera.reset(new PerspectiveCamera(45.0f, Application::Get().GetWindow().AspectRatio(), 0.1f, 100.0f));
 		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	}
 
@@ -181,8 +184,8 @@ namespace Ovis {
 
 			m_Window->OnUpdate();
 
-			OV_CORE_TRACE("Delta Time: {0}", Time::GetDeltaTime());
-			OV_CORE_TRACE("Time: {0}", Time::GetTime());
+			//OV_CORE_TRACE("Delta Time: {0}", Time::GetDeltaTime());
+			//OV_CORE_TRACE("Time: {0}", Time::GetTime());
 
 			for each(auto callback in m_EventCallbacks)
 			{
