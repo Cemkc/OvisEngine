@@ -179,4 +179,9 @@ namespace Ovis {
 		return m_Data.VSync;
 	}
 
+	double WindowsWindow::GetTime() const
+	{
+		return glfwGetTime();
+	}
+
 }

@@ -91,4 +91,45 @@ namespace Ovis
 	{
 		glUseProgram(0);
 	}
+
+	void OpenGLShader::SetUniform(const std::string& name, int value)
+	{
+		glUniform1i(GetUniformLocation(name), value);
+	}
+
+	void OpenGLShader::SetUniform(const std::string& name, float value)
+	{
+		glUniform1f(GetUniformLocation(name), value);
+	}
+
+	void OpenGLShader::SetUniform(const std::string& name, float v0, float v1, float v2, float v3)
+	{
+		glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
+	}
+
+	void OpenGLShader::SetUniform(const std::string& name, glm::vec4 vec)
+	{
+		glUniform4f(GetUniformLocation(name), vec.r, vec.g, vec.b, vec.a);
+	}
+
+	void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& mat)
+	{
+		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
+	}
+
+	int OpenGLShader::GetUniformLocation(const std::string& name)
+	{
+		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+			return m_UniformLocationCache[name];
+
+		int location = glGetUniformLocation(m_ShaderProgram, name.c_str());
+		if (location == -1)
+		{
+			std::cout << "WARNING: Uniform " << name << " does not exist" << std::endl;
+		}
+
+		m_UniformLocationCache[name] = location;
+
+		return location;
+	}
 }

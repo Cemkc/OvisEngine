@@ -38,6 +38,8 @@ namespace Ovis {
 
 		virtual void* GetNativeWindow() const = 0;
 
+		virtual double GetTime() const = 0;
+
 		// To be defined by the window class of a particular platform
 		static Window* Create(const WindowProps& props = WindowProps());
 

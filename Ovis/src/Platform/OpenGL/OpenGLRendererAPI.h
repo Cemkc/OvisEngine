@@ -6,6 +6,9 @@ namespace Ovis
 {
 	class OpenGLRendererAPI : public RendererAPI
 	{
+	private:
+		std::unordered_map<std::string, int> m_UniformLocationCache;
+	public:
 		void SetClearColor(glm::uvec4 color) override;
 		void Clear() override;
 

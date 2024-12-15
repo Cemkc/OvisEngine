@@ -37,6 +37,8 @@ namespace Ovis {
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
 
+		double GetTime() const override;
+
 		inline virtual void* GetNativeWindow() const { return m_Window; }
 	};
 

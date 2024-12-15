@@ -1,6 +1,7 @@
 #include "ovpch.h"
 #include "Application.h"
 
+#include "Ovis/Time.h"
 #include "Ovis/Log.h"
 #include "Ovis/Input.h"
 
@@ -19,6 +20,8 @@ namespace Ovis {
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+
+		m_Time = new Time();
 
 		float vertices[] =
 		{
@@ -86,10 +89,14 @@ namespace Ovis {
 			layout (location = 0) in vec3 aPos;
 			layout (location = 1) in vec4 aColor;
 
+			uniform mat4 model;
+			uniform mat4 view;
+			uniform mat4 projection;
+
 			out vec4 vColor;
 
 			void main(){
-				gl_Position = vec4(aPos, 1.0);
+				gl_Position = projection * view * model * vec4(aPos, 1.0);
 				vColor = aColor;
 			}
 		)";
@@ -110,8 +117,12 @@ namespace Ovis {
 			#version 330 core
 			layout (location = 0) in vec3 aPos;
 
+			uniform mat4 model;
+			uniform mat4 view;
+			uniform mat4 projection;
+
 			void main(){
-				gl_Position = vec4(aPos * 1.5, 1.0);
+				gl_Position = projection * view * model * vec4(aPos, 1.0);
 			}
 		)";
 
@@ -128,6 +139,9 @@ namespace Ovis {
 		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
 
 		m_BlueShader.reset(Shader::Create(blueShaderVsrc, blueShaderFsrc));
+
+		m_Camera.reset(new OrthographicCamera(-2.0f, 2.0f, -2.0f, 2.0f));
+		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	}
 
 	Application::~Application() 
@@ -138,16 +152,20 @@ namespace Ovis {
 	{
 		while (m_Running) 
 		{
+			for each(auto callback in m_EventCallbacks)
+			{
+				AppRenderEvent e(LoopState::Begin);
+				callback(e);
+			}
+
 			RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			Renderer::BeginScene(m_Camera);
 
-			m_BlueShader->Bind();
-			Renderer::Submit(m_SquareVertexArray);
+			Renderer::Submit(m_SquareVertexArray, m_BlueShader);
 
-			m_Shader->Bind();
-			Renderer::Submit(m_VertexArray);
+			Renderer::Submit(m_VertexArray, m_Shader);
 
 			Renderer::EndScene();
 
@@ -162,8 +180,37 @@ namespace Ovis {
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
+
+			OV_CORE_TRACE("Delta Time: {0}", Time::GetDeltaTime());
+			OV_CORE_TRACE("Time: {0}", Time::GetTime());
+
+			for each(auto callback in m_EventCallbacks)
+			{
+				AppRenderEvent e(LoopState::End);
+				callback(e);
+			}
+
+			//glm::vec3 camPosition = m_Camera->GetPosition();
+			//float camSpeed = 0.3f;
+			//if (Input::IsKeyPressed(OV_KEY_W))
+			//{
+			//	camPosition.z -= 1.0f * camSpeed * Application::DeltaTime();
+			//}
+			//if (Input::IsKeyPressed(OV_KEY_S))
+			//{
+			//	camPosition.z += 1.0f * camSpeed * Application::DeltaTime();
+			//}
+			//if (Input::IsKeyPressed(OV_KEY_A))
+			//{
+			//	camPosition.x -= 1.0f * camSpeed * Application::DeltaTime();
+			//}
+			//if (Input::IsKeyPressed(OV_KEY_D))
+			//{
+			//	camPosition.x += 1.0f * camSpeed * Application::DeltaTime();
+			//}
+
+			//m_Camera->SetPosition(camPosition);
 		}
-		
 	}
 
 	void Application::OnEvent(Event& e)
@@ -191,6 +238,11 @@ namespace Ovis {
 	{
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+	}
+
+	inline int Application::DeltaTime()
+	{
+		return s_Instance->Get().GetWindow().GetTime();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

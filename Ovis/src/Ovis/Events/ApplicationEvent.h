@@ -55,8 +55,14 @@ namespace Ovis {
 
 	class AppRenderEvent : public Event
 	{
+	private:
+		LoopState m_State;
 	public:
-		AppRenderEvent() {}
+		AppRenderEvent(LoopState state) 
+			: m_State(state) 
+		{}
+
+		LoopState GetState() { return m_State; }
 
 		EVENT_CLASS_TYPE(AppRender)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
