@@ -10,6 +10,12 @@
 #include "Ovis/imgui/ImguiLayer.h"
 #include "Ovis/Input.h"
 
+// Renderer
+#include "Ovis/Renderer/Renderer.h"
+#include "Ovis/Renderer/RenderCommand.h"
+#include "Ovis/Renderer/Camera.h"
+#include "Ovis/Renderer/Buffer.h"
+
 // -----Entry Point-----------------
 #include "Ovis/EntryPoint.h"
 //----------------------------------

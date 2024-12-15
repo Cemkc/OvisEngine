@@ -28,12 +28,6 @@ namespace Ovis {
 
 		std::vector<std::function<void(Event&)>> m_EventCallbacks;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<VertexArray> m_SquareVertexArray;
-		std::shared_ptr<Camera> m_Camera;
-
 	public:
 		Application();
 		virtual ~Application();
