@@ -36,12 +36,12 @@ namespace Ovis
 
 	void Time::OnFrameBegin()
 	{
+		m_DeltaTime = std::chrono::high_resolution_clock::now() - m_FrameBeginTime;
 		m_FrameBeginTime = std::chrono::high_resolution_clock::now();
 	}
 
 	void Time::OnFrameEnd()
 	{
-		m_DeltaTime = std::chrono::high_resolution_clock::now() - m_FrameBeginTime;
 	}
 
 	double Time::GetTime()
@@ -49,9 +49,8 @@ namespace Ovis
 		return std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - m_AppBeginTime).count();
 	}
 
-	const double Time::GetDeltaTime()
+	const double Time::DeltaTime()
 	{
-		m_DeltaTime = std::chrono::high_resolution_clock::now() - m_FrameBeginTime;
 		return m_DeltaTime.count();
 	}
 }

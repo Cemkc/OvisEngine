@@ -23,9 +23,8 @@ namespace Ovis
 
 	void OrthographicCamera::UpdateViewMatrix()
 	{
-		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, m_Position);
-		transform = glm::rotate(transform, m_Rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) *
+			glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
 		m_ViewMatrix = glm::inverse(transform);
 	}
 

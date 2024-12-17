@@ -16,7 +16,7 @@ namespace Ovis
 		Time();
 
 		static double GetTime();
-		static const double GetDeltaTime();
+		static const double DeltaTime(); // Returns delta time in seconds
 
 		void OnApplicationEvent(Event& event);
 

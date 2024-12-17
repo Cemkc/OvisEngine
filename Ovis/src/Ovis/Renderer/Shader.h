@@ -6,8 +6,6 @@ namespace Ovis
 {
 	class Shader 
 	{
-	private:
-		uint32_t m_RendererId;
 	public:
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;

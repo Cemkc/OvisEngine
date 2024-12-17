@@ -9,13 +9,7 @@
 
 #include "Ovis/imgui/ImguiLayer.h"
 
-#include "Ovis/Renderer/Shader.h"
-#include "Ovis/Renderer/Buffer.h"
-#include "Ovis/Renderer/VertexArray.h"
-#include "Ovis/Renderer/Camera.h"
-
 namespace Ovis {
-
 	class Application
 	{
 	private:
@@ -41,7 +35,6 @@ namespace Ovis {
 
 		inline static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
-		inline static int DeltaTime();
 
 		void AddEventCallback(const std::function<void(Event&)>& callback) { m_EventCallbacks.push_back(callback); }
 

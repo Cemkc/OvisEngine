@@ -1,16 +1,27 @@
 #pragma once
 #include <Ovis.h>
 
+#include "imgui.h"
+#include <glm/gtc/type_ptr.hpp>
+
 class ExampleLayer : public Ovis::Layer
 {
 private:
 	std::shared_ptr<Ovis::Shader> m_Shader;
 	std::shared_ptr<Ovis::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Ovis::Shader> m_BlueShader;
+	std::shared_ptr<Ovis::Shader> m_FlatShader;
 	std::shared_ptr<Ovis::VertexArray> m_SquareVertexArray;
 
 	std::shared_ptr<Ovis::Camera> m_Camera;
+
+	float m_CamMoveSpeed = 3.0f;
+
+	float m_CamRotation = 0.0f;
+	float m_CamRotationSpeed = 30.0f;
+
+	float m_SquareWidht = 0.0f;
+	glm::vec4 m_SquareColor = glm::vec4(1.0f);
 public:
 	ExampleLayer()
 		: Layer("Example")
@@ -105,7 +116,7 @@ public:
 			}
 		)";
 
-		const std::string blueShaderVsrc = R"(
+		const std::string flatShaderVsrc = R"(
 			#version 330 core
 			layout (location = 0) in vec3 aPos;
 
@@ -118,45 +129,107 @@ public:
 			}
 		)";
 
-		const std::string blueShaderFsrc = R"(
+		const std::string flatShaderFsrc = R"(
 			#version 330 core
 
 			out vec4 FragColor;
 
+			uniform vec4 u_Color;
+
 			void main(){
-				FragColor = vec4(0.1, 0.2, 0.8, 1.0);
+				FragColor = u_Color;
 			}
 		)";
 
 		m_Shader.reset(Ovis::Shader::Create(vertexSrc, fragmentSrc));
 
-		m_BlueShader.reset(Ovis::Shader::Create(blueShaderVsrc, blueShaderFsrc));
+		m_FlatShader.reset(Ovis::Shader::Create(flatShaderVsrc, flatShaderFsrc));
 
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetWidth());
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetHeight());
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().AspectRatio());
 
-		m_Camera.reset(new Ovis::PerspectiveCamera(45.0f, Ovis::Application::Get().GetWindow().AspectRatio(), 0.1f, 100.0f));
+		/*m_Camera.reset(new Ovis::PerspectiveCamera(45.0f, Ovis::Application::Get().GetWindow().AspectRatio(), 0.1f, 100.0f));*/
+		m_Camera.reset(new Ovis::OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
 		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
+		std::static_pointer_cast<Ovis::OrthographicCamera>(m_Camera)->SetRotation(45.0f);
+
+		m_SquareWidht = 0.1f;
 	}
 
 	void OnUpdate() override
 	{
+		OV_TRACE("Delta Time: {0}s ({1}ms)", Ovis::Time::DeltaTime(), Ovis::Time::DeltaTime() * 1000);
+
 		Ovis::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		Ovis::RenderCommand::Clear();
 
 		Ovis::Renderer::BeginScene(m_Camera);
 
-		Ovis::Renderer::Submit(m_SquareVertexArray, m_BlueShader);
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				Ovis::Transform transform =
+				{
+					glm::vec3(x * 0.11f, y * 0.11f, 0.0f),
+					glm::vec3(0.0f, 0.0f, 0.0f),
+					glm::vec3(0.1f, 0.1f, 0.1f)
+				};
 
-		Ovis::Renderer::Submit(m_VertexArray, m_Shader);
+				m_FlatShader->SetUniform("u_Color", m_SquareColor);
+				Ovis::Renderer::Submit(m_SquareVertexArray, m_FlatShader, transform);
+			}
+		}
+
+		// Ovis::Renderer::Submit(m_VertexArray, m_Shader, transform);
 
 		Ovis::Renderer::EndScene();
+
+		glm::vec3 camPosition = m_Camera->GetPosition();
+
+		if (Ovis::Input::IsKeyPressed(OV_KEY_W))
+		{
+			camPosition.y += 1.0f * m_CamMoveSpeed * Ovis::Time::DeltaTime();
+		}
+		if (Ovis::Input::IsKeyPressed(OV_KEY_S))
+		{
+			camPosition.y -= 1.0f * m_CamMoveSpeed * Ovis::Time::DeltaTime();
+		}
+		if (Ovis::Input::IsKeyPressed(OV_KEY_A))
+		{
+			camPosition.x -= 1.0f * m_CamMoveSpeed * Ovis::Time::DeltaTime();
+		}
+		if (Ovis::Input::IsKeyPressed(OV_KEY_D))
+		{
+			camPosition.x += 1.0f * m_CamMoveSpeed * Ovis::Time::DeltaTime();
+		}
+
+		if (Ovis::Input::IsKeyPressed(OV_KEY_E))
+		{
+			m_CamRotation -= m_CamRotationSpeed * Ovis::Time::DeltaTime();
+		}
+		if (Ovis::Input::IsKeyPressed(OV_KEY_Q))
+		{
+			m_CamRotation += m_CamRotationSpeed * Ovis::Time::DeltaTime();
+		}
+
+		m_Camera->SetPosition(camPosition);
+		auto camera = std::static_pointer_cast<Ovis::OrthographicCamera>(m_Camera);
+		camera->SetRotation(m_CamRotation);
+
 	}
 
 	void OnEvent(Ovis::Event& event) override
 	{
 		// OV_TRACE("{0}", event.ToString());
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		ImGui::End();
 	}
 };
 

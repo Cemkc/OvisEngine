@@ -116,6 +116,7 @@ project "Sandbox"
 	{
 		"Ovis/vendor/spdlog/include",
 		"Ovis/src",
+		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}"
 	}
 

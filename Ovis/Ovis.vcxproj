@@ -143,15 +143,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ovis\MathUtils.h" />
-    <ClInclude Include="src\Ovis\Renderer\Camera.h" />
-    <ClInclude Include="src\Ovis\Time.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Ovis\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Ovis\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Ovis\Renderer\Renderer.h" />
-    <ClInclude Include="src\Ovis\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Ovis.h" />
     <ClInclude Include="src\Ovis\Application.h" />
     <ClInclude Include="src\Ovis\Core.h" />
@@ -160,18 +151,28 @@
     <ClInclude Include="src\Ovis\Events\Event.h" />
     <ClInclude Include="src\Ovis\Events\KeyEvent.h" />
     <ClInclude Include="src\Ovis\Events\MouseEvent.h" />
+    <ClInclude Include="src\Ovis\GameEntity\Transform.h" />
     <ClInclude Include="src\Ovis\Input.h" />
     <ClInclude Include="src\Ovis\KeyCodes.h" />
     <ClInclude Include="src\Ovis\Layer.h" />
     <ClInclude Include="src\Ovis\LayerStack.h" />
     <ClInclude Include="src\Ovis\Log.h" />
+    <ClInclude Include="src\Ovis\MathUtils.h" />
     <ClInclude Include="src\Ovis\MouseButtonCodes.h" />
-    <ClInclude Include="src\Ovis\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Ovis\Renderer\Shader.h" />
     <ClInclude Include="src\Ovis\Renderer\Buffer.h" />
+    <ClInclude Include="src\Ovis\Renderer\Camera.h" />
+    <ClInclude Include="src\Ovis\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Ovis\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\Ovis\Renderer\Renderer.h" />
+    <ClInclude Include="src\Ovis\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Ovis\Renderer\Shader.h" />
+    <ClInclude Include="src\Ovis\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Ovis\Time.h" />
     <ClInclude Include="src\Ovis\Window.h" />
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -595,23 +596,24 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ovis\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Ovis\Time.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Ovis\Application.cpp" />
+    <ClCompile Include="src\Ovis\GameEntity\Transform.cpp" />
     <ClCompile Include="src\Ovis\Layer.cpp" />
     <ClCompile Include="src\Ovis\LayerStack.cpp" />
     <ClCompile Include="src\Ovis\Log.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Ovis\Time.cpp" />
     <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp" />
     <ClCompile Include="src\Ovis\imgui\imguiBuild.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />

@@ -10,6 +10,9 @@
     <Filter Include="src\Ovis\Events">
       <UniqueIdentifier>{2176D1BB-8D01-3F80-9612-C274021D9B80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ovis\GameEntity">
+      <UniqueIdentifier>{037A584F-6FDB-355D-F848-7C0F64A96C1C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ovis\Renderer">
       <UniqueIdentifier>{239102ED-8FA7-0083-D81E-8CA44474D10A}</UniqueIdentifier>
     </Filter>
@@ -72,6 +75,9 @@
     <ClInclude Include="src\Ovis\Events\MouseEvent.h">
       <Filter>src\Ovis\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\GameEntity\Transform.h">
+      <Filter>src\Ovis\GameEntity</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Input.h">
       <Filter>src\Ovis</Filter>
     </ClInclude>
@@ -87,14 +93,38 @@
     <ClInclude Include="src\Ovis\Log.h">
       <Filter>src\Ovis</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\MathUtils.h">
+      <Filter>src\Ovis</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\MouseButtonCodes.h">
       <Filter>src\Ovis</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\Buffer.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\Camera.h">
+      <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\GraphicsContext.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\RenderCommand.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\Renderer.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\RendererAPI.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Shader.h">
       <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\VertexArray.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Time.h">
+      <Filter>src\Ovis</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Window.h">
       <Filter>src\Ovis</Filter>
@@ -102,10 +132,19 @@
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h">
       <Filter>src\Ovis\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
@@ -1365,21 +1404,13 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Ovis\Renderer\Renderer.h" />
-    <ClInclude Include="src\Ovis\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Ovis\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Ovis\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Ovis\Renderer\Camera.h" />
-    <ClInclude Include="src\Ovis\MathUtils.h" />
-    <ClInclude Include="src\Ovis\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Application.cpp">
       <Filter>src\Ovis</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\GameEntity\Transform.cpp">
+      <Filter>src\Ovis\GameEntity</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Layer.cpp">
       <Filter>src\Ovis</Filter>
@@ -1390,13 +1421,49 @@
     <ClCompile Include="src\Ovis\Log.cpp">
       <Filter>src\Ovis</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\Buffer.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\Camera.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\Renderer.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\Shader.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Time.cpp">
+      <Filter>src\Ovis</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp">
       <Filter>src\Ovis\imgui</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\imgui\imguiBuild.cpp">
       <Filter>src\Ovis\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
@@ -1408,17 +1475,5 @@
     <ClCompile Include="src\ovpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Camera.cpp" />
-    <ClCompile Include="src\Ovis\Time.cpp" />
   </ItemGroup>
 </Project>

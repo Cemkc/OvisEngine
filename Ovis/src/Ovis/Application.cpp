@@ -50,35 +50,11 @@ namespace Ovis {
 
 			m_Window->OnUpdate();
 
-			//OV_CORE_TRACE("Delta Time: {0}", Time::GetDeltaTime());
-			//OV_CORE_TRACE("Time: {0}", Time::GetTime());
-
 			for each(auto callback in m_EventCallbacks)
 			{
 				AppRenderEvent e(LoopState::End);
 				callback(e);
 			}
-
-			//glm::vec3 camPosition = m_Camera->GetPosition();
-			//float camSpeed = 0.3f;
-			//if (Input::IsKeyPressed(OV_KEY_W))
-			//{
-			//	camPosition.z -= 1.0f * camSpeed * Application::DeltaTime();
-			//}
-			//if (Input::IsKeyPressed(OV_KEY_S))
-			//{
-			//	camPosition.z += 1.0f * camSpeed * Application::DeltaTime();
-			//}
-			//if (Input::IsKeyPressed(OV_KEY_A))
-			//{
-			//	camPosition.x -= 1.0f * camSpeed * Application::DeltaTime();
-			//}
-			//if (Input::IsKeyPressed(OV_KEY_D))
-			//{
-			//	camPosition.x += 1.0f * camSpeed * Application::DeltaTime();
-			//}
-
-			//m_Camera->SetPosition(camPosition);
 		}
 	}
 
@@ -107,11 +83,6 @@ namespace Ovis {
 	{
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
-	}
-
-	inline int Application::DeltaTime()
-	{
-		return s_Instance->Get().GetWindow().GetTime();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
