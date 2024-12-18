@@ -13,6 +13,8 @@ private:
 	std::shared_ptr<Ovis::Shader> m_FlatShader;
 	std::shared_ptr<Ovis::VertexArray> m_SquareVertexArray;
 
+	std::shared_ptr<Ovis::Texture2D> m_Texture2D;
+
 	std::shared_ptr<Ovis::Camera> m_Camera;
 
 	float m_CamMoveSpeed = 3.0f;
@@ -38,10 +40,10 @@ public:
 
 		float squareVertices[] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f,	1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f,	1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f,	0.0f, 1.0f
 		};
 
 		std::shared_ptr<Ovis::VertexBuffer> squareVertexBuffer;
@@ -66,6 +68,7 @@ public:
 		Ovis::BufferLayout squareLayout
 		{
 			{ Ovis::ShaderDataType::Float3, "aPos" },
+			{ Ovis::ShaderDataType::Float2, "a_TexCoord" }
 		};
 
 		squareVertexBuffer->SetLayout(squareLayout);
@@ -119,12 +122,16 @@ public:
 		const std::string flatShaderVsrc = R"(
 			#version 330 core
 			layout (location = 0) in vec3 aPos;
+			layout (location = 1) in vec2 a_TexCoord;
+
+			out vec2 v_TexCoord;
 
 			uniform mat4 model;
 			uniform mat4 view;
 			uniform mat4 projection;
 
 			void main(){
+				v_TexCoord = a_TexCoord;
 				gl_Position = projection * view * model * vec4(aPos, 1.0);
 			}
 		)";
@@ -132,12 +139,14 @@ public:
 		const std::string flatShaderFsrc = R"(
 			#version 330 core
 
-			out vec4 FragColor;
+			layout(location = 0) out vec4 FragColor;
 
-			uniform vec4 u_Color;
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
 
 			void main(){
-				FragColor = u_Color;
+				FragColor = texture(u_Texture, v_TexCoord);
 			}
 		)";
 
@@ -153,6 +162,11 @@ public:
 		m_Camera.reset(new Ovis::OrthographicCamera(-1.0f, 1.0f, -1.0f, 1.0f));
 		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 		std::static_pointer_cast<Ovis::OrthographicCamera>(m_Camera)->SetRotation(45.0f);
+
+		m_Texture2D = Ovis::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		m_FlatShader->Bind();
+		m_FlatShader->SetUniform("u_Texture", 0);
 
 		m_SquareWidht = 0.1f;
 	}
@@ -182,7 +196,15 @@ public:
 			}
 		}
 
-		// Ovis::Renderer::Submit(m_VertexArray, m_Shader, transform);
+		Ovis::Transform transform =
+		{
+			glm::vec3(0.0f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(1.5f, 1.5f, 1.5f)
+		};
+
+		m_Texture2D->Bind();
+		Ovis::Renderer::Submit(m_SquareVertexArray, m_FlatShader, transform);
 
 		Ovis::Renderer::EndScene();
 

@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "Ovis/vendor/GLFW/include"
 IncludeDir["Glad"] = "Ovis/vendor/Glad/include"
 IncludeDir["imgui"] = "Ovis/vendor/imgui"
 IncludeDir["glm"] = "Ovis/vendor/glm"
+IncludeDir["stb_image"] = "Ovis/vendor/stb_image"
 
 -- Include premake5 file in GLFW path into this file
 include "Ovis/vendor/GLFW"
@@ -40,6 +41,8 @@ project "Ovis"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
@@ -56,7 +59,8 @@ project "Ovis"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links{
