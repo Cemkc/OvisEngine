@@ -28,9 +28,17 @@ namespace Ovis
 		std::string source = ReadFile(filepath);
 		auto sources = PreProcess(source);
 		Compile(sources);
+
+		// Extract name from filepath
+		auto lastSlash = filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = filepath.rfind('.');
+		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = filepath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -46,7 +54,7 @@ namespace Ovis
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
 		std::string content;
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
 		{
 			in.seekg(0, std::ios::end); // Get the file reading pointer to the end of the file
@@ -73,7 +81,7 @@ namespace Ovis
 		while (pos != std::string::npos)
 		{
 			size_t eol = source.find_first_of("\r\n", pos);
-			OV_CORE_ASSERT(eol == std::string::npos, "Syntax Error");
+			OV_CORE_ASSERT(eol != std::string::npos, "Syntax Error");
 			size_t begin = pos + typeTokenLenght + 1;
 			std::string type = source.substr(begin, eol - begin);
 			OV_CORE_ASSERT(GLShaderTypeFromString(type), "Invalid shader type specification.");
@@ -89,7 +97,10 @@ namespace Ovis
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLuint> shaderIds(shaderSources.size());
+		OV_CORE_ASSERT(shaderSources.size() <= 5, "Ovis only supports 5 shaders at once");
+		std::array<GLuint, 5> shaderIds = { 0 };
+		OV_CORE_TRACE(shaderIds.size());
+		int glShaderIdIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -120,7 +131,7 @@ namespace Ovis
 				break;
 			}
 			glAttachShader(program, shader);
-			shaderIds.push_back(shader);
+			shaderIds[glShaderIdIndex++] = shader;
 		}
 		
 		glLinkProgram(program);

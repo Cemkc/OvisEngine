@@ -9,8 +9,8 @@ class ExampleLayer : public Ovis::Layer
 private:
 	std::shared_ptr<Ovis::VertexArray> m_SquareVertexArray;
 
+	Ovis::ShaderLibrary m_ShaderLibrary;
 	std::shared_ptr<Ovis::Shader> m_FlatShader;
-	std::shared_ptr<Ovis::Shader> m_TextureShader;
 
 	std::shared_ptr<Ovis::Texture2D> m_CheckerBoardTexture;
 	std::shared_ptr<Ovis::Texture2D> m_LogoTexture;
@@ -83,9 +83,9 @@ public:
 			}
 		)";
 
-		m_FlatShader.reset(Ovis::Shader::Create(vertexSrc, fragmentSrc));
+		m_FlatShader = Ovis::Shader::Create("Flat", vertexSrc, fragmentSrc);
 
-		m_TextureShader.reset(Ovis::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetWidth());
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetHeight());
@@ -100,8 +100,8 @@ public:
 
 		m_LogoTexture = Ovis::Texture2D::Create("assets/textures/anka.png");
 
-		m_TextureShader->Bind();
-		m_TextureShader->SetUniform("u_Texture", 0);
+		textureShader->Bind();
+		textureShader->SetUniform("u_Texture", 0);
 
 		m_SquareWidht = 0.1f;
 	}
@@ -138,11 +138,13 @@ public:
 			glm::vec3(1.5f, 1.5f, 1.5f)
 		};
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+
 		m_CheckerBoardTexture->Bind();
-		Ovis::Renderer::Submit(m_SquareVertexArray, m_TextureShader, transform);
+		Ovis::Renderer::Submit(m_SquareVertexArray, textureShader, transform);
 
 		m_LogoTexture->Bind();
-		Ovis::Renderer::Submit(m_SquareVertexArray, m_TextureShader, transform);
+		Ovis::Renderer::Submit(m_SquareVertexArray, textureShader, transform);
 
 		Ovis::Renderer::EndScene();
 

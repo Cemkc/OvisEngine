@@ -10,12 +10,15 @@ namespace Ovis
 	{
 	private:
 		unsigned int m_RendererId;
+		std::string m_Name;
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	public:
 		OpenGLShader(const std::string& filepath);
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 
 		virtual ~OpenGLShader() override;
+
+		std::string GetName() override { return m_Name; }
 
 		void Bind() const override;
 		void UnBind() const override;
