@@ -1,16 +1,21 @@
 #pragma once
 
 #include "Ovis/Renderer/Shader.h"
+#include <glad/glad.h>
+#include <glm/glm.hpp>
 
 namespace Ovis 
 {
 	class OpenGLShader : public Shader
 	{
 	private:
-		unsigned int m_ShaderProgram;
+		unsigned int m_RendererId;
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	public:
-		OpenGLShader(const std::string vertexSrc, const std::string fragmentSrc);
+		OpenGLShader(const std::string& filepath);
+		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+
+		virtual ~OpenGLShader() override;
 
 		void Bind() const override;
 		void UnBind() const override;
@@ -22,5 +27,10 @@ namespace Ovis
 		void SetUniform(const std::string& name, glm::vec4 vec) override;
 		void SetUniform(const std::string& name, const glm::mat4& mat) override;
 		int GetUniformLocation(const std::string& name);
+
+	private:
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	};
 }

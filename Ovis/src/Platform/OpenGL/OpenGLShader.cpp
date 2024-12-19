@@ -1,90 +1,158 @@
 #include "ovpch.h"
-
 #include "OpenGLShader.h"
-#include <glad/glad.h>
+
+#include <fstream>
 
 namespace Ovis 
 {
-	OpenGLShader::OpenGLShader(const std::string vertexSrc, const std::string fragmentSrc)
+	static GLenum GLShaderTypeFromString(const std::string& type)
 	{
-		unsigned int vertexShader;
-		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		if (type == "vertex") return GL_VERTEX_SHADER;
+		if (type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
 
-		const char* source = vertexSrc.c_str();
-		glShaderSource(vertexShader, 1, &source, nullptr);
-		glCompileShader(vertexShader);
+		OV_CORE_ASSERT(false, "Unknown shader type!");
+		return 0;
+	}
 
-		int isCompiled;
-		char infoLog[512];
+	static std::string StringFromGLShaderType(GLenum type)
+	{
+		if (type == GL_VERTEX_SHADER) return "Vertex";
+		if (type == GL_FRAGMENT_SHADER) return "Fragment";
 
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-		if (!isCompiled)
+		OV_CORE_ASSERT(false, "Unknown shader type!");
+		return "";
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& filepath)
+	{
+		std::string source = ReadFile(filepath);
+		auto sources = PreProcess(source);
+		Compile(sources);
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	{
+		std::unordered_map<GLenum, std::string> sources;
+		sources[GL_VERTEX_SHADER] = vertexSrc;
+		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
+		Compile(sources);
+	}
+
+	OpenGLShader::~OpenGLShader()
+	{
+		glDeleteProgram(m_RendererId);
+	}
+
+	std::string OpenGLShader::ReadFile(const std::string& filepath)
+	{
+		std::string content;
+		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		if (in)
 		{
-			int maxLenght = 0;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLenght);
-
-			std::vector<char> infoLog(maxLenght);
-			glGetShaderInfoLog(vertexShader, maxLenght, &maxLenght, &infoLog[0]);
-
-			glDeleteShader(vertexShader);
-
-			OV_CORE_ERROR("{0}", infoLog.data());
-			OV_CORE_ASSERT(false, "Vertex shader compilation failure!");
+			in.seekg(0, std::ios::end); // Get the file reading pointer to the end of the file
+			content.resize(in.tellg()); // Use the pointer that is at the end to figure out the file size and set the string size accordingly
+			in.seekg(0, std::ios::beg); // Set the pointer back to the beggining of the file
+			in.read(&content[0], content.size()); // Read the file into the string
+			in.close(); // Close the stream
+		}
+		else
+		{
+			OV_CORE_ERROR("Could not open file '{0}'", filepath);
 		}
 
-		unsigned int fragmentShader;
-		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		return content;
+	}
 
-		source = fragmentSrc.c_str();
-		glShaderSource(fragmentShader, 1, &source, nullptr);
-		glCompileShader(fragmentShader);
+	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<GLenum, std::string> shaderSources;
 
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-		if (!isCompiled)
+		const char* typeToken = "#type";
+		size_t typeTokenLenght = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+		while (pos != std::string::npos)
 		{
-			int maxLenght = 0;
-			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLenght);
+			size_t eol = source.find_first_of("\r\n", pos);
+			OV_CORE_ASSERT(eol == std::string::npos, "Syntax Error");
+			size_t begin = pos + typeTokenLenght + 1;
+			std::string type = source.substr(begin, eol - begin);
+			OV_CORE_ASSERT(GLShaderTypeFromString(type), "Invalid shader type specification.");
 
-			std::vector<char> infoLog(maxLenght);
-			glGetShaderInfoLog(fragmentShader, maxLenght, &maxLenght, &infoLog[0]);
-
-			glDeleteShader(fragmentShader);
-
-			OV_CORE_ERROR("{0}", infoLog.data());
-			OV_CORE_ASSERT(false, "Fragment shader compilation failure!");
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaderSources[GLShaderTypeFromString(type)] = source.substr(nextLinePos,
+				pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
+		return shaderSources;
+	}
 
-		m_ShaderProgram = glCreateProgram();
-		glAttachShader(m_ShaderProgram, vertexShader);
-		glAttachShader(m_ShaderProgram, fragmentShader);
-		glLinkProgram(m_ShaderProgram);
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+	{
+		GLuint program = glCreateProgram();
+		std::vector<GLuint> shaderIds(shaderSources.size());
+		for (auto& kv : shaderSources)
+		{
+			GLenum type = kv.first;
+			const std::string& source = kv.second;
+
+			GLuint shader = glCreateShader(type);
+
+			const char* sourceCstr = source.c_str();
+			glShaderSource(shader, 1, &sourceCstr, nullptr);
+			glCompileShader(shader);
+
+			int isCompiled;
+			char infoLog[512];
+
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+			if (!isCompiled)
+			{
+				int maxLenght = 0;
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLenght);
+
+				std::vector<char> infoLog(maxLenght);
+				glGetShaderInfoLog(shader, maxLenght, &maxLenght, &infoLog[0]);
+
+				glDeleteShader(shader);
+
+				OV_CORE_ERROR("{0}", infoLog.data());
+				OV_CORE_ASSERT(false, "{0} shader compilation failure!", StringFromGLShaderType(type));
+				break;
+			}
+			glAttachShader(program, shader);
+			shaderIds.push_back(shader);
+		}
+		
+		glLinkProgram(program);
 
 		int isLinked = 0;
-		glGetProgramiv(m_ShaderProgram, GL_LINK_STATUS, (int*)&isLinked);
+		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
 		if (!isLinked)
 		{
 			int maxLength = 0;
-			glGetProgramiv(m_ShaderProgram, GL_INFO_LOG_LENGTH, &maxLength);
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 
 			std::vector<char> infoLog(maxLength);
-			glGetProgramInfoLog(m_ShaderProgram, maxLength, &maxLength, &infoLog[0]);
+			glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
 
-			glDeleteProgram(m_ShaderProgram);
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			glDeleteProgram(program);
+			for(auto id : shaderIds)
+				glDeleteShader(id);
 
 			OV_CORE_ERROR("{0}", infoLog.data());
 			OV_CORE_ASSERT(false, "Shader program link failure!");
 		}
 
 		// Always detach shaders after a successful link.
-		glDetachShader(m_ShaderProgram, vertexShader);
-		glDetachShader(m_ShaderProgram, fragmentShader);
+		for (auto id : shaderIds)
+			glDetachShader(program, id);
+
+		m_RendererId = program;
 	}
 
 	void OpenGLShader::Bind() const
 	{
-		glUseProgram(m_ShaderProgram);
+		glUseProgram(m_RendererId);
 	}
 
 	void OpenGLShader::UnBind() const
@@ -122,7 +190,7 @@ namespace Ovis
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 			return m_UniformLocationCache[name];
 
-		int location = glGetUniformLocation(m_ShaderProgram, name.c_str());
+		int location = glGetUniformLocation(m_RendererId, name.c_str());
 		if (location == -1)
 		{
 			std::cout << "WARNING: Uniform " << name << " does not exist" << std::endl;

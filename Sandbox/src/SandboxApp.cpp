@@ -7,13 +7,13 @@
 class ExampleLayer : public Ovis::Layer
 {
 private:
-	std::shared_ptr<Ovis::Shader> m_Shader;
-	std::shared_ptr<Ovis::VertexArray> m_VertexArray;
-
-	std::shared_ptr<Ovis::Shader> m_FlatShader;
 	std::shared_ptr<Ovis::VertexArray> m_SquareVertexArray;
 
-	std::shared_ptr<Ovis::Texture2D> m_Texture2D;
+	std::shared_ptr<Ovis::Shader> m_FlatShader;
+	std::shared_ptr<Ovis::Shader> m_TextureShader;
+
+	std::shared_ptr<Ovis::Texture2D> m_CheckerBoardTexture;
+	std::shared_ptr<Ovis::Texture2D> m_LogoTexture;
 
 	std::shared_ptr<Ovis::Camera> m_Camera;
 
@@ -28,16 +28,6 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
-		float vertices[] =
-		{
-			-0.5f, -0.5f, 0.0f,  0.8f, 0.8f, 0.1f, 1.0f,
-			 0.5f, -0.5f, 0.0f,  0.8f, 0.1f, 0.8f, 1.0f,
-			 0.0f,  0.5f, 0.0f,	 0.1f, 0.8f, 0.8f,	1.0f,
-		};
-
-		std::shared_ptr<Ovis::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Ovis::VertexBuffer::Create(vertices, sizeof(vertices)));
-
 		float squareVertices[] =
 		{
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -48,22 +38,6 @@ public:
 
 		std::shared_ptr<Ovis::VertexBuffer> squareVertexBuffer;
 		squareVertexBuffer.reset(Ovis::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-
-		Ovis::BufferLayout layout
-		{
-			{ Ovis::ShaderDataType::Float3, "aPos" },
-			{ Ovis::ShaderDataType::Float4, "aColor" }
-		};
-
-		vertexBuffer->SetLayout(layout);
-
-		uint32_t indices[] =
-		{
-			0, 1, 2
-		};
-
-		std::shared_ptr<Ovis::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Ovis::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		Ovis::BufferLayout squareLayout
 		{
@@ -81,11 +55,6 @@ public:
 		std::shared_ptr<Ovis::IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer.reset(Ovis::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
-
-		m_VertexArray.reset(Ovis::VertexArray::Create());
-		m_VertexArray->AddVertexBuffer(vertexBuffer);
-		m_VertexArray->SetIndexBuffer(indexBuffer);
-
 		m_SquareVertexArray.reset(Ovis::VertexArray::Create());
 		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
 		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
@@ -93,66 +62,30 @@ public:
 		const std::string vertexSrc = R"(
 			#version 330 core
 			layout (location = 0) in vec3 aPos;
-			layout (location = 1) in vec4 aColor;
 
 			uniform mat4 model;
 			uniform mat4 view;
 			uniform mat4 projection;
 
-			out vec4 vColor;
-
 			void main(){
 				gl_Position = projection * view * model * vec4(aPos, 1.0);
-				vColor = aColor;
 			}
 		)";
 
 		const std::string fragmentSrc = R"(
 			#version 330 core
-
-			in vec4 vColor;
-
 			out vec4 FragColor;
 
+			uniform vec4 u_Color;
+
 			void main(){
-				FragColor = vColor;
+				FragColor = u_Color;
 			}
 		)";
 
-		const std::string flatShaderVsrc = R"(
-			#version 330 core
-			layout (location = 0) in vec3 aPos;
-			layout (location = 1) in vec2 a_TexCoord;
+		m_FlatShader.reset(Ovis::Shader::Create(vertexSrc, fragmentSrc));
 
-			out vec2 v_TexCoord;
-
-			uniform mat4 model;
-			uniform mat4 view;
-			uniform mat4 projection;
-
-			void main(){
-				v_TexCoord = a_TexCoord;
-				gl_Position = projection * view * model * vec4(aPos, 1.0);
-			}
-		)";
-
-		const std::string flatShaderFsrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 FragColor;
-
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main(){
-				FragColor = texture(u_Texture, v_TexCoord);
-			}
-		)";
-
-		m_Shader.reset(Ovis::Shader::Create(vertexSrc, fragmentSrc));
-
-		m_FlatShader.reset(Ovis::Shader::Create(flatShaderVsrc, flatShaderFsrc));
+		m_TextureShader.reset(Ovis::Shader::Create("assets/shaders/Texture.glsl"));
 
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetWidth());
 		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetHeight());
@@ -163,10 +96,12 @@ public:
 		m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 		std::static_pointer_cast<Ovis::OrthographicCamera>(m_Camera)->SetRotation(45.0f);
 
-		m_Texture2D = Ovis::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_CheckerBoardTexture = Ovis::Texture2D::Create("assets/textures/Checkerboard.png");
 
-		m_FlatShader->Bind();
-		m_FlatShader->SetUniform("u_Texture", 0);
+		m_LogoTexture = Ovis::Texture2D::Create("assets/textures/anka.png");
+
+		m_TextureShader->Bind();
+		m_TextureShader->SetUniform("u_Texture", 0);
 
 		m_SquareWidht = 0.1f;
 	}
@@ -203,8 +138,11 @@ public:
 			glm::vec3(1.5f, 1.5f, 1.5f)
 		};
 
-		m_Texture2D->Bind();
-		Ovis::Renderer::Submit(m_SquareVertexArray, m_FlatShader, transform);
+		m_CheckerBoardTexture->Bind();
+		Ovis::Renderer::Submit(m_SquareVertexArray, m_TextureShader, transform);
+
+		m_LogoTexture->Bind();
+		Ovis::Renderer::Submit(m_SquareVertexArray, m_TextureShader, transform);
 
 		Ovis::Renderer::EndScene();
 
