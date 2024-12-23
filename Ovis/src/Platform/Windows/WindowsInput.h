@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ovis/Input.h"
+#include "Ovis/Core/Input.h"
 
 namespace Ovis {
 

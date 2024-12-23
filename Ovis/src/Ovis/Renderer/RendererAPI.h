@@ -21,6 +21,7 @@ namespace Ovis
 
 	public:
 		virtual void Init() = 0;
+		virtual void SetViewport(int width, int hieght) = 0;
 		virtual void SetClearColor(glm::uvec4 color = glm::vec4(0.8f, 0.2f, 0.8f, 1.0f)) = 0;
 		virtual void Clear() = 0;
 

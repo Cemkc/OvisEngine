@@ -1,9 +1,9 @@
 #include "ovpch.h"
 #include "Application.h"
 
-#include "Ovis/Time.h"
-#include "Ovis/Log.h"
-#include "Ovis/Input.h"
+#include "Ovis/Core/Time.h"
+#include "Ovis/Core/Log.h"
+#include "Ovis/Core/Input.h"
 
 #include "Ovis/Renderer/Renderer.h"
 
@@ -64,6 +64,7 @@ namespace Ovis {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
 		// OV_CORE_INFO("{0}", e.ToString());
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -93,6 +94,10 @@ namespace Ovis {
 		return false;
 	}
 
-
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		RenderCommand::OnWindowResize(m_Window->GetWidth(), m_Window->GetHeight());
+		return false;
+	}
 
 }

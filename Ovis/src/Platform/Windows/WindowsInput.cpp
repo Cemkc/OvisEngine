@@ -2,7 +2,7 @@
 #include "WindowsInput.h"
 
 #include <GLFW/glfw3.h>
-#include "Ovis/Application.h"
+#include "Ovis/Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
 
 namespace Ovis

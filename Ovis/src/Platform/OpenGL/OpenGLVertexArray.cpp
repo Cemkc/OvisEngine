@@ -1,6 +1,6 @@
 #include "ovpch.h"
 
-#include "Ovis/Log.h"
+#include "Ovis/Core/Log.h"
 #include "OpenGLVertexArray.h"
 #include "glad/glad.h"
 

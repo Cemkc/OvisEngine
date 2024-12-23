@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "Ovis/Window.h"
+#include "Ovis/Core/Window.h"
 #include "Ovis/Renderer/GraphicsContext.h"
 #include "GLFW/glfw3.h"
 

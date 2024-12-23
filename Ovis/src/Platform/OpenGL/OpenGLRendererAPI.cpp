@@ -10,6 +10,12 @@ namespace Ovis
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
+
+	void OpenGLRendererAPI::SetViewport(int width, int height)
+	{
+		glViewport(0, 0, width, height);
+	}
+
 	void Ovis::OpenGLRendererAPI::SetClearColor(glm::uvec4 color)
 	{
 		glClearColor(color.r, color.b, color.g, color.a);

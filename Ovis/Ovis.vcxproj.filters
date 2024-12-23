@@ -7,6 +7,9 @@
     <Filter Include="src\Ovis">
       <UniqueIdentifier>{DD8423CF-C951-7EDA-F26A-6C82DE96B368}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ovis\Core">
+      <UniqueIdentifier>{553BF3AC-C1FB-6EE3-8A36-B860F6B5B3BF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ovis\Events">
       <UniqueIdentifier>{2176D1BB-8D01-3F80-9612-C274021D9B80}</UniqueIdentifier>
     </Filter>
@@ -57,14 +60,41 @@
     <ClInclude Include="src\Ovis.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\Application.h">
-      <Filter>src\Ovis</Filter>
+    <ClInclude Include="src\Ovis\Core\Application.h">
+      <Filter>src\Ovis\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\Core.h">
-      <Filter>src\Ovis</Filter>
+    <ClInclude Include="src\Ovis\Core\Core.h">
+      <Filter>src\Ovis\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\EntryPoint.h">
-      <Filter>src\Ovis</Filter>
+    <ClInclude Include="src\Ovis\Core\EntryPoint.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\Input.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\KeyCodes.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\Layer.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\LayerStack.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\Log.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\MathUtils.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\MouseButtonCodes.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\Time.h">
+      <Filter>src\Ovis\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Core\Window.h">
+      <Filter>src\Ovis\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Events\ApplicationEvent.h">
       <Filter>src\Ovis\Events</Filter>
@@ -81,27 +111,6 @@
     <ClInclude Include="src\Ovis\GameEntity\Transform.h">
       <Filter>src\Ovis\GameEntity</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\Input.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\KeyCodes.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\Layer.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\LayerStack.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\Log.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\MathUtils.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\MouseButtonCodes.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Buffer.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
@@ -109,6 +118,9 @@
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\GraphicsContext.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\OrthographicCameraController.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\RenderCommand.h">
@@ -128,12 +140,6 @@
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\VertexArray.h">
       <Filter>src\Ovis\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\Time.h">
-      <Filter>src\Ovis</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ovis\Window.h">
-      <Filter>src\Ovis</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h">
       <Filter>src\Ovis\imgui</Filter>
@@ -1418,25 +1424,31 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ovis\Application.cpp">
-      <Filter>src\Ovis</Filter>
+    <ClCompile Include="src\Ovis\Core\Application.cpp">
+      <Filter>src\Ovis\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Core\Layer.cpp">
+      <Filter>src\Ovis\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Core\LayerStack.cpp">
+      <Filter>src\Ovis\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Core\Log.cpp">
+      <Filter>src\Ovis\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Core\Time.cpp">
+      <Filter>src\Ovis\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\GameEntity\Transform.cpp">
       <Filter>src\Ovis\GameEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ovis\Layer.cpp">
-      <Filter>src\Ovis</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ovis\LayerStack.cpp">
-      <Filter>src\Ovis</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ovis\Log.cpp">
-      <Filter>src\Ovis</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\Buffer.cpp">
       <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\Camera.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\OrthographicCameraController.cpp">
       <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\RenderCommand.cpp">
@@ -1456,9 +1468,6 @@
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp">
       <Filter>src\Ovis\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Ovis\Time.cpp">
-      <Filter>src\Ovis</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp">
       <Filter>src\Ovis\imgui</Filter>

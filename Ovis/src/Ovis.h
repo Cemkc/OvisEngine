@@ -5,15 +5,15 @@
 // Precompiled header
 #include "ovpch.h"
 
-#include "Ovis/Application.h"
-#include "Ovis/Log.h"
-#include "Ovis/Layer.h"
+#include "Ovis/Core/Application.h"
+#include "Ovis/Core/Log.h"
+#include "Ovis/Core/Layer.h"
 
-#include "Ovis/Time.h"
+#include "Ovis/Core/Time.h"
 
-#include "Ovis/Input.h"
-#include "Ovis/KeyCodes.h"
-#include "Ovis/MouseButtonCodes.h"
+#include "Ovis/Core/Input.h"
+#include "Ovis/Core/KeyCodes.h"
+#include "Ovis/Core/MouseButtonCodes.h"
 
 #include "Ovis/imgui/ImguiLayer.h"
 
@@ -27,10 +27,11 @@
 #include "Ovis/Renderer/VertexArray.h"
 
 #include "Ovis/Renderer/Camera.h"
+#include "Ovis/Renderer/OrthographicCameraController.h"
 
 // Objects 
 #include "Ovis/GameEntity/Transform.h"
 
 // -----Entry Point-----------------
-#include "Ovis/EntryPoint.h"
+#include "Ovis/Core/EntryPoint.h"
 //----------------------------------

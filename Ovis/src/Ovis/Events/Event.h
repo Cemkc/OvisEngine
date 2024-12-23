@@ -1,5 +1,5 @@
 #pragma once
-#include "Ovis/Core.h"
+#include "Ovis/Core/Core.h"
 
 namespace Ovis {
 

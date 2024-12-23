@@ -5,8 +5,8 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
 
-#include "Ovis/Application.h"
-#include "Ovis/Log.h"
+#include "Ovis/Core/Application.h"
+#include "Ovis/Core/Log.h"
 
 // Temporary - should not be in this file
 #include <GLFW/glfw3.h>

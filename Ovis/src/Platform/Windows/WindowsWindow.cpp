@@ -1,8 +1,8 @@
 #include "ovpch.h"
 #include "WindowsWindow.h"
 
-#include "Ovis/Log.h"
-#include "Ovis/Core.h"
+#include "Ovis/Core/Log.h"
+#include "Ovis/Core/Core.h"
 
 #include "Ovis/Events/ApplicationEvent.h"
 #include "Ovis/Events/MouseEvent.h"
@@ -29,6 +29,7 @@ namespace Ovis {
 	{
 		Init(props);
 	}
+
 	WindowsWindow::~WindowsWindow()
 	{
 		Shutdown();

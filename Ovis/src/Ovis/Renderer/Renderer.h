@@ -12,7 +12,7 @@ namespace Ovis
 		static glm::mat4 m_View;
 		static glm::mat4 m_Projection;
 	public:
-		static void BeginScene(const std::shared_ptr<Camera> camera);
+		static void BeginScene(const Camera& camera);
 		static void EndScene();
 
 		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const Transform transform);

@@ -2,10 +2,10 @@
 
 #include "Core.h"
 #include "Window.h"
-#include "Ovis/Time.h"
-#include "Ovis/LayerStack.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Ovis/Core/Time.h"
+#include "Ovis/Core/LayerStack.h"
+#include "Ovis/Events/Event.h"
+#include "Ovis/Events/ApplicationEvent.h"
 
 #include "Ovis/imgui/ImguiLayer.h"
 
@@ -40,6 +40,7 @@ namespace Ovis {
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool Application::OnWindowResize(WindowResizeEvent& e);
 	};
 
 	// To be defined in CLIENT

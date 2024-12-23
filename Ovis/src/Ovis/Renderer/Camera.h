@@ -44,6 +44,7 @@ namespace Ovis
 		float m_Rotation;
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top, float nearPlane = -1.0f, float farPlane = 1.0f);
+		void SetProjectionMatrix(float left, float right, float bottom, float top, float nearPlane = -1.0f, float farPlane = 1.0f);
 
 		inline void SetRotation(float rotation) { m_Rotation = rotation; UpdateViewMatrix(); }
 	private:

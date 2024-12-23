@@ -1,7 +1,7 @@
 #include "ovpch.h"
 
 #include "Camera.h"
-#include "Ovis/Log.h"
+#include "Ovis/Core/Log.h"
 
 namespace Ovis
 {
@@ -18,7 +18,12 @@ namespace Ovis
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 		: Camera(nearPlane, farPlane), m_Rotation(0.0f)
 	{
-		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, 1.0f, 100.0f);
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, nearPlane, farPlane);
+	}
+
+	void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+	{
+		m_ProjectionMatrix = glm::ortho(left, right, bottom, top, nearPlane, farPlane);
 	}
 
 	void OrthographicCamera::UpdateViewMatrix()

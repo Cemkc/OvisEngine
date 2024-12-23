@@ -2,17 +2,17 @@
 #include "Renderer.h"
 
 #include <glad/glad.h>
-#include "Ovis/MathUtils.h"
+#include "Ovis/Core/MathUtils.h"
 
 namespace Ovis
 {
 	glm::mat4 Renderer::m_View;
 	glm::mat4 Renderer::m_Projection;
 
-	void Renderer::BeginScene(const std::shared_ptr<Camera> camera)
+	void Renderer::BeginScene(const Camera& camera)
 	{
-		m_View = camera->GetViewMatrix();
-		m_Projection = camera->GetProjectionMatrix();
+		m_Projection = camera.GetProjectionMatrix();
+		m_View = camera.GetViewMatrix();
 	}
 
 	void Renderer::EndScene()
@@ -30,8 +30,7 @@ namespace Ovis
 		shader->SetUniform("model", model);
 		shader->SetUniform("view", m_View);
 		shader->SetUniform("projection", m_Projection);
-		//shader->SetUniform("view", glm::mat4(1.0f));
-		//shader->SetUniform("projection", glm::mat4(1.0f));
+		// shader->SetUniform("view", glm::mat4(1.0f));
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

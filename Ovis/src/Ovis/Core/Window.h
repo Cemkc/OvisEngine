@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ovis/Core.h"
+#include "Ovis/Core/Core.h"
 #include "Ovis/Events/Event.h"
 #include "Ovis/Renderer/GraphicsContext.h"
 

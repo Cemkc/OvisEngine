@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Ovis/Log.h"
+#include "Ovis/Core/Log.h"
 
 #ifdef OV_PLATFORM_WINDOWS
 	#include <Windows.h>
