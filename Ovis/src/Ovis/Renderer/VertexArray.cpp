@@ -6,12 +6,12 @@
 
 namespace Ovis
 {
-	VertexArray* VertexArray::Create()
+	std::shared_ptr<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
-		case RendererAPI::OpenGL:  return new OpenGLVertexArray();
+		case RendererAPI::OpenGL:  return std::make_shared<OpenGLVertexArray>();
 		}
 
 		OV_CORE_ASSERT(false, "Unknown RendererAPI!");

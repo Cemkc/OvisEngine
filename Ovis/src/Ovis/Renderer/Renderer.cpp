@@ -6,13 +6,12 @@
 
 namespace Ovis
 {
-	glm::mat4 Renderer::m_View;
-	glm::mat4 Renderer::m_Projection;
+	std::unique_ptr<Renderer::SceneData> Renderer::s_SceneData = std::make_unique<Renderer::SceneData>();
 
 	void Renderer::BeginScene(const Camera& camera)
 	{
-		m_Projection = camera.GetProjectionMatrix();
-		m_View = camera.GetViewMatrix();
+		s_SceneData->ProjectionMatrix = camera.GetProjectionMatrix();
+		s_SceneData->ViewMatrix = camera.GetViewMatrix();
 	}
 
 	void Renderer::EndScene()
@@ -28,8 +27,8 @@ namespace Ovis
 
 		shader->Bind();
 		shader->SetUniform("model", model);
-		shader->SetUniform("view", m_View);
-		shader->SetUniform("projection", m_Projection);
+		shader->SetUniform("view", s_SceneData->ViewMatrix);
+		shader->SetUniform("projection", s_SceneData->ProjectionMatrix);
 		// shader->SetUniform("view", glm::mat4(1.0f));
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

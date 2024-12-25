@@ -6,6 +6,7 @@
 #include "Ovis/Core/Input.h"
 
 #include "Ovis/Renderer/Renderer.h"
+#include "Ovis/Renderer/Renderer2D.h"
 
 namespace Ovis {
 
@@ -19,6 +20,7 @@ namespace Ovis {
 		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 
 		RenderCommand::Init();
+		Renderer2D::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

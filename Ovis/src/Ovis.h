@@ -19,6 +19,7 @@
 
 // Renderer
 #include "Ovis/Renderer/Renderer.h"
+#include "Ovis/Renderer/Renderer2D.h"
 #include "Ovis/Renderer/RenderCommand.h"
 
 #include "Ovis/Renderer/Buffer.h"
@@ -31,7 +32,3 @@
 
 // Objects 
 #include "Ovis/GameEntity/Transform.h"
-
-// -----Entry Point-----------------
-#include "Ovis/Core/EntryPoint.h"
-//----------------------------------

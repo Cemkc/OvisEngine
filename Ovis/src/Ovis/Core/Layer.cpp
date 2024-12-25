@@ -6,7 +6,4 @@ namespace Ovis {
 		: m_DebugName(debugName)
 	{
 	}
-	Layer::~Layer()
-	{
-	}
 }

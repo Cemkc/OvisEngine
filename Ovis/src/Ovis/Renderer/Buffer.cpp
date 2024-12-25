@@ -7,24 +7,24 @@
 
 namespace Ovis
 {
-	VertexBuffer* Ovis::VertexBuffer::Create(float* vertices, uint32_t size)
+	std::shared_ptr<VertexBuffer> Ovis::VertexBuffer::Create(float* vertices, uint32_t size)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
-		case RendererAPI::OpenGL:  return new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::OpenGL:  return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		}
 
 		OV_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
-		case RendererAPI::OpenGL:  return new OpenGLIndexBuffer(indices, count);
+		case RendererAPI::OpenGL:  return std::make_shared<OpenGLIndexBuffer>(indices, count);
 		}
 
 		OV_CORE_ASSERT(false, "Unknown RendererAPI!");

@@ -9,8 +9,13 @@ namespace Ovis
 	class Renderer 
 	{
 	private:
-		static glm::mat4 m_View;
-		static glm::mat4 m_Projection;
+		struct SceneData
+		{
+			glm::mat4 ViewMatrix;
+			glm::mat4 ProjectionMatrix;
+		};
+
+		static std::unique_ptr<SceneData> s_SceneData;
 	public:
 		static void BeginScene(const Camera& camera);
 		static void EndScene();

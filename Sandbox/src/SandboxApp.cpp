@@ -1,5 +1,8 @@
 #pragma once
-#include <Ovis.h>
+#include "Ovis.h"
+#include "Ovis/Core/EntryPoint.h"
+
+#include "Sandbox2D.h"
 
 #include "imgui.h"
 #include <glm/gtc/type_ptr.hpp>
@@ -35,7 +38,7 @@ public:
 		};
 
 		std::shared_ptr<Ovis::VertexBuffer> squareVertexBuffer;
-		squareVertexBuffer.reset(Ovis::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVertexBuffer = Ovis::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		Ovis::BufferLayout squareLayout
 		{
@@ -51,9 +54,9 @@ public:
 		};
 
 		std::shared_ptr<Ovis::IndexBuffer> squareIndexBuffer;
-		squareIndexBuffer.reset(Ovis::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIndexBuffer = Ovis::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
-		m_SquareVertexArray.reset(Ovis::VertexArray::Create());
+		m_SquareVertexArray = Ovis::VertexArray::Create();
 		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
 		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
@@ -84,10 +87,6 @@ public:
 		m_FlatShader = Ovis::Shader::Create("Flat", vertexSrc, fragmentSrc);
 
 		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
-
-		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetWidth());
-		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().GetHeight());
-		OV_CORE_TRACE("{0}", Ovis::Application::Get().GetWindow().AspectRatio());
 
 		m_CheckerBoardTexture = Ovis::Texture2D::Create("assets/textures/Checkerboard.png");
 
@@ -162,7 +161,8 @@ class Sandbox : public Ovis::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox(){}

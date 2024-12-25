@@ -22,6 +22,6 @@ namespace Ovis
 		virtual void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& buffer) = 0;
 		inline std::shared_ptr<IndexBuffer> GetIndexBuffer() { return m_IndexBuffer; }
 
-		static VertexArray* Create();
+		static std::shared_ptr<VertexArray> Create();
 	};
 }
