@@ -9,6 +9,8 @@ namespace Ovis
 {
 	std::shared_ptr<VertexBuffer> Ovis::VertexBuffer::Create(float* vertices, uint32_t size)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
@@ -21,6 +23,8 @@ namespace Ovis
 
 	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;

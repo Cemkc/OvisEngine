@@ -16,7 +16,7 @@ namespace Ovis
 		static void EndScene();
 
 		static void DrawQuad(const Transform& transform, const glm::vec4& color);
-		static void DrawQuad(const Transform& transform, const Texture2D& texture);
+		static void DrawQuad(const Transform& transform, const Texture2D& texture, float tilingFactor = 1.0f);
 	};
 }
 

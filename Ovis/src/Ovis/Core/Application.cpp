@@ -14,13 +14,24 @@ namespace Ovis {
 
 	Application::Application()
 	{
+		OV_PROFILE_FUNC();
+
 		OV_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
-		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 
-		RenderCommand::Init();
-		Renderer2D::Init();
+		{
+			OV_PROFILE_SCOPE("Application::Application - Window Creation");
+
+			m_Window = std::unique_ptr<Window>(Window::Create());
+			m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		}
+
+		{
+			OV_PROFILE_SCOPE("Application::Application - Renderer Init");
+
+			RenderCommand::Init();
+			Renderer2D::Init();
+		}
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -30,10 +41,13 @@ namespace Ovis {
 
 	Application::~Application() 
 	{
+		OV_PROFILE_FUNC();
 	}
 
 	void Application::Run()
 	{
+		OV_PROFILE_FUNC();
+
 		while (m_Running) 
 		{
 			for each(auto callback in m_EventCallbacks)

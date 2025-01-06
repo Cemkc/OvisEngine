@@ -12,7 +12,8 @@ namespace Ovis
 	struct Renderer2DStorage
 	{
 		std::shared_ptr<VertexArray> QuadVertexArray;
-		std::shared_ptr<ShaderLibrary> ShaderLibrary;
+		std::shared_ptr<Shader> StandartShader;
+		std::shared_ptr<Texture2D> WhiteTexture;
 		glm::mat4 ViewMatrix;
 		glm::mat4 ProjectionMatrix;
 	};
@@ -21,6 +22,8 @@ namespace Ovis
 
 	void Renderer2D::Init()
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		s_Storage = new Renderer2DStorage();
 
 		float squareVertices[] =
@@ -54,15 +57,19 @@ namespace Ovis
 		s_Storage->QuadVertexArray->AddVertexBuffer(squareVertexBuffer);
 		s_Storage->QuadVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-		s_Storage->ShaderLibrary = std::make_shared<ShaderLibrary>();
-		s_Storage->ShaderLibrary->Load("assets/shaders/FlatColor.glsl");
-		auto textureShader = s_Storage->ShaderLibrary->Load("assets/shaders/Texture.glsl");
-		textureShader->Bind();
-		textureShader->SetUniform("u_Texture", 0);
+		s_Storage->WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Storage->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+		s_Storage->StandartShader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Storage->StandartShader->Bind();
+		s_Storage->StandartShader->SetUniform("u_Texture", 0);
 	}
 
 	void Renderer2D::ShutDown()
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		delete s_Storage;
 	}
 
@@ -78,39 +85,43 @@ namespace Ovis
 
 	void Renderer2D::DrawQuad(const Transform& transform, const glm::vec4& color)
 	{
-		std::shared_ptr<Shader> shader = s_Storage->ShaderLibrary->Get("FlatColor");
-		shader->Bind();
-	
+		OV_RENDER_PROFILE_FUNC();
+
+		s_Storage->StandartShader->SetUniform("u_Color", color);
+		s_Storage->WhiteTexture->Bind();
+
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, transform.Position);
 		model = glm::scale(model, transform.Scale);
-		model = glm::rotate(model, glm::radians(transform.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		if(transform.Rotation.x != 0 || transform.Rotation.y != 0 || transform.Rotation.z != 0) //  This saves us from calculating a rotation matrix which can be costly if no rotation is applied
+			model = glm::rotate(model, glm::radians(transform.Rotation.z), { 0.0f, 0.0f, 1.0f });
 
-		shader->SetUniform("u_model", model);
-		shader->SetUniform("u_view", s_Storage->ViewMatrix);
-		shader->SetUniform("u_projection", s_Storage->ProjectionMatrix);
-
-		shader->SetUniform("u_Color", color);
+		s_Storage->StandartShader->SetUniform("u_model", model);
+		s_Storage->StandartShader->SetUniform("u_view", s_Storage->ViewMatrix);
+		s_Storage->StandartShader->SetUniform("u_projection", s_Storage->ProjectionMatrix);
 
 		s_Storage->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Storage->QuadVertexArray);
 	}
 
-	void Renderer2D::DrawQuad(const Transform& transform, const Texture2D& texture)
+	void Renderer2D::DrawQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
 	{
-		std::shared_ptr<Shader> shader = s_Storage->ShaderLibrary->Get("Texture");
-		shader->Bind();
+		OV_RENDER_PROFILE_FUNC();
+
+		s_Storage->StandartShader->Bind();
+		s_Storage->StandartShader->SetUniform("u_Color", glm::vec4(1.0f));
+		s_Storage->StandartShader->SetUniform("u_TilingFactor", tilingFactor);
+		texture.Bind();
 
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, transform.Position);
 		model = glm::scale(model, transform.Scale);
-		model = glm::rotate(model, glm::radians(transform.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		if (transform.Rotation.x != 0 || transform.Rotation.y != 0 || transform.Rotation.z != 0) //  This saves us from calculating a rotation matrix which can be costly if no rotation is applied
+			model = glm::rotate(model, glm::radians(transform.Rotation.z), { 0.0f, 0.0f, 1.0f });
 
-		shader->SetUniform("u_model", model);
-		shader->SetUniform("u_view", s_Storage->ViewMatrix);
-		shader->SetUniform("u_projection", s_Storage->ProjectionMatrix);
-
-		texture.Bind();
+		s_Storage->StandartShader->SetUniform("u_model", model);
+		s_Storage->StandartShader->SetUniform("u_view", s_Storage->ViewMatrix);
+		s_Storage->StandartShader->SetUniform("u_projection", s_Storage->ProjectionMatrix);
 
 		s_Storage->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Storage->QuadVertexArray);

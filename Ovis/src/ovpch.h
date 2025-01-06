@@ -14,6 +14,7 @@
 #include <unordered_set>
 
 #include "Ovis/Core/Log.h"
+#include "Ovis/Debug/Instrumentor.h"
 
 #ifdef OV_PLATFORM_WINDOWS
 	#include <Windows.h>

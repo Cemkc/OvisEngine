@@ -11,6 +11,8 @@ private:
 	Ovis::ShaderLibrary m_ShaderLibrary;
 
 	std::shared_ptr<Ovis::Texture2D> m_CheckerBoardTexture;
+	std::shared_ptr<Ovis::Texture2D> m_RocketTexture;
+	std::shared_ptr<Ovis::Texture2D> m_FrogTexture;
 
 	float m_SquareWidht = 0.5f;
 	glm::vec4 m_SquareColor = glm::vec4(0.6f, 0.1f, 0.8f, 1.0f);

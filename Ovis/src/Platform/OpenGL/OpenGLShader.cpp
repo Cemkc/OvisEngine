@@ -25,6 +25,8 @@ namespace Ovis
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		std::string source = ReadFile(filepath);
 		auto sources = PreProcess(source);
 		Compile(sources);
@@ -40,6 +42,8 @@ namespace Ovis
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -48,11 +52,15 @@ namespace Ovis
 
 	OpenGLShader::~OpenGLShader()
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glDeleteProgram(m_RendererId);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		std::string content;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
@@ -73,6 +81,8 @@ namespace Ovis
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -96,6 +106,8 @@ namespace Ovis
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		GLuint program = glCreateProgram();
 		OV_CORE_ASSERT(shaderSources.size() <= 5, "Ovis only supports 5 shaders at once");
 		std::array<GLuint, 5> shaderIds = { 0 };
@@ -163,41 +175,57 @@ namespace Ovis
 
 	void OpenGLShader::Bind() const
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUseProgram(m_RendererId);
 	}
 
 	void OpenGLShader::UnBind() const
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetUniform(const std::string& name, int value)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUniform1i(GetUniformLocation(name), value);
 	}
 
 	void OpenGLShader::SetUniform(const std::string& name, float value)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUniform1f(GetUniformLocation(name), value);
 	}
 
 	void OpenGLShader::SetUniform(const std::string& name, float v0, float v1, float v2, float v3)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 	}
 
 	void OpenGLShader::SetUniform(const std::string& name, glm::vec4 vec)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUniform4f(GetUniformLocation(name), vec.r, vec.g, vec.b, vec.a);
 	}
 
 	void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& mat)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 	}
 
 	int OpenGLShader::GetUniformLocation(const std::string& name)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 			return m_UniformLocationCache[name];
 

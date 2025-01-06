@@ -10,6 +10,8 @@ namespace Ovis
 
 	void Renderer::BeginScene(const Camera& camera)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		s_SceneData->ProjectionMatrix = camera.GetProjectionMatrix();
 		s_SceneData->ViewMatrix = camera.GetViewMatrix();
 	}
@@ -20,6 +22,8 @@ namespace Ovis
 
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const Transform transform)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, transform.Position);
 		model = glm::scale(model, transform.Scale);

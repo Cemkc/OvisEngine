@@ -16,6 +16,8 @@ void Sandbox2D::OnAttach()
 	m_CameraController = std::make_shared<Ovis::OrthographicCameraController>(aspectRatio, true);
 
 	m_CheckerBoardTexture = Ovis::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_RocketTexture = Ovis::Texture2D::Create("assets/textures/OneRocket.png");
+	m_FrogTexture = Ovis::Texture2D::Create("assets/textures/Frog.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -24,37 +26,67 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate()
 {
+	OV_PROFILE_FUNC();
 	OV_TRACE("Delta Time: {0}s ({1}ms)", Ovis::Time::DeltaTime(), Ovis::Time::DeltaTime() * 1000);
-	m_CameraController->OnUpdate();
 
-	Ovis::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-	Ovis::RenderCommand::Clear();
-
-	Ovis::Renderer2D::BeginScene(m_CameraController->GetCamera());
-
-	Ovis::Transform transform =
 	{
-		glm::vec3(1.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(1.0f, 2.0f, 1.0f)
-	};
+		OV_PROFILE_SCOPE("CameraController::OnUpdate");
+		m_CameraController->OnUpdate();
+	}
 
-	Ovis::Renderer2D::DrawQuad(transform, m_SquareColor);
-
-	transform =
 	{
-		glm::vec3(0.0f, 0.0f, -0.1f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(10.0f, 10.0f, 1.0f)
-	};
+		OV_PROFILE_SCOPE("Renderer Prep");
+		Ovis::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+		Ovis::RenderCommand::Clear();
+	}
 
-	Ovis::Renderer2D::DrawQuad(transform, *m_CheckerBoardTexture);
+	{
+		OV_PROFILE_SCOPE("Renderer Draw");
+		Ovis::Renderer2D::BeginScene(m_CameraController->GetCamera());
 
-	Ovis::Renderer2D::EndScene();
+		Ovis::Transform transform =
+		{
+			glm::vec3(1.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(1.0f, 2.0f, 1.0f)
+		};
+
+		Ovis::Renderer2D::DrawQuad(transform, m_SquareColor);
+
+		transform =
+		{
+			glm::vec3(0.0f, 0.0f, -0.1f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(10.0f, 10.0f, 1.0f)
+		};
+
+		Ovis::Renderer2D::DrawQuad(transform, *m_CheckerBoardTexture, 1.0f);
+
+		transform =
+		{
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		};
+
+		Ovis::Renderer2D::DrawQuad(transform, *m_RocketTexture, 1.0f);
+
+		transform =
+		{
+			glm::vec3(-1.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(1.0f, 1.0f, 1.0f)
+		};
+
+		Ovis::Renderer2D::DrawQuad(transform, *m_FrogTexture, 1.0f);
+
+		Ovis::Renderer2D::EndScene();
+	}
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+	OV_PROFILE_FUNC();
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 	ImGui::End();

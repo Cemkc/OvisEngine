@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
     <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ovis.h" />
     <ClInclude Include="src\Ovis\Core\Application.h" />

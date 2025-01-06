@@ -8,6 +8,8 @@ namespace Ovis
 {
 	std::shared_ptr<Shader> Shader::Create(const std::string& filepath)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
@@ -20,6 +22,8 @@ namespace Ovis
 
 	std::shared_ptr<Shader> Shader::Create(const std::string& name, const std::string& vertexScr, const std::string& fragmentScr)
 	{
+		OV_RENDER_PROFILE_FUNC();
+
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;

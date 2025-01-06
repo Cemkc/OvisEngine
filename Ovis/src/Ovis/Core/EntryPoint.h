@@ -6,14 +6,19 @@ extern Ovis::Application* Ovis::CreateApplication();
 
 void main(int argc, char** argv) 
 {
-	int a = 5;
 	Ovis::Log::Init();
-	OV_CORE_ERROR("Initialized Core Log!");
-	OV_WARN("Hello Var={0}", a);
 
+	OV_PROFILE_BEGIN_SESSION("Startup", "SandboxProfile-Startup.json");
 	auto app = Ovis::CreateApplication();
+	OV_PROFILE_END_SESSION();
+
+	OV_PROFILE_BEGIN_SESSION("Runtime", "SandboxProfile-Runtime.json");
 	app->Run();
+	OV_PROFILE_END_SESSION();
+
+	OV_PROFILE_BEGIN_SESSION("Shutdown", "SandboxProfile-Shutdown.json");
 	delete app;
+	OV_PROFILE_END_SESSION();
 }
 
 #endif
