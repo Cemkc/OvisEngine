@@ -20,6 +20,8 @@
 // Renderer
 #include "Ovis/Renderer/Renderer.h"
 #include "Ovis/Renderer/Renderer2D.h"
+#include "Ovis/Renderer/BatchRenderer2D.h"
+#include "Ovis/Renderer/SnapRenderer2D.h"
 #include "Ovis/Renderer/RenderCommand.h"
 
 #include "Ovis/Renderer/Buffer.h"

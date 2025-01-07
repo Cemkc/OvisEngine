@@ -7,6 +7,8 @@
 
 #include "Ovis/Renderer/Renderer.h"
 #include "Ovis/Renderer/Renderer2D.h"
+#include "Ovis/Renderer/SnapRenderer2D.h"
+#include "Ovis/Renderer/BatchRenderer2D.h"
 
 namespace Ovis {
 
@@ -29,8 +31,10 @@ namespace Ovis {
 		{
 			OV_PROFILE_SCOPE("Application::Application - Renderer Init");
 
+			Renderer2D* renderer = new BatchRenderer2D();
+
 			RenderCommand::Init();
-			Renderer2D::Init();
+			Renderer2D::Instance().Init();
 		}
 
 		m_ImGuiLayer = new ImGuiLayer();

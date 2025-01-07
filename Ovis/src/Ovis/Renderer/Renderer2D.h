@@ -8,15 +8,23 @@ namespace Ovis
 {
 	class Renderer2D
 	{
+	private:
+		static Renderer2D* s_Instance;
 	public:
-		static void Init();
-		static void ShutDown();
+		Renderer2D();
 
-		static void BeginScene(const OrthographicCamera& camera);
-		static void EndScene();
+		inline static Renderer2D& Instance(){ return *s_Instance; }
 
-		static void DrawQuad(const Transform& transform, const glm::vec4& color);
-		static void DrawQuad(const Transform& transform, const Texture2D& texture, float tilingFactor = 1.0f);
+		virtual ~Renderer2D() = default;
+
+		virtual void Init() = 0;
+		virtual void ShutDown() = 0;
+
+		virtual void BeginScene(const OrthographicCamera& camera) = 0;
+		virtual void EndScene() = 0;
+
+		virtual void SubmitQuad(const Transform& transform, const glm::vec4& color) = 0;
+		virtual void SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor = 1.0f) = 0;
 	};
 }
 

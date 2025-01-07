@@ -1424,6 +1424,9 @@
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
+    <ClInclude Include="src\Ovis\Renderer\Vertex.h" />
+    <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h" />
+    <ClInclude Include="src\Ovis\Renderer\SnapRenderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Core\Application.cpp">
@@ -1507,6 +1510,8 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\SnapRenderer2D.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\BatchRenderer2D.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

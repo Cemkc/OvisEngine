@@ -29,8 +29,9 @@ namespace Ovis
 			s_RendererAPI->Clear();
 		}
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount = 0)
 		{
+			OV_RENDER_PROFILE_FUNC();
 			s_RendererAPI->DrawIndexed(vertexArray);
 		}
 	};

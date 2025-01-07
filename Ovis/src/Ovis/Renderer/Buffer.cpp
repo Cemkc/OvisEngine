@@ -7,6 +7,20 @@
 
 namespace Ovis
 {
+	std::shared_ptr<VertexBuffer> VertexBuffer::Create(uint32_t size)
+	{
+		OV_RENDER_PROFILE_FUNC();
+
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::None:    OV_CORE_ASSERT(false, "No Rendering API specification provided!"); return nullptr;
+		case RendererAPI::OpenGL:  return std::make_shared<OpenGLVertexBuffer>(size);
+		}
+
+		OV_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 	std::shared_ptr<VertexBuffer> Ovis::VertexBuffer::Create(float* vertices, uint32_t size)
 	{
 		OV_RENDER_PROFILE_FUNC();
