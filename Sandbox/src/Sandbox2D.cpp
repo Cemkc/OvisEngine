@@ -44,23 +44,26 @@ void Sandbox2D::OnUpdate()
 		OV_PROFILE_SCOPE("Renderer Draw");
 		Ovis::Renderer2D::Instance().BeginScene(m_CameraController->GetCamera());
 
-		Ovis::Transform transform =
+		Ovis::Transform transform;
+
+		float offset = 0.1f;
+
+		for (int x = 0; x < 10; x++)
 		{
-			glm::vec3(-1.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(1.0f, 1.0f, 1.0f)
-		};
+			for (int y = 0; y < 10; y++)
+			{
+				transform =
+				{
+					glm::vec3(x * offset, y * offset, 0.0f),
+					glm::vec3(0.0f, 0.0f, 0.0f),
+					glm::vec3(1.0f, 1.0f, 1.0f)
+				};
 
-		Ovis::Renderer2D::Instance().SubmitQuad(transform, m_QuadColor1);
+				glm::vec4 color = (y + x) % 2 == 0 ? m_QuadColor1 : m_QuadColor2;
 
-		transform =
-		{
-			glm::vec3(1.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(1.0f, 1.0f, 1.0f)
-		};
-
-		Ovis::Renderer2D::Instance().SubmitQuad(transform, m_QuadColor2);
+				Ovis::Renderer2D::Instance().SubmitQuad(transform, color);
+			}
+		}
 
 		Ovis::Renderer2D::Instance().EndScene();
 	}

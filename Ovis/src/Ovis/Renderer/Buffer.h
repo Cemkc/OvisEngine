@@ -105,7 +105,7 @@ namespace Ovis
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
 
-		virtual void SetData(const void* data, uint32_t size) const = 0;
+		virtual void SetData(uint32_t size, const void* data) const = 0;
 
 		inline void SetLayout(const BufferLayout& layout) { m_Layout = layout; };
 		inline const BufferLayout& GetLayout() const { return m_Layout; };

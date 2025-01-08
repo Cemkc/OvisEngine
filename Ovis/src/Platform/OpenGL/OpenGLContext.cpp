@@ -9,7 +9,7 @@ namespace Ovis
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 		: m_Window(windowHandle)
 	{
-		OV_CORE_ASSERT(windowHandle, "Window hndle is null");
+		OV_CORE_ASSERT(windowHandle, "Window handle is null");
 	}
 
 	void OpenGLContext::Init()

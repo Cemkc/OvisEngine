@@ -1,37 +1,16 @@
 #include "ovpch.h"
 #include "BatchRenderer2D.h"
 
-// #include "glad/glad.h"
-
 namespace Ovis
 {
+	static uint32_t VAO;
+	static uint32_t VBO;
+	static uint32_t EBO;
+
 	void BatchRenderer2D::Init()
 	{
 		OV_RENDER_PROFILE_FUNC();
-
-		float squareVertices[] =
-		{
-			-1.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-1.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-
-			 0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 1.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 1.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			 0.5f,  0.5f, 0.0f, 0.0f, 1.0f
-		};
-
-		m_QuadVertexBuffer = VertexBuffer::Create(m_MaxVertices * sizeof(Vertex));
-
-		BufferLayout squareLayout
-		{
-			{ ShaderDataType::Float3, "a_Pos" },
-			{ ShaderDataType::Float4, "a_Color" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
-		};
-
-		m_QuadVertexBuffer->SetLayout(squareLayout);
+		
 		m_QuadVertexBufferBase = new Vertex[m_MaxVertices];
 		m_QuadVertexBufferPtr = m_QuadVertexBufferBase;
 
@@ -51,13 +30,23 @@ namespace Ovis
 			offset += 4;
 		}
 
-		std::shared_ptr<IndexBuffer> squareIndexBuffer;
-		squareIndexBuffer = IndexBuffer::Create(quadIndices, m_MaxIndices);
-
 		m_QuadVertexArray = VertexArray::Create();
-		m_QuadVertexArray->AddVertexBuffer(m_QuadVertexBuffer);
-		m_QuadVertexArray->SetIndexBuffer(squareIndexBuffer);
+		m_QuadVertexBuffer = VertexBuffer::Create(m_MaxVertices * sizeof(Vertex));
+		std::shared_ptr<IndexBuffer> indexBuffer = IndexBuffer::Create(quadIndices, m_MaxIndices);
 		delete[] quadIndices;
+
+		BufferLayout quadVertexLayout
+		{
+			{ ShaderDataType::Float3, "a_Pos" },
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TexCoord" }
+		};
+
+		m_QuadVertexBuffer->SetLayout(quadVertexLayout);
+
+		m_QuadVertexArray->AddVertexBuffer(m_QuadVertexBuffer);
+		m_QuadVertexArray->SetIndexBuffer(indexBuffer);
+
 
 		m_WhiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
@@ -88,16 +77,16 @@ namespace Ovis
 	{
 		OV_RENDER_PROFILE_FUNC();
 
-		m_QuadVertexArray->Bind();
-
-		uint32_t bufferSize = (m_QuadVertexBufferPtr - m_QuadVertexBufferBase) * sizeof(uint32_t);
-		m_QuadVertexBuffer->SetData(m_QuadVertexBufferBase, bufferSize);
+		uint32_t bufferSize = (uint8_t*)m_QuadVertexBufferPtr - (uint8_t*)m_QuadVertexBufferBase;
+		m_QuadVertexBuffer->SetData(bufferSize, m_QuadVertexBufferBase);
 
 		Flush();
 	}
 
 	void BatchRenderer2D::Flush()
 	{
+		/*m_QuadVertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);*/
 		RenderCommand::DrawIndexed(m_QuadVertexArray, m_QuadIndexCount);
 	}
 
@@ -105,32 +94,36 @@ namespace Ovis
 	{
 		OV_RENDER_PROFILE_FUNC();
 
-		m_QuadVertexBufferPtr->Position = transform.Position;
+		float size = 0.05f; // (Half Size)
+
+		float px = transform.Position.x;
+		float py = transform.Position.y;
+		float pz = transform.Position.z;
+
+		float sx = transform.Position.x;
+		float sy = transform.Position.y;
+
+		m_QuadVertexBufferPtr->Position = { px - size, py - size, pz };
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = transform.Position;
+		m_QuadVertexBufferPtr->Position = { px + size, py - size, pz };
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = transform.Position;
+		m_QuadVertexBufferPtr->Position = { px + size, py + size, pz };
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = transform.Position;
+		m_QuadVertexBufferPtr->Position = { px - size, py + size, pz };
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
 		m_QuadIndexCount += 6;
-
 	}
 
 	void BatchRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
@@ -138,25 +131,21 @@ namespace Ovis
 		m_QuadVertexBufferPtr->Position = transform.Position;
 		m_QuadVertexBufferPtr->Color = glm::vec4(1.0f);
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
 		m_QuadVertexBufferPtr->Position = transform.Position;
 		m_QuadVertexBufferPtr->Color = glm::vec4(1.0f);
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
 		m_QuadVertexBufferPtr->Position = transform.Position;
 		m_QuadVertexBufferPtr->Color = glm::vec4(1.0f);
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
 		m_QuadVertexBufferPtr->Position = transform.Position;
 		m_QuadVertexBufferPtr->Color = glm::vec4(1.0f);
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
-		m_QuadVertexBufferPtr->TexId = 0;
 		m_QuadVertexBufferPtr++;
 
 	}

@@ -40,7 +40,7 @@ namespace Ovis
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size) const
+	void Ovis::OpenGLVertexBuffer::SetData(uint32_t size, const void* data) const
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);

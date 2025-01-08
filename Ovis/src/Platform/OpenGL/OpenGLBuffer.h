@@ -13,7 +13,7 @@ namespace Ovis
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGLVertexBuffer() override;
 
-		virtual void SetData(const void* data, uint32_t size) const override;
+		virtual void SetData(uint32_t size, const void* data) const override;
 
 		virtual void Bind() const override;
 		virtual void UnBind() const override;
