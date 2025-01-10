@@ -20,6 +20,8 @@ namespace Ovis
 
 		virtual void SetUniform(const std::string& name, int value) = 0;
 
+		virtual void SetUniform(const std::string& name, int* value, uint32_t count) = 0;
+
 		virtual void SetUniform(const std::string& name, float value) = 0;
 
 		virtual void SetUniform(const std::string& name, float v0, float v1, float v2, float v3) = 0;

@@ -194,6 +194,13 @@ namespace Ovis
 		glUniform1i(GetUniformLocation(name), value);
 	}
 
+	void OpenGLShader::SetUniform(const std::string& name, int* value, uint32_t count)
+	{
+		OV_RENDER_PROFILE_FUNC();
+
+		glUniform1iv(GetUniformLocation(name), count, value);
+	}
+
 	void OpenGLShader::SetUniform(const std::string& name, float value)
 	{
 		OV_RENDER_PROFILE_FUNC();

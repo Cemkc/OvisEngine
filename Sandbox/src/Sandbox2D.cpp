@@ -46,6 +46,15 @@ void Sandbox2D::OnUpdate()
 
 		Ovis::Transform transform;
 
+		transform =
+		{
+			glm::vec3(0.0f, 0.0f, -0.1f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(10.0f, 10.0f, 1.0f)
+		};
+
+		Ovis::Renderer2D::Instance().SubmitQuad(transform, *m_CheckerBoardTexture.get());
+
 		float offset = 0.1f;
 
 		for (int x = 0; x < 10; x++)

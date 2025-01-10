@@ -25,5 +25,7 @@ namespace Ovis
 		virtual void SetData(void* data, uint32_t size) override;
 
 		void Bind(uint32_t slot) const override;
+
+		virtual bool operator == (const Texture& other) const override;
 	};
 }

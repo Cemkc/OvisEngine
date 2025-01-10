@@ -88,4 +88,9 @@ namespace Ovis
 
 		glBindTextureUnit(slot, m_RendererId);
 	}
+
+	bool OpenGLTexture2D::operator==(const Texture& other) const
+	{
+		return (this->m_RendererId == ((OpenGLTexture2D&)other).m_RendererId);
+	}
 }

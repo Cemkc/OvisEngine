@@ -14,11 +14,15 @@ namespace Ovis
 	private:
 		float m_QuadSize = 1.0f;
 
-		const uint32_t m_MaxQuads = 10000;
-		const uint32_t m_MaxVertices = m_MaxQuads * 4;
-		const uint32_t m_MaxIndices = m_MaxQuads * 6;
+		static const uint32_t s_MaxQuads = 10000;
+		static const uint32_t s_MaxVertices = s_MaxQuads * 4;
+		static const uint32_t s_MaxIndices = s_MaxQuads * 6;
 
 		uint32_t m_QuadIndexCount = 0;
+		static const uint32_t s_MaxTextureSlots = 32;
+		static const Texture2D* s_TextureSlots[s_MaxTextureSlots];
+		uint32_t m_TextureSlotIndex;
+
 		Vertex* m_QuadVertexBufferBase = nullptr;
 		Vertex* m_QuadVertexBufferPtr = nullptr;
 

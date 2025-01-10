@@ -25,6 +25,7 @@ namespace Ovis
 
 		// Inherited via Shader
 		void SetUniform(const std::string& name, int value) override;
+		void SetUniform(const std::string& name, int* value, uint32_t count) override;
 		void SetUniform(const std::string& name, float value) override;
 		void SetUniform(const std::string& name, float v0, float v1, float v2, float v3) override;
 		void SetUniform(const std::string& name, glm::vec4 vec) override;
