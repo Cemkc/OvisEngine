@@ -50,7 +50,7 @@ void Sandbox2D::OnUpdate()
 
 		transform =
 		{
-			glm::vec3(-1.0f, 1.0f, -0.1f),
+			glm::vec3(0.0f, 0.0f, -0.1f),
 			glm::vec3(0.0f, 0.0f, 45.0f),
 			glm::vec3(5.0f, 5.0f, 1.0f)
 		};
@@ -59,9 +59,9 @@ void Sandbox2D::OnUpdate()
 
 		float offset = 0.1f;
 
-		for (int x = 0; x < 10; x++)
+		for (int x = 0; x < 100; x++)
 		{
-			for (int y = 0; y < 10; y++)
+			for (int y = 0; y < 100; y++)
 			{
 				transform =
 				{
@@ -80,12 +80,28 @@ void Sandbox2D::OnUpdate()
 	}
 }
 
+int frameRate = 0;
+float frameTime = 0;
+
 void Sandbox2D::OnImGuiRender()
 {
 	OV_PROFILE_FUNC();
+
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(m_QuadColor1));
 	ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(m_QuadColor2));
+
+
+	ImGui::Text("Performance Metrics:");
+	if (Ovis::Time::GetTime() - m_ImGuiRefreshTimer > 1)
+	{
+		frameRate = (int)(1 / Ovis::Time::DeltaTime());
+		frameTime = Ovis::Time::DeltaTime() * 1000;
+		m_ImGuiRefreshTimer = Ovis::Time::GetTime();
+	}
+
+	ImGui::Text("Frame Rate: %d fps", frameRate);
+	ImGui::Text("Frame Time: %f ms", frameTime);
 
 	auto stats = Ovis::Renderer2D::Instance().GetStats();
 	ImGui::Text("Renderer2D Stats:");

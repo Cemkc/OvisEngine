@@ -135,6 +135,9 @@ namespace Ovis
 	{
 		OV_RENDER_PROFILE_FUNC();
 
+		constexpr int quadVertexCount = 4;
+		const float textureCoordinates[4][2] = { {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f} };
+
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
 
@@ -147,34 +150,16 @@ namespace Ovis
 		float px = transform.Position.x;
 		float py = transform.Position.y;
 		float pz = transform.Position.z;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[0];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
-		m_QuadVertexBufferPtr->TextureId = whiteTexture;
-		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[1];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
-		m_QuadVertexBufferPtr->TextureId = whiteTexture;
-		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[2];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
-		m_QuadVertexBufferPtr->TextureId = whiteTexture;
-		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[3];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
-		m_QuadVertexBufferPtr->TextureId = whiteTexture;
-		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
-		m_QuadVertexBufferPtr++;
+		
+		for (int i = 0; i < quadVertexCount; i++)
+		{
+			m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[i];
+			m_QuadVertexBufferPtr->Color = color;
+			m_QuadVertexBufferPtr->TexCoords = { textureCoordinates[i][0], textureCoordinates[i][1] };
+			m_QuadVertexBufferPtr->TextureId = whiteTexture;
+			m_QuadVertexBufferPtr->TilingFactor = 1.0f;
+			m_QuadVertexBufferPtr++;
+		}
 
 		m_QuadIndexCount += 6;
 
@@ -184,6 +169,9 @@ namespace Ovis
 	void BatchRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
 	{
 		OV_RENDER_PROFILE_FUNC();
+
+		constexpr int quadVertexCount = 4;
+		const float textureCoordinates[4][2] = { {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f} };
 
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
@@ -221,33 +209,15 @@ namespace Ovis
 		float sx = transform.Position.x; 
 		float sy = transform.Position.y;
 
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[0];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
-		m_QuadVertexBufferPtr->TextureId = textureIndex;
-		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[1];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
-		m_QuadVertexBufferPtr->TextureId = textureIndex;
-		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[2];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
-		m_QuadVertexBufferPtr->TextureId = textureIndex;
-		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
-		m_QuadVertexBufferPtr++;
-
-		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[3];
-		m_QuadVertexBufferPtr->Color = color;
-		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
-		m_QuadVertexBufferPtr->TextureId = textureIndex;
-		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
-		m_QuadVertexBufferPtr++;
+		for (int i = 0; i < quadVertexCount; i++)
+		{
+			m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[i];
+			m_QuadVertexBufferPtr->Color = color;
+			m_QuadVertexBufferPtr->TexCoords = { textureCoordinates[i][0], textureCoordinates[i][1] };
+			m_QuadVertexBufferPtr->TextureId = textureIndex;
+			m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			m_QuadVertexBufferPtr++;
+		}
 
 		m_QuadIndexCount += 6;
 

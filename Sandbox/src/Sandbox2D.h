@@ -18,6 +18,8 @@ private:
 	float m_SquareWidht = 0.5f;
 	glm::vec4 m_QuadColor1 = glm::vec4(0.6f, 0.1f, 0.8f, 1.0f);
 	glm::vec4 m_QuadColor2 = glm::vec4(0.6f, 0.1f, 0.8f, 1.0f);
+
+	double m_ImGuiRefreshTimer = 0;
 public:
 	Sandbox2D();
 
