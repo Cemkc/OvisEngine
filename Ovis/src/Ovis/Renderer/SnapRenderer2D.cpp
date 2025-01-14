@@ -50,7 +50,7 @@ namespace Ovis
 		uint32_t whiteTextureData = 0xffffffff;
 		m_Storage.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-		m_Storage.StandartShader = Shader::Create("assets/shaders/Texture.glsl");
+		m_Storage.StandartShader = Shader::Create("assets/shaders/SnapShader.glsl");
 		m_Storage.StandartShader->Bind();
 		m_Storage.StandartShader->SetUniform("u_Texture", 0);
 	}
@@ -89,6 +89,9 @@ namespace Ovis
 
 		m_Storage.QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(m_Storage.QuadVertexArray);
+
+		m_Storage.Stats.DrawCalls++;
+		m_Storage.Stats.QuadCount++;
 	}
 
 	void SnapRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
@@ -112,6 +115,19 @@ namespace Ovis
 
 		m_Storage.QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(m_Storage.QuadVertexArray);
+
+		m_Storage.Stats.DrawCalls++;
+		m_Storage.Stats.QuadCount++;
+	}
+
+	void SnapRenderer2D::ResetStats()
+	{
+		memset(&m_Storage.Stats, 0, sizeof(Statistics));
+	}
+
+	Renderer2D::Statistics SnapRenderer2D::GetStats()
+	{
+		return m_Storage.Stats;
 	}
 
 }

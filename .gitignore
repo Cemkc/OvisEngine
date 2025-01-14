@@ -1,7 +1,19 @@
-# Directories
-.vs/
-bin/
+# Binaries
+**/bin/
 bin-int/
+Intermediates/
 
-#Files
-*.user
+# Ovis files
+*.log
+Sandbox/SandboxProfile-Runtime.json
+Sandbox/SandboxProfile-Shutdown.json
+Sandbox/SandboxProfile-Startup.json
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+

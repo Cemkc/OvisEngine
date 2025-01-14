@@ -20,10 +20,13 @@ namespace Ovis
 			glm::mat4 ViewMatrix;
 			glm::mat4 ProjectionMatrix;
 
-			std::vector<Vertex> VertexData;
+			std::vector<QuadVertex> VertexData;
+
+			Statistics Stats;
 		};
 
 		Renderer2DStorage m_Storage;
+
 	public:
 		void Init() override;
 		void ShutDown() override;
@@ -31,5 +34,8 @@ namespace Ovis
 		void EndScene() override;
 		void SubmitQuad(const Transform& transform, const glm::vec4& color) override;
 		void SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor) override;
+
+		void ResetStats() override;
+		Statistics GetStats() override;
 	};
 }

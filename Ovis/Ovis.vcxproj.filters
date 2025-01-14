@@ -1424,9 +1424,9 @@
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Ovis\Renderer\Vertex.h" />
     <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h" />
     <ClInclude Include="src\Ovis\Renderer\SnapRenderer2D.h" />
+    <ClInclude Include="src\Ovis\Renderer\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Core\Application.cpp">

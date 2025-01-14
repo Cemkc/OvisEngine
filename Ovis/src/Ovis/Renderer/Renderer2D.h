@@ -11,6 +11,14 @@ namespace Ovis
 	private:
 		static Renderer2D* s_Instance;
 	public:
+		struct Statistics
+		{
+			uint32_t DrawCalls = 0;
+			uint32_t QuadCount = 0;
+			uint32_t GetTotalVertexCount() { return QuadCount * 4; }
+			uint32_t GetTotalIndexCount() { return QuadCount * 6; }
+		};
+
 		Renderer2D();
 
 		inline static Renderer2D& Instance(){ return *s_Instance; }
@@ -25,6 +33,9 @@ namespace Ovis
 
 		virtual void SubmitQuad(const Transform& transform, const glm::vec4& color) = 0;
 		virtual void SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor = 1.0f) = 0;
+
+		virtual void ResetStats() = 0;
+		virtual Statistics GetStats() = 0;
 	};
 }
 

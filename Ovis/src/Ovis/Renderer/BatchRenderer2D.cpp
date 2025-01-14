@@ -3,14 +3,22 @@
 
 namespace Ovis
 {
-
 	const Texture2D* BatchRenderer2D::s_TextureSlots[s_MaxTextureSlots];
+	const glm::vec4 BatchRenderer2D::s_QuadCorners[4] = 
+	{
+		{ -0.5f, -0.5f, 0.0f, 1.0f },
+		{  0.5f, -0.5f, 0.0f, 1.0f },
+		{  0.5f,  0.5f, 0.0f, 1.0f },
+		{ -0.5f,  0.5f, 0.0f, 1.0f },
+	};
+
+	Renderer2D::Statistics BatchRenderer2D::s_Stats;
 
 	void BatchRenderer2D::Init()
 	{
 		OV_RENDER_PROFILE_FUNC();
 		
-		m_QuadVertexBufferBase = new Vertex[s_MaxVertices];
+		m_QuadVertexBufferBase = new QuadVertex[s_MaxVertices];
 		m_QuadVertexBufferPtr = m_QuadVertexBufferBase;
 
 		uint32_t* quadIndices = new uint32_t[s_MaxIndices];
@@ -30,7 +38,7 @@ namespace Ovis
 		}
 
 		m_QuadVertexArray = VertexArray::Create();
-		m_QuadVertexBuffer = VertexBuffer::Create(s_MaxVertices * sizeof(Vertex));
+		m_QuadVertexBuffer = VertexBuffer::Create(s_MaxVertices * sizeof(QuadVertex));
 		std::shared_ptr<IndexBuffer> indexBuffer = IndexBuffer::Create(quadIndices, s_MaxIndices);
 		delete[] quadIndices;
 
@@ -39,7 +47,8 @@ namespace Ovis
 			{ ShaderDataType::Float3, "a_Pos" },
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
-			{ ShaderDataType::Float, "a_TexIndex" }
+			{ ShaderDataType::Float, "a_TexIndex" },
+			{ ShaderDataType::Float, "a_TilingFactor" }
 		};
 
 		m_QuadVertexBuffer->SetLayout(quadVertexLayout);
@@ -57,10 +66,10 @@ namespace Ovis
 
 		s_TextureSlots[0] = m_WhiteTexture.get();
 
-		m_StandartShader = Shader::Create("assets/shaders/Texture.glsl");
+		m_StandartShader = Shader::Create("assets/shaders/BatchShader.glsl");
 		m_StandartShader->Bind();
 
-		int32_t samplers[s_MaxTextureSlots];
+		int32_t samplers[s_MaxTextureSlots]; // Temporary buffer to send to GPU as uniform
 		for (uint32_t i = 0; i < s_MaxTextureSlots; i++)
 			samplers[i] = i;
 
@@ -104,53 +113,84 @@ namespace Ovis
 			s_TextureSlots[i]->Bind(i);
 
 		RenderCommand::DrawIndexed(m_QuadVertexArray, m_QuadIndexCount);
+
+		s_Stats.DrawCalls++;
+	}
+
+	void BatchRenderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		m_QuadIndexCount = 0;
+		m_QuadVertexBufferPtr = m_QuadVertexBufferBase;
+		m_TextureSlotIndex = 1;
+	}
+
+	void BatchRenderer2D::ResetStats()
+	{
+		memset(&s_Stats, 0, sizeof(Statistics));
 	}
 
 	void BatchRenderer2D::SubmitQuad(const Transform& transform, const glm::vec4& color)
 	{
 		OV_RENDER_PROFILE_FUNC();
 
-		float whiteTexture = 0.0f;
+		if (m_QuadIndexCount >= s_MaxIndices)
+			FlushAndReset();
 
-		float size = 0.05f; // (Half Size)
+		glm::mat4 trans = glm::translate(glm::mat4(1.0f), transform.Position);
+		trans = glm::rotate(trans, transform.Rotation.z, {0.0f, 0.0f, 1.0f});
+		trans = glm::scale(trans, transform.Scale);
+
+		float whiteTexture = 0.0f;
 
 		float px = transform.Position.x;
 		float py = transform.Position.y;
 		float pz = transform.Position.z;
 
-		float sx = transform.Position.x;
-		float sy = transform.Position.y;
-
-		m_QuadVertexBufferPtr->Position = { px - size, py - size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[0];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
 		m_QuadVertexBufferPtr->TextureId = whiteTexture;
+		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px + size, py - size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[1];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
 		m_QuadVertexBufferPtr->TextureId = whiteTexture;
+		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px + size, py + size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[2];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
 		m_QuadVertexBufferPtr->TextureId = whiteTexture;
+		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px - size, py + size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[3];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
 		m_QuadVertexBufferPtr->TextureId = whiteTexture;
+		m_QuadVertexBufferPtr->TilingFactor = 1.0f;
 		m_QuadVertexBufferPtr++;
 
 		m_QuadIndexCount += 6;
+
+		s_Stats.QuadCount++;
 	}
 
 	void BatchRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
 	{
 		OV_RENDER_PROFILE_FUNC();
+
+		if (m_QuadIndexCount >= s_MaxIndices)
+			FlushAndReset();
+
+		glm::mat4 trans = glm::translate(glm::mat4(1.0f), transform.Position);
+		trans = glm::rotate(trans, transform.Rotation.z, { 0.0f, 0.0f, 1.0f });
+		trans = glm::scale(trans, transform.Scale);
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -178,33 +218,40 @@ namespace Ovis
 		float py = transform.Position.y;
 		float pz = transform.Position.z;
 
-		float sx = transform.Position.x;
+		float sx = transform.Position.x; 
 		float sy = transform.Position.y;
 
-		m_QuadVertexBufferPtr->Position = { px - size, py - size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[0];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 0.0f };
 		m_QuadVertexBufferPtr->TextureId = textureIndex;
+		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px + size, py - size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[1];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 0.0f };
 		m_QuadVertexBufferPtr->TextureId = textureIndex;
+		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px + size, py + size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[2];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 1.0f, 1.0f };
 		m_QuadVertexBufferPtr->TextureId = textureIndex;
+		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		m_QuadVertexBufferPtr++;
 
-		m_QuadVertexBufferPtr->Position = { px - size, py + size, pz };
+		m_QuadVertexBufferPtr->Position = trans * s_QuadCorners[3];
 		m_QuadVertexBufferPtr->Color = color;
 		m_QuadVertexBufferPtr->TexCoords = { 0.0f, 1.0f };
 		m_QuadVertexBufferPtr->TextureId = textureIndex;
+		m_QuadVertexBufferPtr->TilingFactor = tilingFactor;
 		m_QuadVertexBufferPtr++;
 
+		m_QuadIndexCount += 6;
+
+		s_Stats.QuadCount++;
 	}
 
 }

@@ -29,6 +29,8 @@ void Sandbox2D::OnUpdate()
 	OV_PROFILE_FUNC();
 	OV_TRACE("Delta Time: {0}s ({1}ms)", Ovis::Time::DeltaTime(), Ovis::Time::DeltaTime() * 1000);
 
+	Ovis::Renderer2D::Instance().ResetStats();
+
 	{
 		OV_PROFILE_SCOPE("CameraController::OnUpdate");
 		m_CameraController->OnUpdate();
@@ -48,12 +50,12 @@ void Sandbox2D::OnUpdate()
 
 		transform =
 		{
-			glm::vec3(0.0f, 0.0f, -0.1f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(10.0f, 10.0f, 1.0f)
+			glm::vec3(-1.0f, 1.0f, -0.1f),
+			glm::vec3(0.0f, 0.0f, 45.0f),
+			glm::vec3(5.0f, 5.0f, 1.0f)
 		};
 
-		Ovis::Renderer2D::Instance().SubmitQuad(transform, *m_CheckerBoardTexture.get());
+		Ovis::Renderer2D::Instance().SubmitQuad(transform, *m_CheckerBoardTexture.get(), 10.0f);
 
 		float offset = 0.1f;
 
@@ -65,7 +67,7 @@ void Sandbox2D::OnUpdate()
 				{
 					glm::vec3(x * offset, y * offset, 0.0f),
 					glm::vec3(0.0f, 0.0f, 0.0f),
-					glm::vec3(1.0f, 1.0f, 1.0f)
+					glm::vec3(0.1f, 0.1f, 0.1f)
 				};
 
 				glm::vec4 color = (y + x) % 2 == 0 ? m_QuadColor1 : m_QuadColor2;
@@ -84,6 +86,14 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Begin("Settings");
 	ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(m_QuadColor1));
 	ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(m_QuadColor2));
+
+	auto stats = Ovis::Renderer2D::Instance().GetStats();
+	ImGui::Text("Renderer2D Stats:");
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quads: %d", stats.QuadCount);
+	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
 	ImGui::End();
 }
 
