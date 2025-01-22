@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -117,7 +117,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -134,17 +134,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\ExampleLayer.h" />
+    <ClInclude Include="src\Tile\AbsentTile.h" />
+    <ClInclude Include="src\Tile\PresentTile.h" />
+    <ClInclude Include="src\Managers\GridManager.h" />
+    <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\Tile\Tile.h" />
+    <ClInclude Include="src\TileObjects\Block.h" />
+    <ClInclude Include="src\TileObjects\ClickableTileObject.h" />
+    <ClInclude Include="src\TileObjects\RedTile.h" />
+    <ClInclude Include="src\TileObjects\TileObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Tile\AbsentTile.cpp" />
+    <ClCompile Include="src\Tile\PresentTile.cpp" />
+    <ClCompile Include="src\Managers\GridManager.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
+    <ClCompile Include="src\TileObjects\Block.cpp" />
+    <ClCompile Include="src\TileObjects\ClickableTileObject.cpp" />
+    <ClCompile Include="src\TileObjects\RedTile.cpp" />
+    <ClCompile Include="src\TileObjects\TileObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ovis\Ovis.vcxproj">
       <Project>{66658A7C-529C-8B0D-FB88-7110E79E070F}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Sandbox2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

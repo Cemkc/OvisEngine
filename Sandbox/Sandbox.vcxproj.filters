@@ -1,33 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{B34CFEBD-9F19-59C9-C832-4771B45E8E57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Tile">
+      <UniqueIdentifier>{53EC8C7C-3F23-8E0D-E80F-7410D4250A0F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="TileObjects">
+      <UniqueIdentifier>{5DFA2C5E-C9AF-A553-52A4-9F2ABE589C57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\SandboxApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sandbox2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ExampleLayer.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Sandbox2D.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Managers\GridManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\Tile\Tile.h">
+      <Filter>Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\Block.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\ClickableTileObject.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\RedTile.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\TileObject.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tile\PresentTile.h" />
+    <ClInclude Include="src\Tile\AbsentTile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Managers\GridManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sandbox2D.cpp" />
+    <ClCompile Include="src\SandboxApp.cpp" />
+    <ClCompile Include="src\TileObjects\Block.cpp">
+      <Filter>TileObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\ClickableTileObject.cpp">
+      <Filter>TileObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\RedTile.cpp">
+      <Filter>TileObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\TileObject.cpp">
+      <Filter>TileObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tile\PresentTile.cpp" />
+    <ClCompile Include="src\Tile\AbsentTile.cpp" />
   </ItemGroup>
 </Project>

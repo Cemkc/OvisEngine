@@ -14,6 +14,8 @@ namespace Ovis
 	class Camera
 	{
 	protected:
+		static Camera* s_ActiveCamera;
+
 		Projection m_Projection;
 
 		glm::mat4 m_ProjectionMatrix;
@@ -36,6 +38,12 @@ namespace Ovis
 		const Projection GetProjection() const { return m_Projection; }
 
 		virtual void UpdateViewMatrix() = 0;
+
+		void SetActiveCamera(Camera* camera) { 
+			s_ActiveCamera = camera; 
+		}
+
+		static glm::vec2 ScreenToWorldPoint(const float screenX, const float screenY);
 	};
 
 	class OrthographicCamera : public Camera

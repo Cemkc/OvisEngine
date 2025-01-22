@@ -131,7 +131,7 @@ namespace Ovis
 		memset(&s_Stats, 0, sizeof(Statistics));
 	}
 
-	void BatchRenderer2D::SubmitQuad(const Transform& transform, const glm::vec4& color)
+	void BatchRenderer2D::SubmitQuad(const GameEntity& entity, const glm::vec4& color)
 	{
 		OV_RENDER_PROFILE_FUNC();
 
@@ -141,15 +141,9 @@ namespace Ovis
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
 
-		glm::mat4 trans = glm::translate(glm::mat4(1.0f), transform.Position);
-		trans = glm::rotate(trans, transform.Rotation.z, {0.0f, 0.0f, 1.0f});
-		trans = glm::scale(trans, transform.Scale);
+		glm::mat4 trans = entity.GetTransform().GetTransformationMatrix();
 
 		float whiteTexture = 0.0f;
-
-		float px = transform.Position.x;
-		float py = transform.Position.y;
-		float pz = transform.Position.z;
 		
 		for (int i = 0; i < quadVertexCount; i++)
 		{
@@ -166,7 +160,7 @@ namespace Ovis
 		s_Stats.QuadCount++;
 	}
 
-	void BatchRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
+	void BatchRenderer2D::SubmitQuad(const GameEntity& entity, const Texture2D& texture, float tilingFactor)
 	{
 		OV_RENDER_PROFILE_FUNC();
 
@@ -176,9 +170,7 @@ namespace Ovis
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
 
-		glm::mat4 trans = glm::translate(glm::mat4(1.0f), transform.Position);
-		trans = glm::rotate(trans, transform.Rotation.z, { 0.0f, 0.0f, 1.0f });
-		trans = glm::scale(trans, transform.Scale);
+		glm::mat4 trans = entity.GetTransform().GetTransformationMatrix();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -199,15 +191,6 @@ namespace Ovis
 			s_TextureSlots[m_TextureSlotIndex] = &texture;
 			textureIndex = (float)m_TextureSlotIndex;
 		}
-
-		float size = 0.5f; // (Half Size)
-
-		float px = transform.Position.x;
-		float py = transform.Position.y;
-		float pz = transform.Position.z;
-
-		float sx = transform.Position.x; 
-		float sy = transform.Position.y;
 
 		for (int i = 0; i < quadVertexCount; i++)
 		{

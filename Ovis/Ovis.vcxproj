@@ -143,9 +143,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h" />
-    <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ovis.h" />
     <ClInclude Include="src\Ovis\Core\Application.h" />
     <ClInclude Include="src\Ovis\Core\Core.h" />
@@ -159,23 +156,29 @@
     <ClInclude Include="src\Ovis\Core\MouseButtonCodes.h" />
     <ClInclude Include="src\Ovis\Core\Time.h" />
     <ClInclude Include="src\Ovis\Core\Window.h" />
+    <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
     <ClInclude Include="src\Ovis\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Ovis\Events\Event.h" />
     <ClInclude Include="src\Ovis\Events\KeyEvent.h" />
     <ClInclude Include="src\Ovis\Events\MouseEvent.h" />
+    <ClInclude Include="src\Ovis\GameEntity\GameEntity.h" />
     <ClInclude Include="src\Ovis\GameEntity\Transform.h" />
+    <ClInclude Include="src\Ovis\Physics\Ray.h" />
+    <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h" />
     <ClInclude Include="src\Ovis\Renderer\Buffer.h" />
     <ClInclude Include="src\Ovis\Renderer\Camera.h" />
     <ClInclude Include="src\Ovis\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Ovis\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\Ovis\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Ovis\Renderer\Renderer.h" />
+    <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Ovis\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Ovis\Renderer\Shader.h" />
     <ClInclude Include="src\Ovis\Renderer\SnapRenderer2D.h" />
     <ClInclude Include="src\Ovis\Renderer\Texture.h" />
     <ClInclude Include="src\Ovis\Renderer\Vertex.h" />
     <ClInclude Include="src\Ovis\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Ovis\Utils\MatrixUtils.h" />
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -605,13 +608,15 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ovis\Renderer\BatchRenderer2D.cpp" />
     <ClCompile Include="src\Ovis\Core\Application.cpp" />
     <ClCompile Include="src\Ovis\Core\Layer.cpp" />
     <ClCompile Include="src\Ovis\Core\LayerStack.cpp" />
     <ClCompile Include="src\Ovis\Core\Log.cpp" />
     <ClCompile Include="src\Ovis\Core\Time.cpp" />
+    <ClCompile Include="src\Ovis\GameEntity\GameEntity.cpp" />
     <ClCompile Include="src\Ovis\GameEntity\Transform.cpp" />
+    <ClCompile Include="src\Ovis\Physics\Ray.cpp" />
+    <ClCompile Include="src\Ovis\Renderer\BatchRenderer2D.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Camera.cpp" />
     <ClCompile Include="src\Ovis\Renderer\OrthographicCameraController.cpp" />
@@ -623,6 +628,7 @@
     <ClCompile Include="src\Ovis\Renderer\SnapRenderer2D.cpp" />
     <ClCompile Include="src\Ovis\Renderer\Texture.cpp" />
     <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Ovis\Utils\MatrixUtils.cpp" />
     <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp" />
     <ClCompile Include="src\Ovis\imgui\imguiBuild.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />

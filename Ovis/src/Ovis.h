@@ -32,5 +32,12 @@
 #include "Ovis/Renderer/Camera.h"
 #include "Ovis/Renderer/OrthographicCameraController.h"
 
+// Physics
+#include "Ovis/Physics/Ray.h"
+
 // Objects 
 #include "Ovis/GameEntity/Transform.h"
+#include "Ovis/GameEntity/GameEntity.h"
+
+//Utils
+#include "Ovis/Utils/MatrixUtils.h"

@@ -118,6 +118,7 @@ project "Sandbox"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"Ovis/vendor/spdlog/include",
 		"Ovis/src",
 		"%{IncludeDir.imgui}",

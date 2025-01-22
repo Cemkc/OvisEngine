@@ -65,18 +65,14 @@ namespace Ovis
 	{
 	}
 
-	void SnapRenderer2D::SubmitQuad(const Transform& transform, const glm::vec4& color)
+	void SnapRenderer2D::SubmitQuad(const GameEntity& entity, const glm::vec4& color)
 	{
 		OV_RENDER_PROFILE_FUNC();
 
 		m_Storage.StandartShader->SetUniform("u_Color", color);
 		m_Storage.WhiteTexture->Bind();
 
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, transform.Position);
-		model = glm::scale(model, transform.Scale);
-		if (transform.Rotation.x != 0 || transform.Rotation.y != 0 || transform.Rotation.z != 0) //  This saves us from calculating a rotation matrix which can be costly if no rotation is applied
-			model = glm::rotate(model, glm::radians(transform.Rotation.z), { 0.0f, 0.0f, 1.0f });
+		glm::mat4 model = entity.GetTransform().GetTransformationMatrix();
 
 		m_Storage.StandartShader->SetUniform("u_model", model);
 		m_Storage.StandartShader->SetUniform("u_view", m_Storage.ViewMatrix);
@@ -89,7 +85,7 @@ namespace Ovis
 		m_Storage.Stats.QuadCount++;
 	}
 
-	void SnapRenderer2D::SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor)
+	void SnapRenderer2D::SubmitQuad(const GameEntity& entity, const Texture2D& texture, float tilingFactor)
 	{
 		OV_RENDER_PROFILE_FUNC();
 
@@ -98,11 +94,7 @@ namespace Ovis
 		m_Storage.StandartShader->SetUniform("u_TilingFactor", tilingFactor);
 		texture.Bind();
 
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, transform.Position);
-		model = glm::scale(model, transform.Scale);
-		if (transform.Rotation.x != 0 || transform.Rotation.y != 0 || transform.Rotation.z != 0) //  This saves us from calculating a rotation matrix which can be costly if no rotation is applied
-			model = glm::rotate(model, glm::radians(transform.Rotation.z), { 0.0f, 0.0f, 1.0f });
+		glm::mat4 model = entity.GetTransform().GetTransformationMatrix();
 
 		m_Storage.StandartShader->SetUniform("u_model", model);
 		m_Storage.StandartShader->SetUniform("u_view", m_Storage.ViewMatrix);
