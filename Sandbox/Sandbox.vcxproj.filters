@@ -33,6 +33,8 @@
     </ClInclude>
     <ClInclude Include="src\Tile\PresentTile.h" />
     <ClInclude Include="src\Tile\AbsentTile.h" />
+    <ClInclude Include="src\TileTypes.h" />
+    <ClInclude Include="src\TileObjects\BlueTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\GridManager.cpp">
@@ -44,9 +46,6 @@
       <Filter>TileObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\TileObjects\ClickableTileObject.cpp">
-      <Filter>TileObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TileObjects\RedTile.cpp">
       <Filter>TileObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\TileObjects\TileObject.cpp">

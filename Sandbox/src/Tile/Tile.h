@@ -1,25 +1,31 @@
 #pragma once
 
 #include "Ovis.h"
-#include "TileObjects/TileObject.h"
+#include "TileTypes.h"
 
 using namespace Ovis;
 
-class Tile
+class TileObject;
+
+class Tile : public GameEntity
 {
 protected:
-	TileObject* m_TileObject;
+	std::shared_ptr<TileObject> m_TileObject;
 	glm::ivec2 m_TilePos;
 	int m_TileId;
 
 public:
+	Tile() : GameEntity(){}
+	Tile(std::string name) : GameEntity(name){}
+
 	glm::ivec2 GetTilePos(){ return m_TilePos; }
 	int GetTileId() { return m_TileId; }
 
 	virtual void Init(int col, int row) = 0;
-	virtual void SetTileObject(TileObject& tileObject) = 0;
-	virtual void SetTileObject(TileObjectType tileObjectType) = 0;
+	virtual void SetTileObject(const std::shared_ptr<TileObject>& tileObject) = 0;
 	virtual void DestroyTileObject() = 0;
 	
-	inline TileObject& GetTileObject() { return *m_TileObject; }
+	TileObject& GetTileObject() { 
+		return *m_TileObject; 
+	}
 };

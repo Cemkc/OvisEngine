@@ -5,11 +5,11 @@
 
 using namespace Ovis;
 
-class RedTile : public Block
+class BlueTile : public Block
 {
 public:
-	RedTile(){
-		m_Type = TileObjectType::Red;
+	BlueTile(){
+		m_Type = TileObjectType::Blue;
 	}
 
 	virtual int GetCategoryFlags() const override { return Block::GetCategoryFlags(); }

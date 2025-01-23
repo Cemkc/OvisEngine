@@ -54,7 +54,6 @@ namespace Ovis {
 		{
 			return GetCategoryFlags() & category;
 		}
-	protected:
 	};
 
 	class EventDispatcher

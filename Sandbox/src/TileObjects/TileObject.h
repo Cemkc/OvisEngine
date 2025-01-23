@@ -1,39 +1,28 @@
 #pragma once
 
 #include "Ovis.h"
+#include "TileTypes.h"
 
-namespace Ovis
+using namespace Ovis;
+
+class Tile;
+
+class TileObject : public GameEntity
 {
-	class TileObject : public GameEntity
-	{
-	protected:
+protected:
+	std::shared_ptr<Tile> m_Tile;
 
-	};
+	TileObjectType m_Type;
+	TileObjectCategory m_Category;
 
-	enum class TileObjectType
-	{
-		Absent = 0,
-		None,
-		Red,
-		Blue,
-		Green,
-		Yellow,
-		Purple,
-		Balloon,
-		Rocket,
-		Duck
-	};
+public:
+	Tile& GetTile() { return *m_Tile; }
+	void SetTile(std::shared_ptr<Tile> tile) { m_Tile = tile; }
+	TileObjectType GetTileObjectType() { return m_Type; }
+	virtual int GetCategoryFlags() const = 0;
 
-	enum TileObjectCategory
+	inline bool IsInCategory(TileObjectCategory category) 
 	{
-		Absent = 0,
-		None = 1 << 0,
-		HitableTileObject = 1 << 1,
-		ConstantTileObject = 1 << 2,
-		ClickableTileObject = 1 << 3,
-		FallableTileObject = 1 << 4,
-		MatchSensitiveObject = 1 << 5,
-		AudibleTileObject = 1 << 6,
-		ParticleEmittingTileobject = 1 << 7
-	};
-}
+		return GetCategoryFlags() & category;
+	}
+};

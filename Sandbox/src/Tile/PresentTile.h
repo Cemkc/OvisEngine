@@ -4,10 +4,12 @@
 
 class PresentTile : public Tile
 {
-	// Inherited via Tile
+public:
+	PresentTile() : Tile() {}
+	PresentTile(std::string name) : Tile(name){}
+
 	void Init(int col, int row) override;
-	void SetTileObject(TileObject& tileObject) override;
-	void SetTileObject(TileObjectType tileObjectType) override;
+	void SetTileObject(const std::shared_ptr<TileObject>& tileObject) override;
 	void DestroyTileObject() override;
 };
 

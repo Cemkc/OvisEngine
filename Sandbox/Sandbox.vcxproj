@@ -134,6 +134,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TileObjects\BlueTile.h" />
+    <ClInclude Include="src\TileTypes.h" />
     <ClInclude Include="src\Tile\AbsentTile.h" />
     <ClInclude Include="src\Tile\PresentTile.h" />
     <ClInclude Include="src\Managers\GridManager.h" />
@@ -152,7 +154,6 @@
     <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\TileObjects\Block.cpp" />
     <ClCompile Include="src\TileObjects\ClickableTileObject.cpp" />
-    <ClCompile Include="src\TileObjects\RedTile.cpp" />
     <ClCompile Include="src\TileObjects\TileObject.cpp" />
   </ItemGroup>
   <ItemGroup>
