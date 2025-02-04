@@ -8,9 +8,10 @@ using namespace Ovis;
 class RedTile : public Block
 {
 public:
-	RedTile(){
+	RedTile()
+	{
+		m_Name = "Red Tile";
 		m_Type = TileObjectType::Red;
+		m_Color = { 0.8f, 0.2f, 0.2f, 1.0f };
 	}
-
-	virtual int GetCategoryFlags() const override { return Block::GetCategoryFlags(); }
 };

@@ -28,7 +28,7 @@ namespace Ovis
 		m_TransformationMatrix[3][1] = position.y;
 		m_TransformationMatrix[3][2] = position.z;
 
-		OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
+		// OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
 
 		m_Position = position;
 	}
@@ -38,7 +38,7 @@ namespace Ovis
 		m_Rotation = rotation;
 		m_TransformationMatrix = CalculateTranformMatrix(m_Position, m_Rotation, m_Scale);
 
-		OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
+		// OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
 	}
 
 	void Transform::SetScale(glm::vec3& scale)
@@ -46,7 +46,7 @@ namespace Ovis
 		m_Scale = scale;
 		m_TransformationMatrix = CalculateTranformMatrix(m_Position, m_Rotation, m_Scale);
 
-		OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
+		// OV_CORE_INFO("Matrix:\n{0}", Utils::Mat4ToString(m_TransformationMatrix));
 	}
 
 	glm::mat4 Transform::CalculateTranformMatrix(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)

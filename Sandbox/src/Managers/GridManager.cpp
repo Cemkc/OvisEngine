@@ -4,6 +4,9 @@
 #include <random>
 #include <ctime>
 
+#include <imgui.h>
+#include <glm/gtc/type_ptr.hpp>
+
 std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 {
 	switch (type)
@@ -11,17 +14,17 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 	case TileObjectType::Absent:
 		return nullptr;
 	case TileObjectType::None:
-		return nullptr;
+		return std::make_shared<EmptyTileObject>();
 	case TileObjectType::Red:
 		return std::make_shared<RedTile>();
 	case TileObjectType::Blue:
-		return nullptr;
+		return std::make_shared<BlueTile>();
 	case TileObjectType::Green:
-		return nullptr;
+		return std::make_shared<GreenTile>();;
 	case TileObjectType::Yellow:
-		return nullptr;
+		return std::make_shared<YellowTile>();;
 	case TileObjectType::Purple:
-		return nullptr;
+		return std::make_shared<PurpleTile>();;
 	case TileObjectType::Balloon:
 		return nullptr;
 	case TileObjectType::Rocket:
@@ -69,26 +72,104 @@ void GridManager::OnUpdate()
 {
 	m_CameraController->OnUpdate();
 
-	RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+	RenderCommand::SetClearColor(glm::vec4(0.1f, 0.62f, 0.443f, 1.0f));
 	Ovis::RenderCommand::Clear();
+
+	Ovis::Renderer2D::Instance().ResetStats();
 
 	Renderer2D::Instance().BeginScene(m_CameraController->GetCamera());
 
-	//glm::vec3 pos = m_Tile.GetTransform().GetPosition();
-	//pos.y += Time::DeltaTime() * 1.0f;
-	//m_Tile.GetTransform().SetPosition(pos);
+	//for (auto entity : EntityManager::GetEntityMap())
+	//{
+	//	TileObject* tileObject = dynamic_cast<TileObject*>(entity.second);
+	//	if (tileObject)
+	//	{
+	//		Renderer2D::Instance().SubmitQuad(*tileObject, tileObject->GetColor());
+	//	}
+	//	else
+	//	{
+	//		Renderer2D::Instance().SubmitQuad(*entity.second, { 0.8f, 0.8f, 0.2f, 1.0f });
+	//	}
+	//}
 
-	// Renderer2D::Instance().SubmitQuad(m_Tile, *m_FrogTexture.get(), 1.0f);
 	for (int row = 0; row < s_GridDimension; row++)
 	{
 		for (int col = 0; col < s_GridDimension; col++)
 		{
-			Renderer2D::Instance().SubmitQuad(*m_TileMap[row][col], { 0.8f, 0.8f, 0.2f, 1.0f });
+			Renderer2D::Instance().SubmitQuad(*m_TileMap[row][col], { 0.2f, 0.2f, 0.2f, 1.0f });
+
+			std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
+			Renderer2D::Instance().SubmitQuad(*tileObj, tileObj->GetColor());
+			/*if (tileObj && tileObj->GetTileObjectType() != TileObjectType::None)
+			{
+				Renderer2D::Instance().SubmitQuad(*tileObj, tileObj->GetColor());
+			}*/
 		}
 	}
-	//Renderer2D::Instance().SubmitQuad(m_Tile, { 0.8f, 0.8f, 0.2f, 1.0f });
 
 	Renderer2D::Instance().EndScene();
+}
+
+int frameRate = 0;
+float frameTime = 0;
+
+void GridManager::OnImGuiRender()
+{
+	OV_PROFILE_FUNC();
+
+	ImGui::Begin("Metrics Panel");
+
+	ImGui::Text("Performance Metrics:");
+	if (Ovis::Time::GetTime() - m_ImGuiRefreshTimer > 1)
+	{
+		frameRate = (int)(1 / Ovis::Time::DeltaTime());
+		frameTime = Ovis::Time::DeltaTime() * 1000;
+		m_ImGuiRefreshTimer = Ovis::Time::GetTime();
+	}
+
+	ImGui::Text("Frame Rate: %d fps", frameRate);
+	ImGui::Text("Frame Time: %f ms", frameTime);
+
+	auto stats = Ovis::Renderer2D::Instance().GetStats();
+	ImGui::Text("Renderer2D Stats:");
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quads: %d", stats.QuadCount);
+	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+	if(ImGui::Button("Fill Empty Tiles"))
+		FillEmptyTiles();
+
+	std::string tileString;
+	for (int col = 0; col < s_GridDimension; col++)
+	{
+		for (int row = 0; row < s_GridDimension; row++)
+		{
+			std::ostringstream oss;
+			oss << m_TileMap[col][row]->GetTileObject().get();
+			tileString += m_TileMap[col][row]->GetName() + ": " + m_TileMap[col][row]->GetTileObject()->GetName() + " Address: " + oss.str() + "\n";
+		}
+	}
+
+	// Make the buffer large enough to hold the long text
+	char buffer[2048];  // Adjust size depending on your use case
+	std::strncpy(buffer, tileString.c_str(), sizeof(buffer));
+	buffer[sizeof(buffer) - 1] = '\0'; // Ensure null termination
+
+	// Use InputText with multiline and readonly flags
+	ImGui::InputTextMultiline("##CopyField", buffer, sizeof(buffer),
+		ImVec2(-1.0f, ImGui::GetTextLineHeight() * 40),  // Adjust the height of the input box
+		ImGuiInputTextFlags_ReadOnly);
+
+	ImGui::End();
+}
+
+void GridManager::OnEvent(Event& event)
+{
+	m_CameraController->OnEvent(event);
+
+	EventDispatcher dispatcher(event);
+	dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&GridManager::OnMouseEvent, this, std::placeholders::_1));
 }
 
 void GridManager::OnClick(float posX, float posY)
@@ -114,11 +195,11 @@ void GridManager::OnClick(float posX, float posY)
 		for (GameEntity* entity : hitEntities)
 		{
 			Tile* tile = static_cast<Tile*>(entity);
-			TileObject* tileObj = &tile->GetTileObject();
-			// TileObject* tileObj = tile ? &(tile->GetTileObject()) : nullptr;
+			std::shared_ptr<TileObject> tileObj = tile->GetTileObject();
+			// TileObject* tileObj = tile ? &(tile->GetTileObject()-> : nullptr;
 			if (tileObj->IsInCategory(TileObjectCategory::ClickableCategory))
 			{
-				ClickableTileObject* clickableObject = dynamic_cast<ClickableTileObject*>(tileObj);
+				std::shared_ptr<ClickableTileObject> clickableObject = std::dynamic_pointer_cast<ClickableTileObject>(tileObj);
 				if (clickableObject)
 					clickableObject->OnClick();
 			}
@@ -130,14 +211,6 @@ void GridManager::OnClick(float posX, float posY)
 			// OV_INFO("Object name: {0}", entity->GetName());
 		}
 	}
-}
-
-void GridManager::OnEvent(Event& event)
-{
-	m_CameraController->OnEvent(event);
-
-	EventDispatcher dispatcher(event);
-	dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&GridManager::OnMouseEvent, this, std::placeholders::_1));
 }
 
 bool GridManager::OnMouseEvent(MouseButtonPressedEvent& e)
@@ -171,6 +244,7 @@ void GridManager::GenerateTileMap()
 			char c = '0' + row;
 			std::string name = std::string(1, r) + ", " + c;
 			std::shared_ptr<PresentTile> tile = std::make_shared<PresentTile>(name);
+
 			tile->Init(col, row);
 			tile->GetTransform().SetPosition(pos);
 			tile->GetTransform().SetScale(scale);
@@ -178,7 +252,7 @@ void GridManager::GenerateTileMap()
 
 			std::shared_ptr<TileObject> tileObject = nullptr;
 
-			if (col == 0 && row == 0 || col == 0 && row == 1 || col == 0 && row == 2 || col == 1 && row == 0)
+			if (col == 0 && row == 4 || col == 1 && row == 4 /*|| col == 0 && row == 2 || col == 1 && row == 0*/)
 			{
 				tileObject = std::make_shared<RedTile>();
 			}
@@ -186,9 +260,15 @@ void GridManager::GenerateTileMap()
 			{
 				tileObject = std::make_shared<BlueTile>();
 			}
-			
+
 			tile->SetTileObject(tileObject);
-			tileObject->SetTile(tile);
+			tileObject->SetTile(tile.get());
+
+			glm::vec3 pos = tile->GetTransform().GetPosition();
+			pos.z = 0.1f;
+			tileObject->GetTransform().SetPosition(pos);
+			tileObject->GetTransform().SetScale(glm::vec3(scale.x * 0.8f, scale.y * 0.8f, 1.0f));
+
 			m_TileMap[col][row] = tile;
 		}
 		pos.x += tileoffset;
@@ -211,8 +291,8 @@ void GridManager::GetConnectedTiles(int tile, std::list<int>& connectedTiles, st
 		{
 			continue;
 		}
-		TileObjectType selfType = GetTile(tile).GetTileObject().GetTileObjectType();
-		TileObjectType adjacentType = GetTile(adjacentTile).GetTileObject().GetTileObjectType();
+		TileObjectType selfType = GetTile(tile).GetTileObject()->GetTileObjectType();
+		TileObjectType adjacentType = GetTile(adjacentTile).GetTileObject()->GetTileObjectType();
 		if (selfType == adjacentType && adjacentType != TileObjectType::Absent)
 		{
 			bool listContainsTile = std::find(connectedTiles.begin(), connectedTiles.end(), adjacentTile) != connectedTiles.end();
@@ -222,7 +302,7 @@ void GridManager::GetConnectedTiles(int tile, std::list<int>& connectedTiles, st
 				GetConnectedTiles(adjacentTile, connectedTiles, hittableTilesOnEdge, tile);
 			}
 		}
-		else if (GetTile(adjacentTile).GetTileObject().IsInCategory(TileObjectCategory::HitableTileObject))
+		else if (GetTile(adjacentTile).GetTileObject()->IsInCategory(TileObjectCategory::HitableTileObject))
 		{
 			hittableTilesOnEdge.push_back(adjacentTile);
 		}
@@ -240,30 +320,122 @@ std::list<int> GridManager::GetAdjacentTiles(int tile)
 	int col = tile / s_GridDimension;
 
 	// Check above (row + 1)
-	if (row + 1 < s_GridDimension && GetTile(tile + 1).GetTileObject().GetTileObjectType() != TileObjectType::Absent)
+	if (row + 1 < s_GridDimension && GetTile(tile + 1).GetTileObject()->GetTileObjectType() != TileObjectType::Absent)
 	{
 		adjacentTiles.push_back(tile + 1);
 	}
 
 	// Check below (row - 1)
-	if (row - 1 >= 0 && GetTile(tile - 1).GetTileObject().GetTileObjectType() != TileObjectType::Absent)
+	if (row - 1 >= 0 && GetTile(tile - 1).GetTileObject()->GetTileObjectType() != TileObjectType::Absent)
 	{
 		adjacentTiles.push_back(tile - 1);
 	}
 
 	// Check right (col + 1)
-	if (col + 1 < s_GridDimension && GetTile(tile + s_GridDimension).GetTileObject().GetTileObjectType() != TileObjectType::Absent)
+	if (col + 1 < s_GridDimension && GetTile(tile + s_GridDimension).GetTileObject()->GetTileObjectType() != TileObjectType::Absent)
 	{
 		adjacentTiles.push_back(tile + s_GridDimension);
 	}
 
 	// Check left (col - 1)
-	if (col - 1 >= 0 && GetTile(tile - s_GridDimension).GetTileObject().GetTileObjectType() != TileObjectType::Absent)
+	if (col - 1 >= 0 && GetTile(tile - s_GridDimension).GetTileObject()->GetTileObjectType() != TileObjectType::Absent)
 	{
 		adjacentTiles.push_back(tile - s_GridDimension);
 	}
 
 	return adjacentTiles;
+}
+
+void GridManager::FillEmptyTiles()
+{
+	for (int col = 0; col < s_GridDimension; col++)
+	{
+		for (int row = 0; row < s_GridDimension; row++)
+		{
+			std::shared_ptr<Tile> tile = m_TileMap[col][row];
+			if (tile->GetTileObject()->GetTileObjectType() == TileObjectType::None)
+			{
+				OV_INFO("Detected empty tile starting recursive algorithm. Empty tile is: ({0}, {1})", tile->GetTilePos().x, tile->GetTilePos().y);
+				FillColumn(tile); // This will recursively fill the empty tiles.
+				break;
+			}
+		}
+	}
+}
+
+void GridManager::FillColumn(std::shared_ptr<Tile>& tile)
+{
+	TileObject* tileObj = tile->GetTileObject().get();
+	if (tileObj->GetTileObjectType() == TileObjectType::None)
+	{
+		if (tileObj->GetTileObjectType() == TileObjectType::Absent)
+		{
+			if (tile->GetTilePos().y + 1 >= s_GridDimension) return;
+			else FillColumn(m_TileMap[tile->GetTilePos().x][tile->GetTilePos().y + 1]);
+		}
+
+		OV_INFO("Recursive algorithm started tile ({0}, {1})) seems to be empty attempting to fill. ", tile->GetTilePos().x, tile->GetTilePos().y);
+		bool foundTileInGrid = false;
+		for (int row = tile->GetTilePos().y + 1; row < s_GridDimension; row++)
+		{
+			std::shared_ptr<Tile> tileAbove = m_TileMap[tile->GetTilePos().x][row];
+			std::shared_ptr<TileObject> tileObjAbove = m_TileMap[tile->GetTilePos().x][row]->GetTileObject();
+			if (tileObjAbove->GetTileObjectType() != TileObjectType::None && tileObjAbove->GetTileObjectType() != TileObjectType::Absent) // Change with tile.CanFall()
+			{
+				foundTileInGrid = true;
+				OV_INFO("Found Tile Object in the column!");
+				AnimationManager::Instance().MoveObject(*tileObjAbove, tile->GetTransform().GetPosition());
+				//StartCoroutine(FallToPosition(tileObjAbove, tile));
+				glm::vec3 pos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.1f };
+				//tileObjAbove->GetTransform().SetPosition(pos);
+				tile->SetTileObject(tileObjAbove);
+
+				std::shared_ptr<TileObject> emptyTileObj = TileTypeToObject(TileObjectType::None);
+				tileAbove->SetTileObject(emptyTileObj);
+				break;
+			}
+		}
+
+		if (!foundTileInGrid)
+		{
+			// Create a random number generator
+			std::random_device rd; // Obtain a random number from the system
+			std::mt19937 gen(rd()); // Use Mersenne Twister engine
+			std::uniform_int_distribution<int> dis(2, 6); // Distribution for the enum range
+
+			// Generate a random number and cast it to the corresponding enum value
+			TileObjectType type = static_cast<TileObjectType>(dis(gen));
+			OV_INFO((int)type);
+
+			std::shared_ptr<TileObject> tileObject = TileTypeToObject(type);
+			glm::vec3 pos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.1f };
+			//tileObject->GetTransform().SetPosition(pos);
+			glm::vec3 scale = tile->GetTransform().GetScale();
+			scale = scale * 0.8f;
+			scale.z = 1.0f;
+			tileObject->GetTransform().SetScale(scale);
+			tile->SetTileObject(tileObject);
+			AnimationManager::Instance().MoveObject(*tileObject, tile->GetTransform().GetPosition());
+			//StartCoroutine(FallToPosition(tileObject, tile));
+		}
+
+	}
+
+	if (tile->GetTilePos().y + 1 >= s_GridDimension) return;
+	else FillColumn(m_TileMap[tile->GetTilePos().x][tile->GetTilePos().y + 1]);
+
+}
+
+void GridManager::OnTileDestroy(Tile* tile)
+{
+	std::shared_ptr<TileObject> emptyTileObj = TileTypeToObject(TileObjectType::None);
+	glm::vec3 emptyTilePos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.1f };
+	emptyTileObj->GetTransform().SetPosition(emptyTilePos);
+	glm::vec3 scale = tile->GetTransform().GetScale();
+	scale = scale * 0.8f;
+	scale.z = 1.0f;
+	emptyTileObj->GetTransform().SetScale(scale);
+	tile->SetTileObject(emptyTileObj);
 }
 
 Tile& GridManager::GetTile(glm::ivec2 tilePos)

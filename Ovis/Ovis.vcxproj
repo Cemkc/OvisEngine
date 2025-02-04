@@ -161,6 +161,7 @@
     <ClInclude Include="src\Ovis\Events\Event.h" />
     <ClInclude Include="src\Ovis\Events\KeyEvent.h" />
     <ClInclude Include="src\Ovis\Events\MouseEvent.h" />
+    <ClInclude Include="src\Ovis\GameEntity\EntityManager.h" />
     <ClInclude Include="src\Ovis\GameEntity\GameEntity.h" />
     <ClInclude Include="src\Ovis\GameEntity\Transform.h" />
     <ClInclude Include="src\Ovis\Physics\Ray.h" />
@@ -613,6 +614,7 @@
     <ClCompile Include="src\Ovis\Core\LayerStack.cpp" />
     <ClCompile Include="src\Ovis\Core\Log.cpp" />
     <ClCompile Include="src\Ovis\Core\Time.cpp" />
+    <ClCompile Include="src\Ovis\GameEntity\EntityManager.cpp" />
     <ClCompile Include="src\Ovis\GameEntity\GameEntity.cpp" />
     <ClCompile Include="src\Ovis\GameEntity\Transform.cpp" />
     <ClCompile Include="src\Ovis\Physics\Ray.cpp" />

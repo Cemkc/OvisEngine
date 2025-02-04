@@ -134,7 +134,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Managers\AnimationManager.h" />
     <ClInclude Include="src\TileObjects\BlueTile.h" />
+    <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
+    <ClInclude Include="src\TileObjects\GreenTile.h" />
+    <ClInclude Include="src\TileObjects\PurpleTile.h" />
+    <ClInclude Include="src\TileObjects\YellowTile.h" />
     <ClInclude Include="src\TileTypes.h" />
     <ClInclude Include="src\Tile\AbsentTile.h" />
     <ClInclude Include="src\Tile\PresentTile.h" />
@@ -147,14 +152,13 @@
     <ClInclude Include="src\TileObjects\TileObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Managers\AnimationManager.cpp" />
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
     <ClCompile Include="src\Tile\PresentTile.cpp" />
     <ClCompile Include="src\Managers\GridManager.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\TileObjects\Block.cpp" />
-    <ClCompile Include="src\TileObjects\ClickableTileObject.cpp" />
-    <ClCompile Include="src\TileObjects\TileObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ovis\Ovis.vcxproj">

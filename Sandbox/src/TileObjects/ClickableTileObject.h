@@ -5,7 +5,9 @@
 class ClickableTileObject : public TileObject
 {
 public:
+	ClickableTileObject()
+	{
+		m_Category = (TileObjectCategory)(m_Category | TileObjectCategory::ClickableCategory);
+	}
 	virtual bool OnClick() = 0;
-
-	virtual int GetCategoryFlags() const override { return TileObjectCategory::ClickableCategory; }
 };

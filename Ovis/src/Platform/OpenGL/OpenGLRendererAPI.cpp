@@ -18,9 +18,9 @@ namespace Ovis
 		glViewport(0, 0, width, height);
 	}
 
-	void Ovis::OpenGLRendererAPI::SetClearColor(glm::uvec4 color)
+	void Ovis::OpenGLRendererAPI::SetClearColor(glm::vec4 color)
 	{
-		glClearColor(color.r, color.b, color.g, color.a);
+		glClearColor(color.r, color.g, color.b, color.a);
 	}
 
 	void Ovis::OpenGLRendererAPI::Clear()

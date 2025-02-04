@@ -35,6 +35,11 @@
     <ClInclude Include="src\Tile\AbsentTile.h" />
     <ClInclude Include="src\TileTypes.h" />
     <ClInclude Include="src\TileObjects\BlueTile.h" />
+    <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
+    <ClInclude Include="src\TileObjects\GreenTile.h" />
+    <ClInclude Include="src\TileObjects\PurpleTile.h" />
+    <ClInclude Include="src\TileObjects\YellowTile.h" />
+    <ClInclude Include="src\Managers\AnimationManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\GridManager.cpp">
@@ -45,13 +50,8 @@
     <ClCompile Include="src\TileObjects\Block.cpp">
       <Filter>TileObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\TileObjects\ClickableTileObject.cpp">
-      <Filter>TileObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TileObjects\TileObject.cpp">
-      <Filter>TileObjects</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tile\PresentTile.cpp" />
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
+    <ClCompile Include="src\Managers\AnimationManager.cpp" />
   </ItemGroup>
 </Project>

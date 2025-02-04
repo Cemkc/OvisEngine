@@ -28,9 +28,9 @@ namespace Ovis
 		void SetScale(glm::vec3& scale);
 
 	private:
-		glm::vec3 m_Position = glm::vec3(1.0f);
-		glm::vec3 m_Rotation = glm::vec3(1.0f);
-		glm::vec3 m_Scale = glm::vec3(1.0f);
+		glm::vec3 m_Position;
+		glm::vec3 m_Rotation;
+		glm::vec3 m_Scale;
 
 		glm::mat4 m_TransformationMatrix;
 

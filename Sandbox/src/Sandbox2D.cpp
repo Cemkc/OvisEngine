@@ -82,37 +82,37 @@ void Sandbox2D::OnUpdate()
 	}
 }
 
-int frameRate = 0;
-float frameTime = 0;
+//int frameRate = 0;
+//float frameTime = 0;
 
 void Sandbox2D::OnImGuiRender()
 {
-	OV_PROFILE_FUNC();
+	//OV_PROFILE_FUNC();
 
-	ImGui::Begin("Settings");
-	ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(m_QuadColor1));
-	ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(m_QuadColor2));
+	//ImGui::Begin("Settings");
+	//ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(m_QuadColor1));
+	//ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(m_QuadColor2));
 
 
-	ImGui::Text("Performance Metrics:");
-	if (Ovis::Time::GetTime() - m_ImGuiRefreshTimer > 1)
-	{
-		frameRate = (int)(1 / Ovis::Time::DeltaTime());
-		frameTime = Ovis::Time::DeltaTime() * 1000;
-		m_ImGuiRefreshTimer = Ovis::Time::GetTime();
-	}
+	//ImGui::Text("Performance Metrics:");
+	//if (Ovis::Time::GetTime() - m_ImGuiRefreshTimer > 1)
+	//{
+	//	frameRate = (int)(1 / Ovis::Time::DeltaTime());
+	//	frameTime = Ovis::Time::DeltaTime() * 1000;
+	//	m_ImGuiRefreshTimer = Ovis::Time::GetTime();
+	//}
 
-	ImGui::Text("Frame Rate: %d fps", frameRate);
-	ImGui::Text("Frame Time: %f ms", frameTime);
+	//ImGui::Text("Frame Rate: %d fps", frameRate);
+	//ImGui::Text("Frame Time: %f ms", frameTime);
 
-	auto stats = Ovis::Renderer2D::Instance().GetStats();
-	ImGui::Text("Renderer2D Stats:");
-	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-	ImGui::Text("Quads: %d", stats.QuadCount);
-	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
-	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	//auto stats = Ovis::Renderer2D::Instance().GetStats();
+	//ImGui::Text("Renderer2D Stats:");
+	//ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	//ImGui::Text("Quads: %d", stats.QuadCount);
+	//ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	//ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-	ImGui::End();
+	//ImGui::End();
 }
 
 void Sandbox2D::OnEvent(Ovis::Event& event)

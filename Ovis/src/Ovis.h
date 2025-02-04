@@ -38,6 +38,7 @@
 // Objects 
 #include "Ovis/GameEntity/Transform.h"
 #include "Ovis/GameEntity/GameEntity.h"
+#include "Ovis/GameEntity/EntityManager.h"
 
 //Utils
 #include "Ovis/Utils/MatrixUtils.h"

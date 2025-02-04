@@ -1,5 +1,6 @@
 #include "ovpch.h"
 #include "BatchRenderer2D.h"
+#include "glad/glad.h"
 
 namespace Ovis
 {
@@ -106,9 +107,6 @@ namespace Ovis
 
 	void BatchRenderer2D::Flush()
 	{
-		/*m_QuadVertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);*/
-
 		for (uint32_t i = 0; i <= m_TextureSlotIndex; i++)
 			s_TextureSlots[i]->Bind(i);
 
@@ -141,7 +139,7 @@ namespace Ovis
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
 
-		glm::mat4 trans = entity.GetTransform().GetTransformationMatrix();
+		const glm::mat4& trans = entity.GetTransformationMatrix();
 
 		float whiteTexture = 0.0f;
 		
@@ -170,7 +168,7 @@ namespace Ovis
 		if (m_QuadIndexCount >= s_MaxIndices)
 			FlushAndReset();
 
-		glm::mat4 trans = entity.GetTransform().GetTransformationMatrix();
+		const glm::mat4& trans = entity.GetTransformationMatrix();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 

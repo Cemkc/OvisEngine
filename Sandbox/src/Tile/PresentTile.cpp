@@ -7,11 +7,13 @@ void PresentTile::Init(int col, int row)
 	m_TileId = GridManager::s_GridDimension * col + row;
 }
 
-void PresentTile::SetTileObject(const std::shared_ptr<TileObject>& tileObject)
+void PresentTile::SetTileObject(const std::shared_ptr<TileObject> tileObject)
 {
 	m_TileObject = tileObject;
+	tileObject->SetTile(this);
 }
 
 void PresentTile::DestroyTileObject()
 {
+	m_TileObject = nullptr;
 }

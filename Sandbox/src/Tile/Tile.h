@@ -22,10 +22,10 @@ public:
 	int GetTileId() { return m_TileId; }
 
 	virtual void Init(int col, int row) = 0;
-	virtual void SetTileObject(const std::shared_ptr<TileObject>& tileObject) = 0;
+	virtual void SetTileObject(const std::shared_ptr<TileObject> tileObject) = 0;
 	virtual void DestroyTileObject() = 0;
 	
-	TileObject& GetTileObject() { 
-		return *m_TileObject; 
+	std::shared_ptr<TileObject> GetTileObject() {
+		return m_TileObject;
 	}
 };

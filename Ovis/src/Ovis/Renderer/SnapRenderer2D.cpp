@@ -2,6 +2,7 @@
 #include "SnapRenderer2D.h"
 
 #include "Ovis/Core/Application.h"
+#include "Ovis/Utils/MatrixUtils.h"
 
 namespace Ovis
 {
@@ -72,7 +73,10 @@ namespace Ovis
 		m_Storage.StandartShader->SetUniform("u_Color", color);
 		m_Storage.WhiteTexture->Bind();
 
-		glm::mat4 model = entity.GetTransform().GetTransformationMatrix();
+		glm::mat4 model = entity.GetTransformationMatrix();
+
+		/*std::string tileString = entity.GetName() + ", Transformation Matrix: \n" + Utils::Mat4ToString(entity.GetTransformationMatrix()) + "\n";
+		OV_CORE_INFO("{0}", tileString);*/
 
 		m_Storage.StandartShader->SetUniform("u_model", model);
 		m_Storage.StandartShader->SetUniform("u_view", m_Storage.ViewMatrix);
@@ -94,7 +98,7 @@ namespace Ovis
 		m_Storage.StandartShader->SetUniform("u_TilingFactor", tilingFactor);
 		texture.Bind();
 
-		glm::mat4 model = entity.GetTransform().GetTransformationMatrix();
+		glm::mat4 model = entity.GetTransformationMatrix();
 
 		m_Storage.StandartShader->SetUniform("u_model", model);
 		m_Storage.StandartShader->SetUniform("u_view", m_Storage.ViewMatrix);

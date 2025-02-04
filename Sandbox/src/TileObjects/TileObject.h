@@ -10,19 +10,22 @@ class Tile;
 class TileObject : public GameEntity
 {
 protected:
-	std::shared_ptr<Tile> m_Tile;
+	Tile* m_Tile;
 
 	TileObjectType m_Type;
 	TileObjectCategory m_Category;
 
 public:
+	virtual ~TileObject() = default;
+
 	Tile& GetTile() { return *m_Tile; }
-	void SetTile(std::shared_ptr<Tile> tile) { m_Tile = tile; }
+	void SetTile(Tile* tile) { m_Tile = tile; }
+
 	TileObjectType GetTileObjectType() { return m_Type; }
-	virtual int GetCategoryFlags() const = 0;
+	TileObjectCategory GetTileObjectCategory() { return m_Category; }
 
 	inline bool IsInCategory(TileObjectCategory category) 
 	{
-		return GetCategoryFlags() & category;
+		return m_Category & category;
 	}
 };

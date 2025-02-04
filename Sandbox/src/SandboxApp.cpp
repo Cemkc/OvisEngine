@@ -4,6 +4,7 @@
 
 #include "Sandbox2D.h"
 #include "Managers/GridManager.h"
+#include "Managers/AnimationManager.h"
 
 class Sandbox : public Ovis::Application
 {
@@ -12,6 +13,7 @@ public:
 	{
 		// PushLayer(new Sandbox2D());
 		PushLayer(new GridManager());
+		PushLayer(new AnimationManager());
 	}
 
 	~Sandbox(){}
