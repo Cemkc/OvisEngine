@@ -1,9 +1,12 @@
 #pragma once
 
 #include "ClickableTileObject.h"
+#include "IHitableTileObject.h"
 
-class Block : public ClickableTileObject
+class Block : public ClickableTileObject, public IHitableTileObject
 {
 public:
-	virtual bool OnClick() override;
+	Block();
+	bool OnClick() override;
+	void OnHit(int damage) override;
 };

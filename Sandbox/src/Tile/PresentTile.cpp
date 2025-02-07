@@ -4,7 +4,7 @@
 void PresentTile::Init(int col, int row)
 {
 	m_TilePos = glm::ivec2(col, row);
-	m_TileId = GridManager::s_GridDimension * col + row;
+	m_TileId = GridManager::GridDimension() * col + row;
 }
 
 void PresentTile::SetTileObject(const std::shared_ptr<TileObject> tileObject)

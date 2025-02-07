@@ -54,7 +54,7 @@ namespace Ovis {
 
 		while (m_Running) 
 		{
-			for each(auto callback in m_EventCallbacks)
+			for (auto callback : m_EventCallbacks)
 			{
 				AppRenderEvent e(LoopState::Begin);
 				callback(e);
@@ -72,7 +72,7 @@ namespace Ovis {
 
 			m_Window->OnUpdate();
 
-			for each(auto callback in m_EventCallbacks)
+			for (auto callback : m_EventCallbacks)
 			{
 				AppRenderEvent e(LoopState::End);
 				callback(e);

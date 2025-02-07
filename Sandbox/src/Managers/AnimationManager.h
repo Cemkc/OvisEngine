@@ -30,5 +30,5 @@ private:
 		glm::vec3 PositionToGet;
 	};
 
-	std::array<AnimationData, 36> m_AnimationArray;
+	std::array<AnimationData, GridManager::TileNumber()> m_AnimationArray;
 };

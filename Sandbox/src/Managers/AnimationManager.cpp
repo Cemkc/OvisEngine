@@ -3,7 +3,7 @@
 AnimationManager* AnimationManager::s_Instance = nullptr;
 
 bool AnimationManager::s_MovingObject = false;
-float AnimationManager::s_AnimationSpeed = 0.5f;
+float AnimationManager::s_AnimationSpeed = 1.0f;
 
 AnimationManager::AnimationManager()
 	:Layer("AnimationManager")
@@ -16,7 +16,6 @@ AnimationManager::AnimationManager()
 		m_AnimationArray[i].Moving = false;
 		m_AnimationArray[i].ObjectToMove = nullptr;
 		m_AnimationArray[i].PositionToGet = glm::vec3(0.0f);
-		
 	}
 }
 
@@ -28,14 +27,16 @@ void AnimationManager::OnUpdate()
 		if (animation.Moving == true)
 		{
 			glm::vec3 entityPos = animation.ObjectToMove->GetTransform().GetPosition();
-			direction = glm::normalize(animation.PositionToGet - entityPos);
+			glm::vec3 positionToGet = glm::vec3(animation.PositionToGet.x, animation.PositionToGet.y, 0.1f);
+			direction = glm::normalize(positionToGet - entityPos);
+			OV_INFO("Direction magnitute: {0}", glm::length(direction));
 			animation.ObjectToMove->GetTransform().SetPosition(entityPos + direction * s_AnimationSpeed * (float)Time::DeltaTime());
 
-			if (glm::distance(animation.PositionToGet, entityPos) < 0.02f)
+			if (glm::distance(positionToGet, entityPos) < 0.02f)
 			{
-				glm::vec3 tileObjPos = { animation.PositionToGet.x, animation.PositionToGet.y, 1.0f };
-				animation.ObjectToMove->GetTransform().SetPosition(tileObjPos);
+				animation.ObjectToMove->GetTransform().SetPosition(positionToGet);
 				animation.Moving = false;
+				GridManager::Instance().m_RunningSequences--;
 			}
 		}
 	}
@@ -43,13 +44,14 @@ void AnimationManager::OnUpdate()
 
 void AnimationManager::MoveObject(GameEntity& entity, glm::vec3 pos)
 {
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < GridManager::TileNumber(); i++)
 	{
 		if (m_AnimationArray[i].Moving == false)
 		{
 			m_AnimationArray[i].Moving = true;
 			m_AnimationArray[i].ObjectToMove = &entity;
 			m_AnimationArray[i].PositionToGet = pos;
+			GridManager::Instance().m_RunningSequences++;
 			break;
 		}
 	}
