@@ -135,7 +135,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Managers\AnimationManager.h" />
+    <ClInclude Include="src\Managers\GridEvent.h" />
     <ClInclude Include="src\TileObjects\BlueTile.h" />
+    <ClInclude Include="src\TileObjects\DuckTileObject.h" />
     <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
     <ClInclude Include="src\TileObjects\GreenTile.h" />
     <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
@@ -155,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\AnimationManager.cpp" />
+    <ClCompile Include="src\TileObjects\DuckTileObject.cpp" />
     <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
     <ClCompile Include="src\Tile\PresentTile.cpp" />

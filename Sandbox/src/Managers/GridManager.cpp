@@ -32,7 +32,7 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 	case TileObjectType::Rocket:
 		return std::make_shared<RocketTileObject>();
 	case TileObjectType::Duck:
-		return nullptr;
+		return std::make_shared<DuckTileObject>();
 	default:
 		return nullptr;
 	}
@@ -77,9 +77,14 @@ void GridManager::OnUpdate()
 		for (int col = 0; col < s_GridDimension; col++)
 		{
 			std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
-			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::None && m_RunningSequences == 0)
+			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::None && RunningSequences == 0)
 			{
 				FillEmptyTiles();
+				for (const auto& [id, func] : m_EventCallbacks)
+				{
+					FillEndEvent e;
+					func(e);
+				}
 			}
 		}
 	}
@@ -259,11 +264,11 @@ void GridManager::GenerateTileMap()
 
 			if (col == 0 && row == 4 || col == 4 && row == 4 /*|| col == 1 && row == 4 || col == 0 && row == 2 || col == 1 && row == 0*/)
 			{
-				tileObject = std::make_shared<RocketTileObject>();
+				tileObject = TileTypeToObject(TileObjectType::Rocket);
 			}
 			else
 			{
-				tileObject = std::make_shared<BlueTile>();
+				tileObject = TileTypeToObject(TileObjectType::Blue);
 			}
 
 			tile->SetTileObject(tileObject);

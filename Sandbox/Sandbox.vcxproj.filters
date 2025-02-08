@@ -42,6 +42,8 @@
     <ClInclude Include="src\Managers\AnimationManager.h" />
     <ClInclude Include="src\TileObjects\RocketTileObject.h" />
     <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
+    <ClInclude Include="src\Managers\GridEvent.h" />
+    <ClInclude Include="src\TileObjects\DuckTileObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\GridManager.cpp">
@@ -56,5 +58,6 @@
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
     <ClCompile Include="src\Managers\AnimationManager.cpp" />
     <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
+    <ClCompile Include="src\TileObjects\DuckTileObject.cpp" />
   </ItemGroup>
 </Project>

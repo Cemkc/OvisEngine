@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Ovis.h"
+#include "GridEvent.h"
+
 #include "TileObjects/TileObject.h"
 #include "TileObjects/ClickableTileObject.h"
 #include "Tile/Tile.h"
@@ -14,21 +16,40 @@
 #include "TileObjects/YellowTile.h"
 #include "TileObjects/RocketTileObject.h"
 #include "TileObjects/EmptyTileObject.h"
+#include "TileObjects/DuckTileObject.h"
 
 using namespace Ovis;
 
 class GridManager : public Layer
 {
 public:
+	int RunningSequences = 0;
+
 	GridManager();
 	static GridManager* s_Instance;
+	inline static GridManager& Instance() { return *s_Instance; }
+	
+	std::vector<std::pair<int, std::function<void(GridEvent&)>>> m_EventCallbacks;
+	void AddEventCallback(int id, const std::function<void(GridEvent&)>& callback) { m_EventCallbacks.push_back({ id ,callback }); }
+	void RemoveEventCallback(int id) 
+	{ 
+		auto newEnd = std::remove_if(m_EventCallbacks.begin(), m_EventCallbacks.end(), 
+			[id](const std::pair<int, std::function<void(GridEvent&)>>& pair) 
+			{ return id == pair.first; });
 
-	int m_RunningSequences = 0;
+		m_EventCallbacks.erase(newEnd, m_EventCallbacks.end());
+	}
 
 	static constexpr int GridDimension() { return s_GridDimension; }
-	static constexpr int TileNumber() { return s_GridDimension * s_GridDimension; }
+	static constexpr int TileCount() { return s_GridDimension * s_GridDimension; }
 
 	glm::vec2 GetTileSize() { return m_TileSize; }
+
+	void GetConnectedTiles(int tile, std::list<int>& connectedTiles, std::list<int>& hittableTilesOnEdge, int previousTile = -1);
+	Tile* GetTile(glm::ivec2 tilePos);
+	Tile* GetTile(int tileNum);
+
+	void OnTileDestroy(Tile* tile);
 
 	inline static glm::vec2 TileIdToPos(int tileId)
 	{
@@ -36,14 +57,6 @@ public:
 		int row = tileId % s_GridDimension;
 		return glm::vec2(col, row);
 	}
-
-	inline static GridManager& Instance() { return *s_Instance; }
-
-	void GetConnectedTiles(int tile, std::list<int>& connectedTiles, std::list<int>& hittableTilesOnEdge, int previousTile = -1);
-	Tile* GetTile(glm::ivec2 tilePos);
-	Tile* GetTile(int tileNum);
-
-	void OnTileDestroy(Tile* tile);
 
 private:
 	std::shared_ptr<OrthographicCameraController> m_CameraController;

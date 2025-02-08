@@ -36,7 +36,7 @@ void AnimationManager::OnUpdate()
 			{
 				animation.ObjectToMove->GetTransform().SetPosition(positionToGet);
 				animation.Moving = false;
-				GridManager::Instance().m_RunningSequences--;
+				GridManager::Instance().RunningSequences--;
 			}
 		}
 	}
@@ -44,14 +44,14 @@ void AnimationManager::OnUpdate()
 
 void AnimationManager::MoveObject(GameEntity& entity, glm::vec3 pos)
 {
-	for (int i = 0; i < GridManager::TileNumber(); i++)
+	for (int i = 0; i < GridManager::TileCount(); i++)
 	{
 		if (m_AnimationArray[i].Moving == false)
 		{
 			m_AnimationArray[i].Moving = true;
 			m_AnimationArray[i].ObjectToMove = &entity;
 			m_AnimationArray[i].PositionToGet = pos;
-			GridManager::Instance().m_RunningSequences++;
+			GridManager::Instance().RunningSequences++;
 			break;
 		}
 	}

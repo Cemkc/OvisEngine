@@ -28,7 +28,7 @@ bool RocketTileObject::OnClick()
 	m_TileBPos = GridManager::Instance().TileIdToPos(m_Tile->GetTileId());
 
 	m_Active = true;
-	GridManager::Instance().m_RunningSequences++;
+	GridManager::Instance().RunningSequences++;
 	return true;
 }
 
@@ -38,7 +38,7 @@ void RocketTileObject::OnUpdate()
 
 	m_RockeFireTimer += Time::DeltaTime();
 
-	if (m_RockeFireTimer < 0.2f) return;
+	if (m_RockeFireTimer < 0.1f) return;
 
 	if (m_Vertical)
 	{
@@ -68,7 +68,7 @@ void RocketTileObject::OnUpdate()
 	if (tileA == nullptr && tileB == nullptr)
 	{
 		m_Active = false;
-		GridManager::Instance().m_RunningSequences--;
+		GridManager::Instance().RunningSequences--;
 		GridManager::Instance().OnTileDestroy(m_Tile);
 	}
 
