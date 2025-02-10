@@ -23,7 +23,6 @@ bool Block::OnClick()
 		{
 			Tile* tile = GridManager::Instance().GetTile(tileNum); // Not that great of a way to to this too many back and forth commuincation and dependency
 			std::shared_ptr<TileObject> tileObject = tile->GetTileObject();
-			OV_INFO("{0}", tile->GetTileId());
 			GridManager::Instance().OnTileDestroy(tile);
 
 			//tileObject.OnDestroy?.Invoke(tile, tileObject);
@@ -50,6 +49,5 @@ bool Block::OnClick()
 
 void Block::OnHit(int damage)
 {
-	OV_INFO("I'm hit!!");
 	GridManager::Instance().OnTileDestroy(m_Tile);
 }

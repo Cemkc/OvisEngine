@@ -15,7 +15,7 @@ public:
 
 	static bool s_MovingObject;
 
-	void MoveObject(GameEntity& entity, glm::vec3 pos);
+	void MoveObject(std::shared_ptr<TileObject>& tileObject, Tile* tile);
 
 	void OnUpdate() override;
 
@@ -26,8 +26,8 @@ private:
 	{
 	public:
 		bool Moving;
-		GameEntity* ObjectToMove;
-		glm::vec3 PositionToGet;
+		std::shared_ptr<TileObject> ObjectToMove;
+		Tile* TileToGet;
 	};
 
 	std::array<AnimationData, GridManager::TileCount()> m_AnimationArray;

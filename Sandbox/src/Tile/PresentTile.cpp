@@ -3,6 +3,7 @@
 
 void PresentTile::Init(int col, int row)
 {
+	m_Color = { 0.2f, 0.2f, 0.2f, 1.0f };
 	m_TilePos = glm::ivec2(col, row);
 	m_TileId = GridManager::GridDimension() * col + row;
 }

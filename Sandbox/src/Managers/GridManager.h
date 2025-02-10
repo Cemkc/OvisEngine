@@ -71,6 +71,8 @@ private:
 
 	double m_ImGuiRefreshTimer = 0;
 
+	int m_PreRunningSequences = 0;
+
 	void OnAttach() override;
 	void OnDetach() override;
 	void OnUpdate() override;

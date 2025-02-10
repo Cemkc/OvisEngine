@@ -15,7 +15,7 @@ AnimationManager::AnimationManager()
 	{
 		m_AnimationArray[i].Moving = false;
 		m_AnimationArray[i].ObjectToMove = nullptr;
-		m_AnimationArray[i].PositionToGet = glm::vec3(0.0f);
+		m_AnimationArray[i].TileToGet= nullptr;
 	}
 }
 
@@ -27,30 +27,34 @@ void AnimationManager::OnUpdate()
 		if (animation.Moving == true)
 		{
 			glm::vec3 entityPos = animation.ObjectToMove->GetTransform().GetPosition();
-			glm::vec3 positionToGet = glm::vec3(animation.PositionToGet.x, animation.PositionToGet.y, 0.1f);
+			glm::vec3 positionToGet = animation.TileToGet->GetTransform().GetPosition();
+			positionToGet.z = 0.1f;
+
 			direction = glm::normalize(positionToGet - entityPos);
-			OV_INFO("Direction magnitute: {0}", glm::length(direction));
+
 			animation.ObjectToMove->GetTransform().SetPosition(entityPos + direction * s_AnimationSpeed * (float)Time::DeltaTime());
 
 			if (glm::distance(positionToGet, entityPos) < 0.02f)
 			{
 				animation.ObjectToMove->GetTransform().SetPosition(positionToGet);
+				animation.TileToGet->SetTileObject(animation.ObjectToMove);
 				animation.Moving = false;
+				animation.ObjectToMove = nullptr;
 				GridManager::Instance().RunningSequences--;
 			}
 		}
 	}
 }
 
-void AnimationManager::MoveObject(GameEntity& entity, glm::vec3 pos)
+void AnimationManager::MoveObject(std::shared_ptr<TileObject>& tileObject, Tile* tile)
 {
 	for (int i = 0; i < GridManager::TileCount(); i++)
 	{
 		if (m_AnimationArray[i].Moving == false)
 		{
 			m_AnimationArray[i].Moving = true;
-			m_AnimationArray[i].ObjectToMove = &entity;
-			m_AnimationArray[i].PositionToGet = pos;
+			m_AnimationArray[i].ObjectToMove = tileObject;
+			m_AnimationArray[i].TileToGet = tile;
 			GridManager::Instance().RunningSequences++;
 			break;
 		}

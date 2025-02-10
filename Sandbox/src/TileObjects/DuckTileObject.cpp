@@ -26,6 +26,7 @@ DuckTileObject::DuckTileObject()
 
 DuckTileObject::~DuckTileObject()
 {
+	GridManager::Instance().RemoveEventCallback(m_DuckId);
 	s_DuckIdArray[m_DuckId] = false;
 }
 
@@ -37,6 +38,7 @@ void DuckTileObject::OnGridEvent(GridEvent& event)
 
 void DuckTileObject::OnFillEnd()
 {
+	OV_INFO("Heard Fill End!");
 	if (m_Tile->GetTilePos().y == 0)
 	{
 		GridManager::Instance().OnTileDestroy(m_Tile);

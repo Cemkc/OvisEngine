@@ -80,13 +80,19 @@ void GridManager::OnUpdate()
 			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::None && RunningSequences == 0)
 			{
 				FillEmptyTiles();
-				for (const auto& [id, func] : m_EventCallbacks)
-				{
-					FillEndEvent e;
-					func(e);
-				}
 			}
 		}
+
+		if (RunningSequences <= 0 && m_PreRunningSequences != RunningSequences)
+		{
+			for (const auto& [id, func] : m_EventCallbacks)
+			{
+				FillEndEvent e;
+				func(e);
+			}
+		}
+
+		m_PreRunningSequences = RunningSequences;
 	}
 
 	m_CameraController->OnUpdate();
@@ -98,14 +104,16 @@ void GridManager::OnUpdate()
 
 	Renderer2D::Instance().BeginScene(m_CameraController->GetCamera());
 
+	for (auto& entity : EntityManager::GetEntityMap())
+	{
+		Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetColor());
+	}
+
 	for (int row = 0; row < s_GridDimension; row++)
 	{
 		for (int col = 0; col < s_GridDimension; col++)
 		{
-			Renderer2D::Instance().SubmitQuad(*m_TileMap[row][col], { 0.2f, 0.2f, 0.2f, 1.0f });
-
 			std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
-			Renderer2D::Instance().SubmitQuad(*tileObj, tileObj->GetColor());
 
 			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Rocket)
 			{
@@ -160,13 +168,13 @@ void GridManager::OnImGuiRender()
 	}
 
 	// Make the buffer large enough to hold the long text
-	char buffer[2048];  // Adjust size depending on your use case
+	char buffer[4096];  // Adjust size depending on your use case
 	std::strncpy(buffer, tileString.c_str(), sizeof(buffer));
 	buffer[sizeof(buffer) - 1] = '\0'; // Ensure null termination
 
 	// Use InputText with multiline and readonly flags
 	ImGui::InputTextMultiline("##CopyField", buffer, sizeof(buffer),
-		ImVec2(-1.0f, ImGui::GetTextLineHeight() * 40),  // Adjust the height of the input box
+		ImVec2(-1.0f, ImGui::GetTextLineHeight() * 70),  // Adjust the height of the input box
 		ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::End();
@@ -182,9 +190,9 @@ void GridManager::OnEvent(Event& event)
 
 void GridManager::OnClick(float posX, float posY)
 {
-	OV_INFO("Mouse clicked at position: ({0}, {1})", posX, posY);
+	//OV_INFO("Mouse clicked at position: ({0}, {1})", posX, posY);
 	glm::vec2 worldPos = Camera::ScreenToWorldPoint(posX, posY);
-	OV_INFO("Mouse world position: ({0}, {1})", worldPos.x, worldPos.y);
+	//OV_INFO("Mouse world position: ({0}, {1})", worldPos.x, worldPos.y);
 	Ray ray({worldPos.x, worldPos.y, 1.0f}, {0.0f, 0.0f, -1.0f});
 	std::vector<GameEntity*> hitEntities;
 	std::vector<GameEntity*> entities;
@@ -262,9 +270,9 @@ void GridManager::GenerateTileMap()
 
 			std::shared_ptr<TileObject> tileObject = nullptr;
 
-			if (col == 0 && row == 4 || col == 4 && row == 4 /*|| col == 1 && row == 4 || col == 0 && row == 2 || col == 1 && row == 0*/)
+			if (col == 0 && row == 4 /*|| col == 1 && row == 4 || col == 0 && row == 2 || col == 1 && row == 0*/)
 			{
-				tileObject = TileTypeToObject(TileObjectType::Rocket);
+				tileObject = TileTypeToObject(TileObjectType::Duck);
 			}
 			else
 			{
@@ -365,7 +373,6 @@ void GridManager::FillEmptyTiles()
 			std::shared_ptr<Tile> tile = m_TileMap[col][row];
 			if (tile->GetTileObject()->GetTileObjectType() == TileObjectType::None)
 			{
-				OV_INFO("Detected empty tile starting recursive algorithm. Empty tile is: ({0}, {1})", tile->GetTilePos().x, tile->GetTilePos().y);
 				FillColumn(tile); // This will recursively fill the empty tiles.
 				break;
 			}
@@ -384,7 +391,6 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 			else FillColumn(m_TileMap[tile->GetTilePos().x][tile->GetTilePos().y + 1]);
 		}
 
-		OV_INFO("Recursive algorithm started tile ({0}, {1})) seems to be empty attempting to fill. ", tile->GetTilePos().x, tile->GetTilePos().y);
 		bool foundTileInGrid = false;
 		for (int row = tile->GetTilePos().y + 1; row < s_GridDimension; row++)
 		{
@@ -393,14 +399,19 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 			if (tileObjAbove->GetTileObjectType() != TileObjectType::None && tileObjAbove->GetTileObjectType() != TileObjectType::Absent) // Change with tile.CanFall()
 			{
 				foundTileInGrid = true;
-				OV_INFO("Found Tile Object in the column!");
-				AnimationManager::Instance().MoveObject(*tileObjAbove, tile->GetTransform().GetPosition());
+				AnimationManager::Instance().MoveObject(tileObjAbove, tile.get());
 				//StartCoroutine(FallToPosition(tileObjAbove, tile));
 				glm::vec3 pos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.1f };
 				//tileObjAbove->GetTransform().SetPosition(pos);
-				tile->SetTileObject(tileObjAbove);
+				// tile->SetTileObject(tileObjAbove);
 
 				std::shared_ptr<TileObject> emptyTileObj = TileTypeToObject(TileObjectType::None);
+				glm::vec3 emptyTilePos = { tileAbove->GetTransform().GetPosition().x, tileAbove->GetTransform().GetPosition().y, 0.05f };
+				emptyTileObj->GetTransform().SetPosition(emptyTilePos);
+				glm::vec3 scale = tile->GetTransform().GetScale();
+				scale = scale * 0.8f;
+				scale.z = 1.0f;
+				emptyTileObj->GetTransform().SetScale(scale);
 				tileAbove->SetTileObject(emptyTileObj);
 				break;
 			}
@@ -415,7 +426,6 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 
 			// Generate a random number and cast it to the corresponding enum value
 			TileObjectType type = static_cast<TileObjectType>(dis(gen));
-			OV_INFO((int)type);
 
 			std::shared_ptr<TileObject> tileObject = TileTypeToObject(type);
 			generatedTileNum++;
@@ -425,8 +435,8 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 			scale = scale * 0.8f;
 			scale.z = 1.0f;
 			tileObject->GetTransform().SetScale(scale);
-			tile->SetTileObject(tileObject);
-			AnimationManager::Instance().MoveObject(*tileObject, tile->GetTransform().GetPosition());
+			// tile->SetTileObject(tileObject);
+			AnimationManager::Instance().MoveObject(tileObject, tile.get());
 			//StartCoroutine(FallToPosition(tileObject, tile));
 		}
 
@@ -440,7 +450,7 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 void GridManager::OnTileDestroy(Tile* tile)
 {
 	std::shared_ptr<TileObject> emptyTileObj = TileTypeToObject(TileObjectType::None);
-	glm::vec3 emptyTilePos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.1f };
+	glm::vec3 emptyTilePos = { tile->GetTransform().GetPosition().x, tile->GetTransform().GetPosition().y, 0.05f };
 	emptyTileObj->GetTransform().SetPosition(emptyTilePos);
 	glm::vec3 scale = tile->GetTransform().GetScale();
 	scale = scale * 0.8f;
