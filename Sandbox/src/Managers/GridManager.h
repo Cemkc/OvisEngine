@@ -9,10 +9,10 @@
 #include "Tile/PresentTile.h"
 #include "Tile/AbsentTile.h"
 #include "TileTypes.h"
-#include "TileObjects/RedTile.h"
-#include "TileObjects/BlueTile.h"
+#include "TileObjects/Pearl.h"
+#include "TileObjects/Shell.h"
 #include "TileObjects/GreenTile.h"
-#include "TileObjects/PurpleTile.h"
+#include "TileObjects/Star.h"
 #include "TileObjects/YellowTile.h"
 #include "TileObjects/RocketTileObject.h"
 #include "TileObjects/EmptyTileObject.h"
@@ -28,17 +28,6 @@ public:
 	GridManager();
 	static GridManager* s_Instance;
 	inline static GridManager& Instance() { return *s_Instance; }
-	
-	std::vector<std::pair<int, std::function<void(GridEvent&)>>> m_EventCallbacks;
-	void AddEventCallback(int id, const std::function<void(GridEvent&)>& callback) { m_EventCallbacks.push_back({ id ,callback }); }
-	void RemoveEventCallback(int id) 
-	{ 
-		auto newEnd = std::remove_if(m_EventCallbacks.begin(), m_EventCallbacks.end(), 
-			[id](const std::pair<int, std::function<void(GridEvent&)>>& pair) 
-			{ return id == pair.first; });
-
-		m_EventCallbacks.erase(newEnd, m_EventCallbacks.end());
-	}
 
 	static constexpr int GridDimension() { return s_GridDimension; }
 	static constexpr int TileCount() { return s_GridDimension * s_GridDimension; }
@@ -46,6 +35,11 @@ public:
 	glm::vec2 GetTileSize() { return m_TileSize; }
 
 	void GetConnectedTiles(int tile, std::list<int>& connectedTiles, std::list<int>& hittableTilesOnEdge, int previousTile = -1);
+
+	void SetTile(Tile& tile, std::shared_ptr<TileObject>& tileObject);
+	void SetTile(Tile& tile, TileObjectType type);
+	void SetTile(int tileId, TileObjectType type);
+
 	Tile* GetTile(glm::ivec2 tilePos);
 	Tile* GetTile(int tileNum);
 

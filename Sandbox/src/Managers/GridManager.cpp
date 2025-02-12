@@ -18,15 +18,15 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 	case TileObjectType::None:
 		return std::make_shared<EmptyTileObject>();
 	case TileObjectType::Red:
-		return std::make_shared<RedTile>();
+		return std::make_shared<Pearl>();
 	case TileObjectType::Blue:
-		return std::make_shared<BlueTile>();
+		return std::make_shared<Shell>();
 	case TileObjectType::Green:
-		return std::make_shared<GreenTile>();;
+		return std::make_shared<GreenTile>();
 	case TileObjectType::Yellow:
-		return std::make_shared<YellowTile>();;
+		return std::make_shared<YellowTile>();
 	case TileObjectType::Purple:
-		return std::make_shared<PurpleTile>();;
+		return std::make_shared<Star>();
 	case TileObjectType::Balloon:
 		return nullptr;
 	case TileObjectType::Rocket:
@@ -82,18 +82,24 @@ void GridManager::OnUpdate()
 				FillEmptyTiles();
 			}
 		}
+	}
 
-		if (RunningSequences <= 0 && m_PreRunningSequences != RunningSequences)
+	if (RunningSequences <= 0 && m_PreRunningSequences != RunningSequences)
+	{
+		for (int row = 0; row < s_GridDimension; row++)
 		{
-			for (const auto& [id, func] : m_EventCallbacks)
+			for (int col = 0; col < s_GridDimension; col++)
 			{
-				FillEndEvent e;
-				func(e);
+				std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
+				if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Duck)
+				{
+					std::static_pointer_cast<DuckTileObject>(tileObj)->OnFillEnd();
+				}
 			}
 		}
-
-		m_PreRunningSequences = RunningSequences;
 	}
+
+	m_PreRunningSequences = RunningSequences;
 
 	m_CameraController->OnUpdate();
 
@@ -106,6 +112,10 @@ void GridManager::OnUpdate()
 
 	for (auto& entity : EntityManager::GetEntityMap())
 	{
+		/*if (dynamic_cast<Pearl*>(entity.second) || dynamic_cast<Star*>(entity.second) || dynamic_cast<Shell*>(entity.second))
+		{
+			Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetTexture());
+		}*/
 		Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetColor());
 	}
 
@@ -329,6 +339,43 @@ void GridManager::GetConnectedTiles(int tile, std::list<int>& connectedTiles, st
 	return;
 }
 
+void FitTileObjectToTile(Tile& tile, TileObject& tileObject)
+{
+	glm::vec3 tilePos;
+
+	if(tileObject.GetTileObjectType() == TileObjectType::None)
+		tilePos = { tile.GetTransform().GetPosition().x, tile.GetTransform().GetPosition().y, 0.05f };
+	else
+		tilePos = { tile.GetTransform().GetPosition().x, tile.GetTransform().GetPosition().y, 0.1f };
+
+	tileObject.GetTransform().SetPosition(tilePos);
+	glm::vec3 scale = tile.GetTransform().GetScale();
+	scale = scale * 0.8f;
+	scale.z = 1.0f;
+	tileObject.GetTransform().SetScale(scale);
+}
+
+void GridManager::SetTile(Tile& tile, std::shared_ptr<TileObject>& tileObject)
+{
+	FitTileObjectToTile(tile, *tileObject);
+	tile.SetTileObject(tileObject);
+}
+
+void GridManager::SetTile(Tile& tile, TileObjectType type)
+{
+	std::shared_ptr<TileObject>& tileObject = TileTypeToObject(type);
+	FitTileObjectToTile(tile, *tileObject);
+	tile.SetTileObject(tileObject);
+}
+
+void GridManager::SetTile(int tileId, TileObjectType type)
+{
+	std::shared_ptr<TileObject>& tileObject = TileTypeToObject(type);
+	Tile& tile = *GetTile(tileId);
+	FitTileObjectToTile(tile, *tileObject);
+	tile.SetTileObject(tileObject);
+}
+
 std::list<int> GridManager::GetAdjacentTiles(int tile)
 {
 	std::list<int> adjacentTiles;
@@ -405,14 +452,7 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 				//tileObjAbove->GetTransform().SetPosition(pos);
 				// tile->SetTileObject(tileObjAbove);
 
-				std::shared_ptr<TileObject> emptyTileObj = TileTypeToObject(TileObjectType::None);
-				glm::vec3 emptyTilePos = { tileAbove->GetTransform().GetPosition().x, tileAbove->GetTransform().GetPosition().y, 0.05f };
-				emptyTileObj->GetTransform().SetPosition(emptyTilePos);
-				glm::vec3 scale = tile->GetTransform().GetScale();
-				scale = scale * 0.8f;
-				scale.z = 1.0f;
-				emptyTileObj->GetTransform().SetScale(scale);
-				tileAbove->SetTileObject(emptyTileObj);
+				SetTile(*tileAbove, TileObjectType::None);
 				break;
 			}
 		}

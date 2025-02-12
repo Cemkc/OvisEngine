@@ -136,12 +136,12 @@
   <ItemGroup>
     <ClInclude Include="src\Managers\AnimationManager.h" />
     <ClInclude Include="src\Managers\GridEvent.h" />
-    <ClInclude Include="src\TileObjects\BlueTile.h" />
+    <ClInclude Include="src\TileObjects\Shell.h" />
     <ClInclude Include="src\TileObjects\DuckTileObject.h" />
     <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
     <ClInclude Include="src\TileObjects\GreenTile.h" />
     <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
-    <ClInclude Include="src\TileObjects\PurpleTile.h" />
+    <ClInclude Include="src\TileObjects\Star.h" />
     <ClInclude Include="src\TileObjects\RocketTileObject.h" />
     <ClInclude Include="src\TileObjects\YellowTile.h" />
     <ClInclude Include="src\TileTypes.h" />
@@ -152,7 +152,7 @@
     <ClInclude Include="src\Tile\Tile.h" />
     <ClInclude Include="src\TileObjects\Block.h" />
     <ClInclude Include="src\TileObjects\ClickableTileObject.h" />
-    <ClInclude Include="src\TileObjects\RedTile.h" />
+    <ClInclude Include="src\TileObjects\Pearl.h" />
     <ClInclude Include="src\TileObjects\TileObject.h" />
   </ItemGroup>
   <ItemGroup>

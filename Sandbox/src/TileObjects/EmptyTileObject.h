@@ -10,6 +10,6 @@ public:
 		m_Name = "Empty Tile Object";
 		m_Type = TileObjectType::None;
 		m_Category = TileObjectCategory::None;
-		m_Color = { 0.992f, 0.239f, 0.71f, 1.0f };
+		m_Color = { 0.992f, 0.239f, 0.71f, 0.0f };
 	}
 };

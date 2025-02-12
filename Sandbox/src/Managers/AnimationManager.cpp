@@ -36,8 +36,8 @@ void AnimationManager::OnUpdate()
 
 			if (glm::distance(positionToGet, entityPos) < 0.02f)
 			{
-				animation.ObjectToMove->GetTransform().SetPosition(positionToGet);
-				animation.TileToGet->SetTileObject(animation.ObjectToMove);
+				GridManager::Instance().SetTile(*animation.TileToGet, animation.ObjectToMove);
+				//animation.TileToGet->SetTileObject(animation.ObjectToMove);
 				animation.Moving = false;
 				animation.ObjectToMove = nullptr;
 				GridManager::Instance().RunningSequences--;

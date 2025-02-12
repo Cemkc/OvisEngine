@@ -8,10 +8,8 @@ public:
 	DuckTileObject();
 	~DuckTileObject();
 
-private:
-	int m_DuckId;
-	static bool s_DuckIdArray[];
-
-	void OnGridEvent(GridEvent& event);
 	void OnFillEnd();
+private:
+	std::function<void()> m_OnFillEndCallback;
+	int m_CallBackId;
 };

@@ -5,13 +5,14 @@
 
 using namespace Ovis;
 
-class BlueTile : public Block
+class Shell : public Block
 {
 public:
-	BlueTile()
+	Shell()
 	{
 		m_Name = "Blue Tile";
 		m_Type = TileObjectType::Blue;
+		//m_Texture2d = Texture2D::Create("assets/textures/Shell.png");
 		m_Color = { 0.2f, 0.2f, 0.8f, 1.0f };
 	}
 };

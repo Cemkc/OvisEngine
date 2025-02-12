@@ -31,15 +31,15 @@ bool Block::OnClick()
 		for(int tileNum : hitTiles)
 		{
 			Tile* tile = GridManager::Instance().GetTile(tileNum);
-			if (!tile->GetTileObject()->IsInCategory(TileObjectCategory::MatchSensitiveObject)) continue; // We put same tiles into the list to be able to hit them multiple times but if the tile is gone-broke that means we should not do a cast
+			if (!tile->GetTileObject()->IsInCategory(TileObjectCategory::MatchSensitiveObject)) continue; // We put same tiles into the list to be able to hit them multiple times but if the tile has gone broke that means we should not do a cast
 			//IMatchSensitive matchSensitiveTile = tile.ActiveTileObject() as IMatchSensitive;
 			//matchSensitiveTile.OnMatchHit();
 		}
 
-		/*if (connectedTiles.Count >= 5)
+		if (connectedTiles.size() >= 5)
 		{
-			GridManager.s_Instance.GetTile(tileNumber).SetTileObject(TileObjectType.Rocket);
-		}*/
+			GridManager::Instance().SetTile(tileNumber, TileObjectType::Rocket);
+		}
 
 		return true;
 	}
