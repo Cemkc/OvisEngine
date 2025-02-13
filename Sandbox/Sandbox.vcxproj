@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\TileObjects;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\TileObjects;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -117,7 +117,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>OV_PLATFORM_WINDOWS;OV_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\TileObjects;..\Ovis\vendor\spdlog\include;..\Ovis\src;..\Ovis\vendor\imgui;..\Ovis\vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,35 +136,38 @@
   <ItemGroup>
     <ClInclude Include="src\Managers\AnimationManager.h" />
     <ClInclude Include="src\Managers\GridEvent.h" />
-    <ClInclude Include="src\TileObjects\Shell.h" />
-    <ClInclude Include="src\TileObjects\DuckTileObject.h" />
-    <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
-    <ClInclude Include="src\TileObjects\GreenTile.h" />
-    <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
-    <ClInclude Include="src\TileObjects\Star.h" />
-    <ClInclude Include="src\TileObjects\RocketTileObject.h" />
-    <ClInclude Include="src\TileObjects\YellowTile.h" />
-    <ClInclude Include="src\TileTypes.h" />
-    <ClInclude Include="src\Tile\AbsentTile.h" />
-    <ClInclude Include="src\Tile\PresentTile.h" />
     <ClInclude Include="src\Managers\GridManager.h" />
     <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\Tile\AbsentTile.h" />
+    <ClInclude Include="src\Tile\PresentTile.h" />
     <ClInclude Include="src\Tile\Tile.h" />
-    <ClInclude Include="src\TileObjects\Block.h" />
+    <ClInclude Include="src\TileObjects\Anchor.h" />
     <ClInclude Include="src\TileObjects\ClickableTileObject.h" />
-    <ClInclude Include="src\TileObjects\Pearl.h" />
+    <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
+    <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Block.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\GreenTile.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Pearl.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Shell.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Star.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\YellowTile.h" />
+    <ClInclude Include="src\TileObjects\RocketTileObject.h" />
     <ClInclude Include="src\TileObjects\TileObject.h" />
+    <ClInclude Include="src\TileTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\AnimationManager.cpp" />
-    <ClCompile Include="src\TileObjects\DuckTileObject.cpp" />
-    <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
-    <ClCompile Include="src\Tile\AbsentTile.cpp" />
-    <ClCompile Include="src\Tile\PresentTile.cpp" />
     <ClCompile Include="src\Managers\GridManager.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
-    <ClCompile Include="src\TileObjects\Block.cpp" />
+    <ClCompile Include="src\Tile\AbsentTile.cpp" />
+    <ClCompile Include="src\Tile\PresentTile.cpp" />
+    <ClCompile Include="src\TileObjects\Anchor.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Block.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Pearl.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Shell.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Star.cpp" />
+    <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ovis\Ovis.vcxproj">

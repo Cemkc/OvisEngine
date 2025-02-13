@@ -9,14 +9,16 @@
 #include "Tile/PresentTile.h"
 #include "Tile/AbsentTile.h"
 #include "TileTypes.h"
-#include "TileObjects/Pearl.h"
-#include "TileObjects/Shell.h"
-#include "TileObjects/GreenTile.h"
-#include "TileObjects/Star.h"
-#include "TileObjects/YellowTile.h"
+
+#include "TileObjects/MatchObjects/Pearl.h"
+#include "TileObjects/MatchObjects/Shell.h"
+#include "TileObjects/MatchObjects/GreenTile.h"
+#include "TileObjects/MatchObjects/Star.h"
+#include "TileObjects/MatchObjects/YellowTile.h"
+
 #include "TileObjects/RocketTileObject.h"
 #include "TileObjects/EmptyTileObject.h"
-#include "TileObjects/DuckTileObject.h"
+#include "TileObjects/Anchor.h"
 
 using namespace Ovis;
 

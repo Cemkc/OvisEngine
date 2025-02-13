@@ -28,7 +28,7 @@ namespace Ovis
 		void RemoveChild(GameEntity& child);
 
 		const glm::vec4& GetColor() const { return m_Color; }
-		const Texture2D& GetTexture() const { return *m_Texture2d; }
+		virtual const Texture2D* GetTexture() const { return nullptr; }
 	private:
 		uint32_t m_Id;
 
@@ -40,7 +40,6 @@ namespace Ovis
 		void Init();
 
 	protected:
-		std::shared_ptr<Texture2D> m_Texture2d;
 		glm::vec4 m_Color;
 		std::string m_Name;
 	};

@@ -10,54 +10,100 @@
     <Filter Include="TileObjects">
       <UniqueIdentifier>{5DFA2C5E-C9AF-A553-52A4-9F2ABE589C57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TileObjects\MatchObjects">
+      <UniqueIdentifier>{232740A1-0F4C-8F21-3897-74B1241B8E3F}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Managers\AnimationManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\GridEvent.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Managers\GridManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\Tile\AbsentTile.h">
+      <Filter>Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tile\PresentTile.h">
+      <Filter>Tile</Filter>
+    </ClInclude>
     <ClInclude Include="src\Tile\Tile.h">
       <Filter>Tile</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileObjects\Block.h">
+    <ClInclude Include="src\TileObjects\Anchor.h">
       <Filter>TileObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\TileObjects\ClickableTileObject.h">
       <Filter>TileObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileObjects\Pearl.h">
+    <ClInclude Include="src\TileObjects\EmptyTileObject.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\IHitableTileObject.h">
+      <Filter>TileObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\Block.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\GreenTile.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\Pearl.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\Shell.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\Star.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\MatchObjects\YellowTile.h">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TileObjects\RocketTileObject.h">
       <Filter>TileObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\TileObjects\TileObject.h">
       <Filter>TileObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tile\PresentTile.h" />
-    <ClInclude Include="src\Tile\AbsentTile.h" />
     <ClInclude Include="src\TileTypes.h" />
-    <ClInclude Include="src\TileObjects\Shell.h" />
-    <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
-    <ClInclude Include="src\TileObjects\GreenTile.h" />
-    <ClInclude Include="src\TileObjects\Star.h" />
-    <ClInclude Include="src\TileObjects\YellowTile.h" />
-    <ClInclude Include="src\Managers\AnimationManager.h" />
-    <ClInclude Include="src\TileObjects\RocketTileObject.h" />
-    <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
-    <ClInclude Include="src\Managers\GridEvent.h" />
-    <ClInclude Include="src\TileObjects\DuckTileObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Managers\AnimationManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
     <ClCompile Include="src\Managers\GridManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
-    <ClCompile Include="src\TileObjects\Block.cpp">
+    <ClCompile Include="src\Tile\AbsentTile.cpp">
+      <Filter>Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tile\PresentTile.cpp">
+      <Filter>Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\Anchor.cpp">
       <Filter>TileObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tile\PresentTile.cpp" />
-    <ClCompile Include="src\Tile\AbsentTile.cpp" />
-    <ClCompile Include="src\Managers\AnimationManager.cpp" />
-    <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
-    <ClCompile Include="src\TileObjects\DuckTileObject.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Block.cpp">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\MatchObjects\Pearl.cpp">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\MatchObjects\Shell.cpp">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\MatchObjects\Star.cpp">
+      <Filter>TileObjects\MatchObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TileObjects\RocketTileObject.cpp">
+      <Filter>TileObjects</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

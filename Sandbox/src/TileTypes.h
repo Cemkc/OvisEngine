@@ -4,14 +4,14 @@ enum class TileObjectType
 {
 	Absent = 0,
 	None,
-	Red,
-	Blue,
+	Pearl,
+	Shell,
 	Green,
 	Yellow,
-	Purple,
+	Star,
 	Balloon,
 	Rocket,
-	Duck
+	Anchor
 };
 
 enum TileObjectCategory

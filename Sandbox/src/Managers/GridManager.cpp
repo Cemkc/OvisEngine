@@ -17,22 +17,22 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 		return nullptr;
 	case TileObjectType::None:
 		return std::make_shared<EmptyTileObject>();
-	case TileObjectType::Red:
+	case TileObjectType::Pearl:
 		return std::make_shared<Pearl>();
-	case TileObjectType::Blue:
+	case TileObjectType::Shell:
 		return std::make_shared<Shell>();
 	case TileObjectType::Green:
 		return std::make_shared<GreenTile>();
 	case TileObjectType::Yellow:
 		return std::make_shared<YellowTile>();
-	case TileObjectType::Purple:
+	case TileObjectType::Star:
 		return std::make_shared<Star>();
 	case TileObjectType::Balloon:
 		return nullptr;
 	case TileObjectType::Rocket:
 		return std::make_shared<RocketTileObject>();
-	case TileObjectType::Duck:
-		return std::make_shared<DuckTileObject>();
+	case TileObjectType::Anchor:
+		return std::make_shared<Anchor>();
 	default:
 		return nullptr;
 	}
@@ -91,9 +91,9 @@ void GridManager::OnUpdate()
 			for (int col = 0; col < s_GridDimension; col++)
 			{
 				std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
-				if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Duck)
+				if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Anchor)
 				{
-					std::static_pointer_cast<DuckTileObject>(tileObj)->OnFillEnd();
+					std::static_pointer_cast<Anchor>(tileObj)->OnFillEnd();
 				}
 			}
 		}
@@ -112,10 +112,11 @@ void GridManager::OnUpdate()
 
 	for (auto& entity : EntityManager::GetEntityMap())
 	{
-		/*if (dynamic_cast<Pearl*>(entity.second) || dynamic_cast<Star*>(entity.second) || dynamic_cast<Shell*>(entity.second))
+		if (dynamic_cast<Pearl*>(entity.second) || dynamic_cast<Star*>(entity.second) || 
+			dynamic_cast<Shell*>(entity.second) || dynamic_cast<Anchor*>(entity.second))
 		{
-			Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetTexture());
-		}*/
+			Renderer2D::Instance().SubmitQuad(*entity.second, *entity.second->GetTexture());
+		}
 		Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetColor());
 	}
 
@@ -282,11 +283,11 @@ void GridManager::GenerateTileMap()
 
 			if (col == 0 && row == 4 /*|| col == 1 && row == 4 || col == 0 && row == 2 || col == 1 && row == 0*/)
 			{
-				tileObject = TileTypeToObject(TileObjectType::Duck);
+				tileObject = TileTypeToObject(TileObjectType::Anchor);
 			}
 			else
 			{
-				tileObject = TileTypeToObject(TileObjectType::Blue);
+				tileObject = TileTypeToObject(TileObjectType::Shell);
 			}
 
 			tile->SetTileObject(tileObject);
