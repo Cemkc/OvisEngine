@@ -138,6 +138,8 @@
     <ClInclude Include="src\Managers\GridEvent.h" />
     <ClInclude Include="src\Managers\GridManager.h" />
     <ClInclude Include="src\Sandbox2D.h" />
+    <ClInclude Include="src\TileObjects\Bottle.h" />
+    <ClInclude Include="src\TileObjects\IMatchSensitive.h" />
     <ClInclude Include="src\Tile\AbsentTile.h" />
     <ClInclude Include="src\Tile\PresentTile.h" />
     <ClInclude Include="src\Tile\Tile.h" />
@@ -160,6 +162,7 @@
     <ClCompile Include="src\Managers\GridManager.cpp" />
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
+    <ClCompile Include="src\TileObjects\Bottle.cpp" />
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
     <ClCompile Include="src\Tile\PresentTile.cpp" />
     <ClCompile Include="src\TileObjects\Anchor.cpp" />

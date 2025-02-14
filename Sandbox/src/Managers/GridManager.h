@@ -19,6 +19,7 @@
 #include "TileObjects/RocketTileObject.h"
 #include "TileObjects/EmptyTileObject.h"
 #include "TileObjects/Anchor.h"
+#include "TileObjects/Bottle.h"
 
 using namespace Ovis;
 

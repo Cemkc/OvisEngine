@@ -71,6 +71,8 @@
       <Filter>TileObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\TileTypes.h" />
+    <ClInclude Include="src\TileObjects\Bottle.h" />
+    <ClInclude Include="src\TileObjects\IMatchSensitive.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Managers\AnimationManager.cpp">
@@ -105,5 +107,6 @@
     <ClCompile Include="src\TileObjects\RocketTileObject.cpp">
       <Filter>TileObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\TileObjects\Bottle.cpp" />
   </ItemGroup>
 </Project>

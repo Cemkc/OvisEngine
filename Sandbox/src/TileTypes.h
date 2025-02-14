@@ -9,7 +9,7 @@ enum class TileObjectType
 	Green,
 	Yellow,
 	Star,
-	Balloon,
+	Bottle,
 	Rocket,
 	Anchor
 };

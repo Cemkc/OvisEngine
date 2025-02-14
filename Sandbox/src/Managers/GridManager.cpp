@@ -27,8 +27,8 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 		return std::make_shared<YellowTile>();
 	case TileObjectType::Star:
 		return std::make_shared<Star>();
-	case TileObjectType::Balloon:
-		return nullptr;
+	case TileObjectType::Bottle:
+		return std::make_shared<Bottle>();
 	case TileObjectType::Rocket:
 		return std::make_shared<RocketTileObject>();
 	case TileObjectType::Anchor:
@@ -113,7 +113,8 @@ void GridManager::OnUpdate()
 	for (auto& entity : EntityManager::GetEntityMap())
 	{
 		if (dynamic_cast<Pearl*>(entity.second) || dynamic_cast<Star*>(entity.second) || 
-			dynamic_cast<Shell*>(entity.second) || dynamic_cast<Anchor*>(entity.second))
+			dynamic_cast<Shell*>(entity.second) || dynamic_cast<Anchor*>(entity.second) ||
+			dynamic_cast<Bottle*>(entity.second))
 		{
 			Renderer2D::Instance().SubmitQuad(*entity.second, *entity.second->GetTexture());
 		}
@@ -283,7 +284,7 @@ void GridManager::GenerateTileMap()
 
 			if (col == 0 && row == 4 /*|| col == 1 && row == 4 || col == 0 && row == 2 || col == 1 && row == 0*/)
 			{
-				tileObject = TileTypeToObject(TileObjectType::Anchor);
+				tileObject = TileTypeToObject(TileObjectType::Bottle);
 			}
 			else
 			{
@@ -331,7 +332,7 @@ void GridManager::GetConnectedTiles(int tile, std::list<int>& connectedTiles, st
 				GetConnectedTiles(adjacentTile, connectedTiles, hittableTilesOnEdge, tile);
 			}
 		}
-		else if (GetTile(adjacentTile)->GetTileObject()->IsInCategory(TileObjectCategory::HitableTileObject))
+		else
 		{
 			hittableTilesOnEdge.push_back(adjacentTile);
 		}
@@ -463,7 +464,7 @@ void GridManager::FillColumn(std::shared_ptr<Tile>& tile, int generatedTileNum)
 			// Create a random number generator
 			std::random_device rd; // Obtain a random number from the system
 			std::mt19937 gen(rd()); // Use Mersenne Twister engine
-			std::uniform_int_distribution<int> dis(2, 6); // Distribution for the enum range
+			std::uniform_int_distribution<int> dis(2, 9); // Distribution for the enum range
 
 			// Generate a random number and cast it to the corresponding enum value
 			TileObjectType type = static_cast<TileObjectType>(dis(gen));
