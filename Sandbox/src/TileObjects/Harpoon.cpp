@@ -2,11 +2,14 @@
 
 #include <random>
 
-#include "RocketTileObject.h"
+#include "Harpoon.h"
 #include "IHitableTileObject.h"
 #include "Managers/AnimationManager.h"
 
-RocketTileObject::RocketTileObject()
+std::shared_ptr<Texture2D> Harpoon::s_HarpoonVTexture = nullptr;
+std::shared_ptr<Texture2D> Harpoon::s_HarpoonHTexture = nullptr;
+
+Harpoon::Harpoon()
 {
 	// Create a random number generator
 	std::random_device rd; // Obtain a random number from the system
@@ -15,24 +18,33 @@ RocketTileObject::RocketTileObject()
 	
 	m_Vertical = dis(gen);
 
-	m_Name = "Rocket Tile";
-	m_Type = TileObjectType::Rocket;
+	m_Name = "Harpoon";
+	m_Type = TileObjectType::Harpoon;
 	m_Category = (TileObjectCategory)(m_Category | TileObjectCategory::HitableTileObject);
+
+	if (!s_HarpoonHTexture)
+		s_HarpoonHTexture = Texture2D::Create("assets/textures/HarpoonH.png");
+
+	if (!s_HarpoonVTexture)
+		s_HarpoonVTexture = Texture2D::Create("assets/textures/HarpoonV.png");
+
 	m_Color = m_Vertical ? glm::vec4(1.0f, 0.0f, 0.863f, 1.0f) : glm::vec4(0.694f, 0.835f, 0.851f, 1.0f);
 }
 
-bool RocketTileObject::OnClick()
+bool Harpoon::OnClick()
 {
 	OV_INFO("Rocket Clicked!");
+	if (m_Fired) return true;
 	m_TileAPos = GridManager::Instance().TileIdToPos(m_Tile->GetTileId());
 	m_TileBPos = GridManager::Instance().TileIdToPos(m_Tile->GetTileId());
 
+	m_Fired = true;
 	m_Active = true;
 	GridManager::Instance().RunningSequences++;
 	return true;
 }
 
-void RocketTileObject::OnUpdate()
+void Harpoon::OnUpdate()
 {
 	if (!m_Active) return;
 
@@ -76,7 +88,12 @@ void RocketTileObject::OnUpdate()
 
 }
 
-void RocketTileObject::OnHit(int damage)
+const Texture2D* Harpoon::GetTexture() const
+{
+	return m_Vertical ? s_HarpoonVTexture.get() : s_HarpoonHTexture.get();
+}
+
+void Harpoon::OnHit(int damage)
 {
 	OnClick();
 }

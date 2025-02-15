@@ -12,11 +12,11 @@
 
 #include "TileObjects/MatchObjects/Pearl.h"
 #include "TileObjects/MatchObjects/Shell.h"
-#include "TileObjects/MatchObjects/GreenTile.h"
+#include "TileObjects/MatchObjects/Seaweed.h"
 #include "TileObjects/MatchObjects/Star.h"
-#include "TileObjects/MatchObjects/YellowTile.h"
+#include "TileObjects/MatchObjects/Tentacle.h"
 
-#include "TileObjects/RocketTileObject.h"
+#include "TileObjects/Harpoon.h"
 #include "TileObjects/EmptyTileObject.h"
 #include "TileObjects/Anchor.h"
 #include "TileObjects/Bottle.h"

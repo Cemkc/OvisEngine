@@ -148,12 +148,12 @@
     <ClInclude Include="src\TileObjects\EmptyTileObject.h" />
     <ClInclude Include="src\TileObjects\IHitableTileObject.h" />
     <ClInclude Include="src\TileObjects\MatchObjects\Block.h" />
-    <ClInclude Include="src\TileObjects\MatchObjects\GreenTile.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Seaweed.h" />
     <ClInclude Include="src\TileObjects\MatchObjects\Pearl.h" />
     <ClInclude Include="src\TileObjects\MatchObjects\Shell.h" />
     <ClInclude Include="src\TileObjects\MatchObjects\Star.h" />
-    <ClInclude Include="src\TileObjects\MatchObjects\YellowTile.h" />
-    <ClInclude Include="src\TileObjects\RocketTileObject.h" />
+    <ClInclude Include="src\TileObjects\MatchObjects\Tentacle.h" />
+    <ClInclude Include="src\TileObjects\Harpoon.h" />
     <ClInclude Include="src\TileObjects\TileObject.h" />
     <ClInclude Include="src\TileTypes.h" />
   </ItemGroup>
@@ -163,6 +163,8 @@
     <ClCompile Include="src\Sandbox2D.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
     <ClCompile Include="src\TileObjects\Bottle.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Seaweed.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Tentacle.cpp" />
     <ClCompile Include="src\Tile\AbsentTile.cpp" />
     <ClCompile Include="src\Tile\PresentTile.cpp" />
     <ClCompile Include="src\TileObjects\Anchor.cpp" />
@@ -170,7 +172,7 @@
     <ClCompile Include="src\TileObjects\MatchObjects\Pearl.cpp" />
     <ClCompile Include="src\TileObjects\MatchObjects\Shell.cpp" />
     <ClCompile Include="src\TileObjects\MatchObjects\Star.cpp" />
-    <ClCompile Include="src\TileObjects\RocketTileObject.cpp" />
+    <ClCompile Include="src\TileObjects\Harpoon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ovis\Ovis.vcxproj">

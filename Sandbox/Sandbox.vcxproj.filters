@@ -49,7 +49,7 @@
     <ClInclude Include="src\TileObjects\MatchObjects\Block.h">
       <Filter>TileObjects\MatchObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileObjects\MatchObjects\GreenTile.h">
+    <ClInclude Include="src\TileObjects\MatchObjects\Seaweed.h">
       <Filter>TileObjects\MatchObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\TileObjects\MatchObjects\Pearl.h">
@@ -61,10 +61,10 @@
     <ClInclude Include="src\TileObjects\MatchObjects\Star.h">
       <Filter>TileObjects\MatchObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileObjects\MatchObjects\YellowTile.h">
+    <ClInclude Include="src\TileObjects\MatchObjects\Tentacle.h">
       <Filter>TileObjects\MatchObjects</Filter>
     </ClInclude>
-    <ClInclude Include="src\TileObjects\RocketTileObject.h">
+    <ClInclude Include="src\TileObjects\Harpoon.h">
       <Filter>TileObjects</Filter>
     </ClInclude>
     <ClInclude Include="src\TileObjects\TileObject.h">
@@ -104,9 +104,11 @@
     <ClCompile Include="src\TileObjects\MatchObjects\Star.cpp">
       <Filter>TileObjects\MatchObjects</Filter>
     </ClCompile>
-    <ClCompile Include="src\TileObjects\RocketTileObject.cpp">
+    <ClCompile Include="src\TileObjects\Harpoon.cpp">
       <Filter>TileObjects</Filter>
     </ClCompile>
     <ClCompile Include="src\TileObjects\Bottle.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Tentacle.cpp" />
+    <ClCompile Include="src\TileObjects\MatchObjects\Seaweed.cpp" />
   </ItemGroup>
 </Project>

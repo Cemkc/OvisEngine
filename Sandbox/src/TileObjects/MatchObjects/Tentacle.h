@@ -3,14 +3,14 @@
 #include "Ovis.h"
 #include "Block.h"
 
-using namespace Ovis;
-
-class Pearl : public Block
+class Tentacle : public Block
 {
 private:
-	static std::shared_ptr<Texture2D> s_PearlTexture;
+	static std::shared_ptr<Texture2D> s_TentacleTexture;
 public:
-	Pearl();
+	Tentacle();
 
 	const Texture2D* GetTexture() const override;
+
 };
+

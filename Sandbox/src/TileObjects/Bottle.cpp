@@ -9,7 +9,7 @@ Bottle::Bottle()
 {
 	m_Name = "Bottle";
 	m_Type = TileObjectType::Bottle;
-	m_Category = (TileObjectCategory)(m_Category | TileObjectCategory::MatchSensitiveObject);
+	m_Category = (TileObjectCategory)(m_Category | TileObjectCategory::MatchSensitiveObject | TileObjectCategory::HitableTileObject);
 	m_Color = glm::vec4(0.573f, 0.149f, 0.941f, 1.0f);
 
 	if (!s_BottleTexture)
@@ -21,6 +21,11 @@ Bottle::Bottle()
 const Texture2D* Bottle::GetTexture() const
 {
 	return s_BottleTexture.get();
+}
+
+void Bottle::OnHit(int damage)
+{
+	GridManager::Instance().OnTileDestroy(m_Tile);
 }
 
 void Bottle::OnMatchHit()

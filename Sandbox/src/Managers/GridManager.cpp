@@ -21,16 +21,16 @@ std::shared_ptr<TileObject> TileTypeToObject(TileObjectType type)
 		return std::make_shared<Pearl>();
 	case TileObjectType::Shell:
 		return std::make_shared<Shell>();
-	case TileObjectType::Green:
-		return std::make_shared<GreenTile>();
-	case TileObjectType::Yellow:
-		return std::make_shared<YellowTile>();
+	case TileObjectType::Seaweed:
+		return std::make_shared<Seaweed>();
+	case TileObjectType::Tentacle:
+		return std::make_shared<Tentacle>();
 	case TileObjectType::Star:
 		return std::make_shared<Star>();
 	case TileObjectType::Bottle:
 		return std::make_shared<Bottle>();
-	case TileObjectType::Rocket:
-		return std::make_shared<RocketTileObject>();
+	case TileObjectType::Harpoon:
+		return std::make_shared<Harpoon>();
 	case TileObjectType::Anchor:
 		return std::make_shared<Anchor>();
 	default:
@@ -112,13 +112,10 @@ void GridManager::OnUpdate()
 
 	for (auto& entity : EntityManager::GetEntityMap())
 	{
-		if (dynamic_cast<Pearl*>(entity.second) || dynamic_cast<Star*>(entity.second) || 
-			dynamic_cast<Shell*>(entity.second) || dynamic_cast<Anchor*>(entity.second) ||
-			dynamic_cast<Bottle*>(entity.second))
-		{
+		if(entity.second->GetTexture())
 			Renderer2D::Instance().SubmitQuad(*entity.second, *entity.second->GetTexture());
-		}
-		Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetColor());
+		else
+			Renderer2D::Instance().SubmitQuad(*entity.second, entity.second->GetColor());
 	}
 
 	for (int row = 0; row < s_GridDimension; row++)
@@ -127,9 +124,9 @@ void GridManager::OnUpdate()
 		{
 			std::shared_ptr<TileObject> tileObj = m_TileMap[row][col]->GetTileObject();
 
-			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Rocket)
+			if (tileObj && tileObj->GetTileObjectType() == TileObjectType::Harpoon)
 			{
-				RocketTileObject* rocket = dynamic_cast<RocketTileObject*>(tileObj.get());
+				Harpoon* rocket = dynamic_cast<Harpoon*>(tileObj.get());
 				rocket->OnUpdate();
 			}
 		}
@@ -164,6 +161,7 @@ void GridManager::OnImGuiRender()
 	ImGui::Text("Quads: %d", stats.QuadCount);
 	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	ImGui::Text("Running Sequences: %d", RunningSequences);
 
 	if(ImGui::Button("Fill Empty Tiles"))
 		FillEmptyTiles();

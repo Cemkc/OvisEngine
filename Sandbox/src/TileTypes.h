@@ -6,11 +6,11 @@ enum class TileObjectType
 	None,
 	Pearl,
 	Shell,
-	Green,
-	Yellow,
+	Seaweed,
+	Tentacle,
 	Star,
 	Bottle,
-	Rocket,
+	Harpoon,
 	Anchor
 };
 

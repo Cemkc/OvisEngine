@@ -38,7 +38,7 @@ bool Block::OnClick()
 
 		if (connectedTiles.size() >= 5)
 		{
-			GridManager::Instance().SetTile(tileNumber, TileObjectType::Rocket);
+			GridManager::Instance().SetTile(tileNumber, TileObjectType::Harpoon);
 		}
 
 		return true;
