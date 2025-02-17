@@ -27,7 +27,6 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate()
 {
 	OV_PROFILE_FUNC();
-	OV_TRACE("Delta Time: {0}s ({1}ms)", Ovis::Time::DeltaTime(), Ovis::Time::DeltaTime() * 1000);
 
 	Ovis::Renderer2D::Instance().ResetStats();
 
@@ -46,16 +45,16 @@ void Sandbox2D::OnUpdate()
 		OV_PROFILE_SCOPE("Renderer Draw");
 		Ovis::Renderer2D::Instance().BeginScene(m_CameraController->GetCamera());
 
-		Ovis::Transform transform;
+		Ovis::GameEntity entity;
 
-		transform =
+		entity.GetTransform() =
 		{
 			glm::vec3(0.0f, 0.0f, -0.1f),
 			glm::vec3(0.0f, 0.0f, 45.0f),
 			glm::vec3(5.0f, 5.0f, 1.0f)
 		};
 
-		Ovis::Renderer2D::Instance().SubmitQuad(transform, *m_CheckerBoardTexture.get(), 10.0f);
+		Ovis::Renderer2D::Instance().SubmitQuad(entity, *m_CheckerBoardTexture.get(), 10.0f);
 
 		float offset = 0.1f;
 
@@ -63,7 +62,7 @@ void Sandbox2D::OnUpdate()
 		{
 			for (int y = 0; y < 100; y++)
 			{
-				transform =
+				entity.GetTransform() =
 				{
 					glm::vec3(x * offset, y * offset, 0.0f),
 					glm::vec3(0.0f, 0.0f, 0.0f),
@@ -72,7 +71,7 @@ void Sandbox2D::OnUpdate()
 
 				glm::vec4 color = (y + x) % 2 == 0 ? m_QuadColor1 : m_QuadColor2;
 
-				Ovis::Renderer2D::Instance().SubmitQuad(transform, color);
+				Ovis::Renderer2D::Instance().SubmitQuad(entity, color);
 			}
 		}
 
