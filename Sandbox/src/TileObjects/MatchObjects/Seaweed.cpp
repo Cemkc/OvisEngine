@@ -12,9 +12,6 @@ Seaweed::Seaweed()
 
 	if (!s_SeaweedTexture)
 		s_SeaweedTexture = Texture2D::Create("assets/textures/Seaweed.png");
-}
 
-const Texture2D* Seaweed::GetTexture() const
-{
-	return s_SeaweedTexture.get();
+	m_Texture = s_SeaweedTexture.get();
 }

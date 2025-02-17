@@ -15,11 +15,8 @@ Anchor::Anchor()
 	{
 		s_AnchorTexture = Texture2D::Create("assets/textures/Anchor.png");
 	}
-}
 
-const Texture2D* Anchor::GetTexture() const
-{
-	return s_AnchorTexture.get();
+	m_Texture = s_AnchorTexture.get();
 }
 
 void Anchor::OnFillEnd()

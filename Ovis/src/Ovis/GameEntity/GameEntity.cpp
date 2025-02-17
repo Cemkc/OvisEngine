@@ -9,6 +9,7 @@ namespace Ovis
 	void GameEntity::Init()
 	{
 		m_Parent = nullptr;
+		m_Texture = nullptr;
 		m_Id = IDGenerator::generateID();
 		EntityManager::OnEntityCreate(this,  m_Id);
 	}

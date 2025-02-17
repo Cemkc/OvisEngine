@@ -12,9 +12,6 @@ Star::Star()
 	{
 		s_StarTexture = Texture2D::Create("assets/textures/Star.png");
 	}
-}
 
-const Texture2D* Star::GetTexture() const
-{
-	return s_StarTexture.get();
+	m_Texture = s_StarTexture.get();
 }

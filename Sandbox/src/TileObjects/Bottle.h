@@ -11,8 +11,6 @@ private:
 public:
 	Bottle();
 
-	const Texture2D* GetTexture() const override;
-
 	void OnHit(int damage) override;
 
 	void OnMatchHit() override;

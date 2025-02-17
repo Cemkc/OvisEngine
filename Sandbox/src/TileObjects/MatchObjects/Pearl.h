@@ -11,6 +11,4 @@ private:
 	static std::shared_ptr<Texture2D> s_PearlTexture;
 public:
 	Pearl();
-
-	const Texture2D* GetTexture() const override;
 };

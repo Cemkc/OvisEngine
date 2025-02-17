@@ -28,6 +28,8 @@ Harpoon::Harpoon()
 	if (!s_HarpoonVTexture)
 		s_HarpoonVTexture = Texture2D::Create("assets/textures/HarpoonV.png");
 
+	m_Texture = m_Vertical ? s_HarpoonVTexture.get() : s_HarpoonHTexture.get();
+
 	m_Color = m_Vertical ? glm::vec4(1.0f, 0.0f, 0.863f, 1.0f) : glm::vec4(0.694f, 0.835f, 0.851f, 1.0f);
 }
 
@@ -64,14 +66,14 @@ void Harpoon::OnUpdate()
 	}
 
 	Tile* tileA = GridManager::Instance().GetTile(m_TileAPos);
-	if (tileA != nullptr && tileA->GetTileObject()->GetTileObjectCategory() & TileObjectCategory::HitableTileObject)
+	if (tileA != nullptr && tileA->GetTileObject()->IsInCategory(TileObjectCategory::HitableTileObject))
 	{
 		IHitableTileObject* hitableTileObject = dynamic_cast<IHitableTileObject*>(tileA->GetTileObject().get());
 		hitableTileObject->OnHit(1);
 	}
 
 	Tile* tileB = GridManager::Instance().GetTile(m_TileBPos);
-	if (tileB != nullptr && tileB->GetTileObject()->GetTileObjectCategory() & TileObjectCategory::HitableTileObject)
+	if (tileB != nullptr && tileB->GetTileObject()->IsInCategory(TileObjectCategory::HitableTileObject))
 	{
 		IHitableTileObject* hitableTileObject = dynamic_cast<IHitableTileObject*>(tileB->GetTileObject().get());
 		hitableTileObject->OnHit(1);
@@ -86,11 +88,6 @@ void Harpoon::OnUpdate()
 
 	m_RockeFireTimer = 0.0f;
 
-}
-
-const Texture2D* Harpoon::GetTexture() const
-{
-	return m_Vertical ? s_HarpoonVTexture.get() : s_HarpoonHTexture.get();
 }
 
 void Harpoon::OnHit(int damage)

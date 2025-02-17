@@ -13,7 +13,7 @@ protected:
 	Tile* m_Tile;
 
 	TileObjectType m_Type;
-	TileObjectCategory m_Category;
+	TileObjectCategory m_Category = TileObjectCategory::None;
 
 public:
 	virtual ~TileObject() = default;

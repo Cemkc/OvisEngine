@@ -52,6 +52,12 @@ void GridManager::OnAttach()
 	float aspectRatio = Ovis::Application::Get().GetWindow().AspectRatio();
 	m_CameraController = std::make_shared<Ovis::OrthographicCameraController>(aspectRatio, true);
 
+	m_BackgroundEntity = std::make_shared<GameEntity>();
+	m_BackgroundImage = Texture2D::Create("assets/textures/BeachBackground.jpeg");
+	m_BackgroundEntity->GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, -0.1f));
+	m_BackgroundEntity->GetTransform().SetScale(glm::vec3(2.0f * aspectRatio, 2.0f, 1.0f));
+	m_BackgroundEntity->SetTexture(*m_BackgroundImage);
+
 	for (int i = 0; i < s_GridDimension * s_GridDimension; i++)
 	{
 		// Create a random number generator
@@ -192,7 +198,7 @@ void GridManager::OnImGuiRender()
 
 void GridManager::OnEvent(Event& event)
 {
-	m_CameraController->OnEvent(event);
+	//m_CameraController->OnEvent(event);
 
 	EventDispatcher dispatcher(event);
 	dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&GridManager::OnMouseEvent, this, std::placeholders::_1));
@@ -252,16 +258,18 @@ bool GridManager::OnMouseEvent(MouseButtonPressedEvent& e)
 
 void GridManager::GenerateTileMap()
 {
-	float horizontalMargin = 0.2f;
-	float verticalMargin = 0.2f;
+	// Taking aspect ration into consideration to define a play field that occupies consistent screen space regardless of the aspect ratio.
+	float aspectRatio = static_cast<float>(Application::Get().GetWindow().GetWidth()) / static_cast<float>(Application::Get().GetWindow().GetHeight());
 
-	float tileSpacing = 0.02f;
-	m_TileSize.x = (2.0f - horizontalMargin * 2.0f) / s_GridDimension;
+	float horizontalMargin = 0.1f * aspectRatio;
+	float verticalMargin = 0.4f;
+
+	m_TileSize.x = (2.0f * aspectRatio - horizontalMargin * 2.0f) / s_GridDimension;
 	m_TileSize.y = (2.0f - verticalMargin * 2.0f) / s_GridDimension;
 
-	glm::vec3 scale = { m_TileSize.x * 0.8f, m_TileSize.y * 0.8f, 1.0f };
+	glm::vec3 scale = { m_TileSize.x * 0.97f, m_TileSize.y * 0.97f, 1.0f };
 
-	glm::vec3 startPos = { -1.0f + horizontalMargin + m_TileSize.x / 2, -1.0f + verticalMargin + m_TileSize.y / 2, 0.0f };
+	glm::vec3 startPos = { -1.0f * aspectRatio + horizontalMargin + m_TileSize.x / 2, -1.0f + verticalMargin + m_TileSize.y / 2, 0.0f };
 	glm::vec3 pos = startPos;
 
 	for (int col = 0; col < s_GridDimension; col++)

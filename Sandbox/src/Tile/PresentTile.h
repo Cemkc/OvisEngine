@@ -4,6 +4,8 @@
 
 class PresentTile : public Tile
 {
+private:
+	static std::shared_ptr<Texture2D> s_TileTexture;
 public:
 	PresentTile() : Tile() {}
 	PresentTile(std::string name) : Tile(name){}

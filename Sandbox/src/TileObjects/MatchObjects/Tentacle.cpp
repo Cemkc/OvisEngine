@@ -12,9 +12,6 @@ Tentacle::Tentacle()
 
 	if (!s_TentacleTexture)
 		s_TentacleTexture = Texture2D::Create("assets/textures/Tentacle.png");
-}
 
-const Texture2D* Tentacle::GetTexture() const
-{
-	return s_TentacleTexture.get();
+	m_Texture = s_TentacleTexture.get();
 }

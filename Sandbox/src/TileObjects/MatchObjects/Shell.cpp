@@ -12,9 +12,6 @@ Shell::Shell()
 	{
 		s_ShellTexture = Texture2D::Create("assets/textures/Shell.png");
 	}
-}
 
-const Texture2D* Shell::GetTexture() const
-{
-	return s_ShellTexture.get();
+	m_Texture = s_ShellTexture.get();
 }

@@ -12,9 +12,6 @@ Pearl::Pearl()
 	{
 		s_PearlTexture = Texture2D::Create("assets/textures/Pearl.png");
 	}
-}
 
-const Texture2D* Pearl::GetTexture() const
-{
-	return s_PearlTexture.get();
+	m_Texture = s_PearlTexture.get();
 }

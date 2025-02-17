@@ -10,8 +10,6 @@ public:
 	bool OnClick() override;
 	void OnUpdate();
 
-	const Texture2D* GetTexture() const override;
-
 private:
 	static std::shared_ptr<Texture2D> s_HarpoonVTexture;
 	static std::shared_ptr<Texture2D> s_HarpoonHTexture;

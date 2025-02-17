@@ -10,7 +10,4 @@ private:
 
 public:
 	Seaweed();
-
-	const Texture2D* GetTexture() const override;
-
 };

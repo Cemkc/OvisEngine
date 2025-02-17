@@ -16,11 +16,8 @@ Bottle::Bottle()
 	{
 		s_BottleTexture = Texture2D::Create("assets/textures/Bottle.png");
 	}
-}
 
-const Texture2D* Bottle::GetTexture() const
-{
-	return s_BottleTexture.get();
+	m_Texture = s_BottleTexture.get();
 }
 
 void Bottle::OnHit(int damage)

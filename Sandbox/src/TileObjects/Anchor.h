@@ -9,7 +9,5 @@ private:
 public:
 	Anchor();
 
-	const Texture2D* GetTexture() const override;
-
 	void OnFillEnd();
 };

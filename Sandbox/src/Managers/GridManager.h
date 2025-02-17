@@ -64,11 +64,12 @@ private:
 	TileObjectType m_StartBoard[s_GridDimension * s_GridDimension];
 	std::shared_ptr<Tile> m_TileMap[s_GridDimension][s_GridDimension];
 
-	std::list<TileObject*> m_AnimatedTileObjects;
+	int m_PreRunningSequences = 0;
+
+	std::shared_ptr<GameEntity> m_BackgroundEntity;
+	std::shared_ptr<Texture2D> m_BackgroundImage;
 
 	double m_ImGuiRefreshTimer = 0;
-
-	int m_PreRunningSequences = 0;
 
 	void OnAttach() override;
 	void OnDetach() override;

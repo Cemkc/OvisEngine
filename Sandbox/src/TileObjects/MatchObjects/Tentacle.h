@@ -9,8 +9,5 @@ private:
 	static std::shared_ptr<Texture2D> s_TentacleTexture;
 public:
 	Tentacle();
-
-	const Texture2D* GetTexture() const override;
-
 };
 
