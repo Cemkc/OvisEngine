@@ -25,9 +25,9 @@ namespace Ovis
 		OV_RENDER_PROFILE_FUNC();
 
 		glm::mat4 model(1.0f);
-		model = glm::translate(model, transform.Position);
-		model = glm::scale(model, transform.Scale);
-		model = glm::rotate(model, glm::radians(transform.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, transform.GetPosition());
+		model = glm::scale(model, transform.GetScale());
+		model = glm::rotate(model, glm::radians(transform.GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		shader->Bind();
 		shader->SetUniform("model", model);

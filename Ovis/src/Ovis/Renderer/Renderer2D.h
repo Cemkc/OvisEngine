@@ -2,7 +2,7 @@
 
 #include "Ovis/Renderer/Camera.h"
 #include "Ovis/Renderer/Texture.h"
-#include "Ovis/GameEntity/Transform.h"
+#include "Ovis/GameEntity/GameEntity.h"
 
 namespace Ovis
 {
@@ -31,8 +31,8 @@ namespace Ovis
 		virtual void BeginScene(const OrthographicCamera& camera) = 0;
 		virtual void EndScene() = 0;
 
-		virtual void SubmitQuad(const Transform& transform, const glm::vec4& color) = 0;
-		virtual void SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor = 1.0f) = 0;
+		virtual void SubmitQuad(const GameEntity& entity, const glm::vec4& color) = 0;
+		virtual void SubmitQuad(const GameEntity& entity, const Texture2D& texture, float tilingFactor = 1.0f) = 0;
 
 		virtual void ResetStats() = 0;
 		virtual Statistics GetStats() = 0;

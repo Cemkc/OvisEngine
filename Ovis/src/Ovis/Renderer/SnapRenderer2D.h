@@ -32,8 +32,8 @@ namespace Ovis
 		void ShutDown() override;
 		void BeginScene(const OrthographicCamera& camera) override;
 		void EndScene() override;
-		void SubmitQuad(const Transform& transform, const glm::vec4& color) override;
-		void SubmitQuad(const Transform& transform, const Texture2D& texture, float tilingFactor) override;
+		void SubmitQuad(const GameEntity& entity, const glm::vec4& color) override;
+		void SubmitQuad(const GameEntity& entity, const Texture2D& texture, float tilingFactor) override;
 
 		void ResetStats() override;
 		Statistics GetStats() override;

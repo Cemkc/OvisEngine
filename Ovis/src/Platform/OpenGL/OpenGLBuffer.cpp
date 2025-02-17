@@ -43,7 +43,8 @@ namespace Ovis
 	void Ovis::OpenGLVertexBuffer::SetData(uint32_t size, const void* data) const
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+		//glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 	}
 
 	////////////////////////////////////////////////////

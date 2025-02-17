@@ -10,14 +10,23 @@
     <Filter Include="src\Ovis\Core">
       <UniqueIdentifier>{553BF3AC-C1FB-6EE3-8A36-B860F6B5B3BF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ovis\Debug">
+      <UniqueIdentifier>{1301674B-FFCE-5A51-E862-CB77D4CF36B6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ovis\Events">
       <UniqueIdentifier>{2176D1BB-8D01-3F80-9612-C274021D9B80}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Ovis\GameEntity">
       <UniqueIdentifier>{037A584F-6FDB-355D-F848-7C0F64A96C1C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Ovis\Physics">
+      <UniqueIdentifier>{4F158565-3B0E-A4B7-6440-893C509883C3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Ovis\Renderer">
       <UniqueIdentifier>{239102ED-8FA7-0083-D81E-8CA44474D10A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Ovis\Utils">
+      <UniqueIdentifier>{FDF7A24C-E9C5-9652-D259-0779BEC672B7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Ovis\imgui">
       <UniqueIdentifier>{0704094E-F3D1-FC53-DC65-6D7AC8D2D8B8}</UniqueIdentifier>
@@ -96,6 +105,9 @@
     <ClInclude Include="src\Ovis\Core\Window.h">
       <Filter>src\Ovis\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Debug\Instrumentor.h">
+      <Filter>src\Ovis\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Events\ApplicationEvent.h">
       <Filter>src\Ovis\Events</Filter>
     </ClInclude>
@@ -108,8 +120,20 @@
     <ClInclude Include="src\Ovis\Events\MouseEvent.h">
       <Filter>src\Ovis\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\GameEntity\EntityManager.h">
+      <Filter>src\Ovis\GameEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\GameEntity\GameEntity.h">
+      <Filter>src\Ovis\GameEntity</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\GameEntity\Transform.h">
       <Filter>src\Ovis\GameEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Physics\Ray.h">
+      <Filter>src\Ovis\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h">
+      <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Buffer.h">
       <Filter>src\Ovis\Renderer</Filter>
@@ -129,17 +153,29 @@
     <ClInclude Include="src\Ovis\Renderer\Renderer.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\Renderer2D.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\RendererAPI.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Shader.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\SnapRenderer2D.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\Texture.h">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Renderer\Vertex.h">
       <Filter>src\Ovis\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\Renderer\VertexArray.h">
       <Filter>src\Ovis\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ovis\Utils\MatrixUtils.h">
+      <Filter>src\Ovis\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Ovis\imgui\ImguiLayer.h">
       <Filter>src\Ovis\imgui</Filter>
@@ -1422,11 +1458,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ovis\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\Ovis\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Ovis\Renderer\BatchRenderer2D.h" />
-    <ClInclude Include="src\Ovis\Renderer\SnapRenderer2D.h" />
-    <ClInclude Include="src\Ovis\Renderer\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ovis\Core\Application.cpp">
@@ -1444,8 +1475,20 @@
     <ClCompile Include="src\Ovis\Core\Time.cpp">
       <Filter>src\Ovis\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ovis\GameEntity\EntityManager.cpp">
+      <Filter>src\Ovis\GameEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\GameEntity\GameEntity.cpp">
+      <Filter>src\Ovis\GameEntity</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ovis\GameEntity\Transform.cpp">
       <Filter>src\Ovis\GameEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Physics\Ray.cpp">
+      <Filter>src\Ovis\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\BatchRenderer2D.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\Buffer.cpp">
       <Filter>src\Ovis\Renderer</Filter>
@@ -1462,10 +1505,16 @@
     <ClCompile Include="src\Ovis\Renderer\Renderer.cpp">
       <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\Renderer2D.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\RendererAPI.cpp">
       <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\Shader.cpp">
+      <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Renderer\SnapRenderer2D.cpp">
       <Filter>src\Ovis\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\Texture.cpp">
@@ -1473,6 +1522,9 @@
     </ClCompile>
     <ClCompile Include="src\Ovis\Renderer\VertexArray.cpp">
       <Filter>src\Ovis\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ovis\Utils\MatrixUtils.cpp">
+      <Filter>src\Ovis\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\Ovis\imgui\ImguiLayer.cpp">
       <Filter>src\Ovis\imgui</Filter>
@@ -1510,8 +1562,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ovis\Renderer\SnapRenderer2D.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\BatchRenderer2D.cpp" />
-    <ClCompile Include="src\Ovis\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

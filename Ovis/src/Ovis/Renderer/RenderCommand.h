@@ -19,7 +19,7 @@ namespace Ovis
 			s_RendererAPI->SetViewport(width, height);
 		}
 
-		inline static void SetClearColor(glm::uvec4 color = glm::vec4(0.8f, 0.2f, 0.8f, 1.0f))
+		inline static void SetClearColor(glm::vec4 color = glm::vec4(0.8f, 0.2f, 0.8f, 1.0f))
 		{
 			s_RendererAPI->SetClearColor(color);
 		}

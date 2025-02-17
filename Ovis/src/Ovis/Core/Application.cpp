@@ -54,7 +54,7 @@ namespace Ovis {
 
 		while (m_Running) 
 		{
-			for each(auto callback in m_EventCallbacks)
+			for (auto callback : m_EventCallbacks)
 			{
 				AppRenderEvent e(LoopState::Begin);
 				callback(e);
@@ -72,7 +72,7 @@ namespace Ovis {
 
 			m_Window->OnUpdate();
 
-			for each(auto callback in m_EventCallbacks)
+			for (auto callback : m_EventCallbacks)
 			{
 				AppRenderEvent e(LoopState::End);
 				callback(e);
@@ -85,7 +85,6 @@ namespace Ovis {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
-		// OV_CORE_INFO("{0}", e.ToString());
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
